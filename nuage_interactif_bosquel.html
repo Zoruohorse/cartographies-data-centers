@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Cartographie interactive — Bosquel / Supercalculateur IA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#f8fafc; --panel:#ffffff; --text:#0f172a; --muted:#64748b; --border:#e2e8f0; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif; background:var(--bg); color:var(--text); }
+  header { padding:18px 22px 12px; background:linear-gradient(90deg,#0f172a,#334155); color:white; }
+  header h1 { margin:0; font-size:22px; letter-spacing:-.02em; }
+  header p { margin:6px 0 0; color:#cbd5e1; font-size:13px; }
+  #wrap { display:grid; grid-template-columns: 315px 1fr 350px; min-height: calc(100vh - 74px); }
+  aside, #details { background:var(--panel); border-right:1px solid var(--border); padding:16px; overflow:auto; }
+  #details { border-right:0; border-left:1px solid var(--border); }
+  #chart { position:relative; overflow:hidden; }
+  svg { width:100%; height:100%; display:block; cursor:grab; background:
+      radial-gradient(circle at 30% 25%, rgba(37,99,235,.08), transparent 28%),
+      radial-gradient(circle at 70% 60%, rgba(22,163,74,.08), transparent 32%),
+      #f8fafc; }
+  .controls label { display:flex; align-items:center; gap:8px; margin:9px 0; font-size:13px; }
+  .controls input[type="text"] { width:100%; padding:10px 11px; border:1px solid var(--border); border-radius:10px; font-size:13px; }
+  .btnrow { display:flex; gap:8px; margin:12px 0 8px; }
+  button { border:1px solid var(--border); background:#fff; border-radius:10px; padding:8px 10px; cursor:pointer; font-size:12px; }
+  button:hover { background:#f1f5f9; }
+  .legend-dot { width:11px; height:11px; border-radius:50%; display:inline-block; flex:0 0 auto; }
+  .hint { color:var(--muted); font-size:12px; line-height:1.35; padding:10px; border:1px dashed var(--border); border-radius:10px; margin-bottom:14px; background:#f8fafc; }
+  .node circle { stroke:#fff; stroke-width:2px; filter: drop-shadow(0 2px 5px rgba(15,23,42,.18)); }
+  .node text { font-size:11px; font-weight:650; paint-order:stroke; stroke:#fff; stroke-width:4px; stroke-linejoin:round; fill:#0f172a; pointer-events:none; text-anchor:middle; }
+  .link { stroke:#94a3b8; stroke-opacity:.42; stroke-width:1.2; }
+  .node.dim, .link.dim { opacity:.12; }
+  .node.hidden, .link.hidden { display:none; }
+  .selected circle { stroke:#0f172a; stroke-width:3.2px; }
+  #details h2 { margin:0 0 8px; font-size:20px; }
+  .pill { display:inline-block; border-radius:999px; color:white; padding:5px 9px; font-size:12px; font-weight:700; margin-bottom:12px; }
+  #details p { font-size:14px; line-height:1.45; }
+  .mini { color:var(--muted); font-size:12px; margin-top:18px; }
+  .tooltip { position:absolute; pointer-events:none; background:#0f172a; color:white; padding:7px 9px; border-radius:8px; font-size:12px; opacity:0; transform:translate(-50%,-120%); white-space:nowrap; z-index:5; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Cartographie interactive des acteurs — Bosquel / Supercalculateur IA</h1>
+  <p>Nuage relationnel : projet, lauréat industriel, CC2SO, État, RTE, écosystème IA, points de vigilance et sources.</p>
+</header>
+<div id="wrap">
+  <aside>
+    <div class="hint">Utilisation : recherche, filtres par famille, clic sur un nœud pour ouvrir sa fiche. Les nœuds sont déplaçables ; molette = zoom.</div>
+    <div class="controls">
+      <input id="search" type="text" placeholder="Rechercher un acteur, institution, média...">
+      <div class="btnrow"><button id="reset">Réinitialiser</button><button id="center">Recentrer</button></div>
+      <strong>Filtres</strong><div id="checks"></div><div class="count" id="count"></div>
+    </div>
+  </aside>
+  <main id="chart"><div class="tooltip" id="tooltip"></div><svg id="svg"></svg></main>
+  <section id="details">
+    <h2>Campus numérique et industriel du Bosquel</h2>
+    <span class="pill" style="background:#111827">Projet central</span>
+    <p>Projet de supercalculateur / campus IA sur la ZAC du Bosquel, site Fast Track RTE, avec capacité pré-réservée de 1 GW.</p>
+    <p class="mini">Lecture rapide : plus le nœud est gros, plus l’acteur est structurant dans le corpus.</p>
+  </section>
+</div>
+
+<script>
+const graph = {"nodes": [{"id": "Campus numérique et industriel du Bosquel", "label": "Campus numérique et industriel du Bosquel", "group": "Projet central", "size": 28, "detail": "Projet de supercalculateur / campus IA sur la ZAC du Bosquel, site Fast Track RTE, avec une capacité pré-réservée de 1 GW."}, {"id": "ZAC du Bosquel", "label": "ZAC du Bosquel", "group": "Projet central", "size": 22, "detail": "Site de 46 hectares, dont 33 hectares dédiés au futur opérateur et 13 hectares vendus à RTE pour le raccordement."}, {"id": "Silver Bands France Computer Center Bosquel", "label": "Silver Bands France Computer\nCenter Bosquel", "group": "Porteur / lauréat industriel", "size": 22, "detail": "Lauréat de l’AMI choisi par les élus de la CC2SO pour construire puis exploiter le supercalculateur."}, {"id": "Société spécifique au Bosquel", "label": "Société spécifique au Bosquel", "group": "Porteur / lauréat industriel", "size": 15, "detail": "Entité annoncée comme devant être créée avec siège au Bosquel et obligation de travailler avec les étudiants amiénois."}, {"id": "Fluidstack", "label": "Fluidstack", "group": "Porteur / lauréat industriel", "size": 22, "detail": "Ancien projet pressenti, finalement abandonné au profit d’une réorientation vers les États-Unis selon plusieurs articles."}, {"id": "CC2SO", "label": "CC2SO", "group": "Institutions territoriales", "size": 22, "detail": "Communauté de communes Somme Sud-Ouest ; pilote territorial de l’AMI et propriétaire des terrains via un bail de 99 ans."}, {"id": "Alain Desfosses", "label": "Alain Desfosses", "group": "Institutions territoriales", "size": 22, "detail": "Président de la CC2SO ; défend le projet, rappelle l’urgence de choisir un opérateur avant l’échéance Fast Track et promet une présentation aux riverains."}, {"id": "Laurent Snoeck", "label": "Laurent Snoeck", "group": "Institutions territoriales", "size": 18, "detail": "Directeur général des services ; répond aux inquiétudes sur l’eau en évoquant un circuit fermé et une consommation de 265 m³/an."}, {"id": "Arnaud De Monclin", "label": "Arnaud De Monclin", "group": "Institutions territoriales", "size": 18, "detail": "Maire de Courcelles-sous-Thoix ; exprime une inquiétude sur les besoins en eau et demande une étude indépendante sur la nappe phréatique."}, {"id": "Maison des Jeunes d’Hornoy-le-Bourg", "label": "Maison des Jeunes d’Hornoy-le-Bourg", "group": "Institutions territoriales", "size": 15, "detail": "Lieu de la réunion communautaire durant laquelle le choix du lauréat de l’AMI est présenté."}, {"id": "État", "label": "État", "group": "État / acteurs publics nationaux", "size": 22, "detail": "Demande à RTE de pré-réserver une capacité de 1 GW sur le site du Bosquel ; inscrit le site dans la logique Fast Track."}, {"id": "Bercy", "label": "Bercy", "group": "État / acteurs publics nationaux", "size": 15, "detail": "Suit la sécurisation des investissements IA et la sélection des sites de centres de données."}, {"id": "Anne Le Hénanff", "label": "Anne Le Hénanff", "group": "État / acteurs publics nationaux", "size": 15, "detail": "Ministre déléguée chargée de l’IA et du Numérique ; associée aux Rencontres des centres de données et au suivi des sites sécurisés."}, {"id": "François Bayrou", "label": "François Bayrou", "group": "État / acteurs publics nationaux", "size": 15, "detail": "Cité comme Premier ministre ayant annoncé une liste de sites industriels clés en main dédiés aux data centers."}, {"id": "Emmanuel Macron", "label": "Emmanuel Macron", "group": "État / acteurs publics nationaux", "size": 15, "detail": "Porteur politique du plan IA de 109 milliards d’euros annoncé lors du Sommet pour l’action sur l’IA."}, {"id": "CRE", "label": "CRE", "group": "État / acteurs publics nationaux", "size": 15, "detail": "A approuvé la procédure spécifique de raccordement rapide pour installations de très forte puissance."}, {"id": "DGE", "label": "DGE", "group": "État / acteurs publics nationaux", "size": 15, "detail": "Direction générale des entreprises ; citée dans l’accompagnement des porteurs de projets via la Task Force de l’État."}, {"id": "Business France", "label": "Business France", "group": "État / acteurs publics nationaux", "size": 15, "detail": "Membre de la Task Force de l’État accompagnant les entreprises de data centers."}, {"id": "RTE", "label": "RTE", "group": "Énergie / raccordement", "size": 22, "detail": "Gestionnaire du réseau ; pré-réservation de capacité, procédure Fast Track, raccordement prioritaire et réflexion sur l’allocation dynamique des capacités."}, {"id": "Nathalie Lemaître", "label": "Nathalie Lemaître", "group": "Énergie / raccordement", "size": 18, "detail": "Directrice générale du pôle Clients Systèmes Innovation chez RTE ; alerte sur les capacités réservées et la nécessité de servir les projets les plus crédibles."}, {"id": "EDF", "label": "EDF", "group": "Énergie / raccordement", "size": 15, "detail": "Cité avec l’État et RTE comme acteur proposant ou identifiant des sites d’implantation possibles en Picardie."}, {"id": "Lignes haute tension", "label": "Lignes haute tension", "group": "Énergie / raccordement", "size": 15, "detail": "Deux lignes haute tension traversent ou alimentent le site, constituant un facteur d’attractivité pour un projet très consommateur d’électricité."}, {"id": "Étudiants amiénois", "label": "Étudiants amiénois", "group": "Recherche / formation / écosystème IA", "size": 15, "detail": "Le futur opérateur doit travailler avec les étudiants amiénois, selon les obligations évoquées par la CC2SO."}, {"id": "Entreprises et start-up utilisatrices", "label": "Entreprises et start-up utilisatrices", "group": "Recherche / formation / écosystème IA", "size": 15, "detail": "Des espaces doivent être dédiés aux entreprises et start-up souhaitant utiliser la puissance du supercalculateur."}, {"id": "Mistral AI", "label": "Mistral AI", "group": "Recherche / formation / écosystème IA", "size": 15, "detail": "Cité comme acteur potentiellement impacté par le retrait de Fluidstack sur un autre site et comme symbole des besoins français en calcul souverain."}, {"id": "Eclairion", "label": "Eclairion", "group": "Recherche / formation / écosystème IA", "size": 15, "detail": "Cité dans le contexte du retrait de Fluidstack sur un projet en région parisienne avec Mistral."}, {"id": "Anthropic", "label": "Anthropic", "group": "Recherche / formation / écosystème IA", "size": 15, "detail": "Client américain de Fluidstack dans le cadre d’un contrat massif aux États-Unis, contribuant à la réorientation de Fluidstack."}, {"id": "Google", "label": "Google", "group": "Recherche / formation / écosystème IA", "size": 15, "detail": "Cité comme investisseur potentiel dans Fluidstack, renforçant l’attraction américaine."}, {"id": "Nvidia", "label": "Nvidia", "group": "Recherche / formation / écosystème IA", "size": 15, "detail": "Cité comme fabricant de GPU dont les délais conditionnent les projets de calcul IA."}, {"id": "Inquiétude sur l’eau", "label": "Inquiétude sur l’eau", "group": "Positions critiques / points de vigilance", "size": 15, "detail": "Préoccupation portée par Arnaud De Monclin sur les besoins du supercalculateur et la capacité de la nappe phréatique."}, {"id": "Nappe phréatique", "label": "Nappe phréatique", "group": "Positions critiques / points de vigilance", "size": 15, "detail": "Ressource hydrique dont la capacité est interrogée au regard des usages existants et du futur projet."}, {"id": "Crédibilité des porteurs de projet", "label": "Crédibilité des porteurs de projet", "group": "Positions critiques / points de vigilance", "size": 15, "detail": "Sujet soulevé par RTE : sortir de la logique premier demandeur, premier servi pour privilégier les projets réellement matures."}, {"id": "Abandon de Fluidstack", "label": "Abandon de Fluidstack", "group": "Positions critiques / points de vigilance", "size": 18, "detail": "Épisode qui fragilise le plan IA français et pose la question de la capacité de la France à concrétiser ses ambitions IA."}, {"id": "Souveraineté numérique", "label": "Souveraineté numérique", "group": "Positions critiques / points de vigilance", "size": 18, "detail": "Argument central du projet, mais fragilisé par la dépendance aux capitaux, GPU et grands clients extra-européens."}, {"id": "Courrier picard", "label": "Courrier picard", "group": "Médias / sources cités", "size": 15, "detail": "Source locale principale sur le choix du lauréat de l’AMI et les échanges au sein de la CC2SO."}, {"id": "La Tribune", "label": "La Tribune", "group": "Médias / sources cités", "size": 15, "detail": "Relaye l’abandon de Fluidstack et l’arbitrage économique en faveur des États-Unis."}, {"id": "Le Figaro", "label": "Le Figaro", "group": "Médias / sources cités", "size": 15, "detail": "Couvre le retrait de Fluidstack et ses conséquences sur le projet de Bosquel."}, {"id": "DCmag", "label": "DCmag", "group": "Médias / sources cités", "size": 15, "detail": "Suit les infrastructures data centers et l’ouverture de l’AMI du Bosquel."}, {"id": "L’Usine Nouvelle", "label": "L’Usine Nouvelle", "group": "Médias / sources cités", "size": 15, "detail": "Analyse la politique de raccordement électrique de RTE pour les datacenters."}, {"id": "Next INpact", "label": "Next INpact", "group": "Médias / sources cités", "size": 15, "detail": "Analyse les sites Fast Track, les capacités sécurisées et les annonces gouvernementales."}, {"id": "Services RTE", "label": "Services RTE", "group": "Médias / sources cités", "size": 15, "detail": "Source institutionnelle sur la pré-réservation de capacité et la prolongation du site du Bosquel."}], "links": [{"source": "Campus numérique et industriel du Bosquel", "target": "ZAC du Bosquel", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Silver Bands France Computer Center Bosquel", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Société spécifique au Bosquel", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Fluidstack", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "CC2SO", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Alain Desfosses", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Laurent Snoeck", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Arnaud De Monclin", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Maison des Jeunes d’Hornoy-le-Bourg", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "État", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Bercy", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Anne Le Hénanff", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "François Bayrou", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Emmanuel Macron", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "CRE", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "DGE", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Business France", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "RTE", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Nathalie Lemaître", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "EDF", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Lignes haute tension", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Étudiants amiénois", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Entreprises et start-up utilisatrices", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Mistral AI", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Eclairion", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Anthropic", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Google", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Nvidia", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Inquiétude sur l’eau", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Nappe phréatique", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Crédibilité des porteurs de projet", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Abandon de Fluidstack", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Souveraineté numérique", "kind": "rôle / lien projet"}, {"source": "Campus numérique et industriel du Bosquel", "target": "ZAC du Bosquel", "kind": "interaction / rattachement"}, {"source": "CC2SO", "target": "Alain Desfosses", "kind": "interaction / rattachement"}, {"source": "CC2SO", "target": "Laurent Snoeck", "kind": "interaction / rattachement"}, {"source": "CC2SO", "target": "Silver Bands France Computer Center Bosquel", "kind": "interaction / rattachement"}, {"source": "CC2SO", "target": "Arnaud De Monclin", "kind": "interaction / rattachement"}, {"source": "CC2SO", "target": "Société spécifique au Bosquel", "kind": "interaction / rattachement"}, {"source": "Silver Bands France Computer Center Bosquel", "target": "Société spécifique au Bosquel", "kind": "interaction / rattachement"}, {"source": "Silver Bands France Computer Center Bosquel", "target": "Entreprises et start-up utilisatrices", "kind": "interaction / rattachement"}, {"source": "Silver Bands France Computer Center Bosquel", "target": "Étudiants amiénois", "kind": "interaction / rattachement"}, {"source": "Arnaud De Monclin", "target": "Inquiétude sur l’eau", "kind": "interaction / rattachement"}, {"source": "Inquiétude sur l’eau", "target": "Nappe phréatique", "kind": "interaction / rattachement"}, {"source": "Laurent Snoeck", "target": "Inquiétude sur l’eau", "kind": "interaction / rattachement"}, {"source": "RTE", "target": "État", "kind": "interaction / rattachement"}, {"source": "RTE", "target": "CRE", "kind": "interaction / rattachement"}, {"source": "RTE", "target": "Nathalie Lemaître", "kind": "interaction / rattachement"}, {"source": "RTE", "target": "Lignes haute tension", "kind": "interaction / rattachement"}, {"source": "RTE", "target": "Crédibilité des porteurs de projet", "kind": "interaction / rattachement"}, {"source": "État", "target": "Bercy", "kind": "interaction / rattachement"}, {"source": "État", "target": "Anne Le Hénanff", "kind": "interaction / rattachement"}, {"source": "État", "target": "DGE", "kind": "interaction / rattachement"}, {"source": "État", "target": "Business France", "kind": "interaction / rattachement"}, {"source": "Emmanuel Macron", "target": "État", "kind": "interaction / rattachement"}, {"source": "Fluidstack", "target": "Abandon de Fluidstack", "kind": "interaction / rattachement"}, {"source": "Fluidstack", "target": "Anthropic", "kind": "interaction / rattachement"}, {"source": "Fluidstack", "target": "Google", "kind": "interaction / rattachement"}, {"source": "Fluidstack", "target": "Mistral AI", "kind": "interaction / rattachement"}, {"source": "Mistral AI", "target": "Eclairion", "kind": "interaction / rattachement"}, {"source": "Nvidia", "target": "Souveraineté numérique", "kind": "interaction / rattachement"}, {"source": "Souveraineté numérique", "target": "Mistral AI", "kind": "interaction / rattachement"}, {"source": "Abandon de Fluidstack", "target": "Souveraineté numérique", "kind": "interaction / rattachement"}, {"source": "EDF", "target": "RTE", "kind": "interaction / rattachement"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Courrier picard", "kind": "source / couverture"}, {"source": "Campus numérique et industriel du Bosquel", "target": "La Tribune", "kind": "source / couverture"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Le Figaro", "kind": "source / couverture"}, {"source": "Campus numérique et industriel du Bosquel", "target": "DCmag", "kind": "source / couverture"}, {"source": "Campus numérique et industriel du Bosquel", "target": "L’Usine Nouvelle", "kind": "source / couverture"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Next INpact", "kind": "source / couverture"}, {"source": "Campus numérique et industriel du Bosquel", "target": "Services RTE", "kind": "source / couverture"}]};
+const colors = {"Projet central": "#111827", "Porteur / lauréat industriel": "#2563eb", "Institutions territoriales": "#7c3aed", "État / acteurs publics nationaux": "#0f766e", "Énergie / raccordement": "#f97316", "Recherche / formation / écosystème IA": "#0891b2", "Positions critiques / points de vigilance": "#dc2626", "Médias / sources cités": "#64748b"};
+const groups = ["Institutions territoriales", "Médias / sources cités", "Porteur / lauréat industriel", "Positions critiques / points de vigilance", "Projet central", "Recherche / formation / écosystème IA", "Énergie / raccordement", "État / acteurs publics nationaux"];
+const central = "Campus numérique et industriel du Bosquel";
+const svg = document.getElementById('svg'), chart = document.getElementById('chart'), details = document.getElementById('details'), tooltip = document.getElementById('tooltip'), checks = document.getElementById('checks'), countEl = document.getElementById('count');
+let width = chart.clientWidth, height = chart.clientHeight;
+svg.setAttribute('viewBox', [0,0,width,height].join(' '));
+const ns = "http://www.w3.org/2000/svg";
+const g = document.createElementNS(ns,'g'); svg.appendChild(g);
+const linkG = document.createElementNS(ns,'g'), nodeG = document.createElementNS(ns,'g'); g.appendChild(linkG); g.appendChild(nodeG);
+const activeGroups = new Set(groups);
+groups.forEach(gr => {
+  const label = document.createElement('label');
+  label.innerHTML = `<input type="checkbox" checked value="${gr}"><span class="legend-dot" style="background:${colors[gr]}"></span><span>${gr}</span>`;
+  checks.appendChild(label);
+});
+checks.addEventListener('change', e => {
+  if(e.target.type === 'checkbox') { e.target.checked ? activeGroups.add(e.target.value) : activeGroups.delete(e.target.value); applyFilters(); }
+});
+const nodes = graph.nodes.map(d => Object.assign({}, d));
+const nodeById = new Map(nodes.map(d => [d.id,d]));
+const links = graph.links.map(d => Object.assign({}, d, {source: nodeById.get(d.source), target: nodeById.get(d.target)})).filter(d => d.source && d.target);
+const linkEls = links.map(l => {
+  const line = document.createElementNS(ns,'line'); line.classList.add('link'); line.dataset.source = l.source.id; line.dataset.target = l.target.id; linkG.appendChild(line); return line;
+});
+const nodeEls = nodes.map(n => {
+  const el = document.createElementNS(ns,'g'); el.classList.add('node'); el.dataset.id = n.id; el.dataset.group = n.group;
+  const c = document.createElementNS(ns,'circle'); c.setAttribute('r', n.size); c.setAttribute('fill', colors[n.group] || '#999');
+  const t = document.createElementNS(ns,'text'); t.setAttribute('dy', n.size + 13);
+  n.label.split('\n').forEach((part,i) => { const tsp = document.createElementNS(ns,'tspan'); tsp.textContent = part; tsp.setAttribute('x', 0); tsp.setAttribute('dy', i===0 ? 0 : 12); t.appendChild(tsp); });
+  el.appendChild(c); el.appendChild(t); nodeG.appendChild(el);
+  el.addEventListener('click', () => selectNode(n));
+  el.addEventListener('mouseenter', ev => showTip(n, ev)); el.addEventListener('mousemove', ev => showTip(n, ev)); el.addEventListener('mouseleave', () => tooltip.style.opacity = 0);
+  drag(el,n); return el;
+});
+function initialPosition() {
+  const ring = {"Projet central":0,"Porteur / lauréat industriel":150,"Institutions territoriales":210,"État / acteurs publics nationaux":315,"Énergie / raccordement":235,"Recherche / formation / écosystème IA":360,"Positions critiques / points de vigilance":285,"Médias / sources cités":430};
+  const byGroup = {}; nodes.forEach(n => (byGroup[n.group] ||= []).push(n));
+  nodes.forEach(n => {
+    if(n.id === central) { n.x = width/2; n.y = height/2; return; }
+    const arr = byGroup[n.group], idx = arr.indexOf(n), total = arr.length;
+    let base = Object.keys(byGroup).indexOf(n.group) * 0.55;
+    if(n.group === "Énergie / raccordement") base = -0.25;
+    if(n.group === "Positions critiques / points de vigilance") base = 2.4;
+    const angle = base + idx * (Math.PI*2/Math.max(total,1));
+    const r = ring[n.group] || 300;
+    n.x = width/2 + Math.cos(angle)*r; n.y = height/2 + Math.sin(angle)*r;
+  });
+}
+initialPosition();
+function tick() {
+  for(let k=0;k<2;k++) {
+    links.forEach(l => {
+      const dx = l.target.x-l.source.x, dy = l.target.y-l.source.y, dist = Math.hypot(dx,dy) || 1;
+      const desired = l.source.id===central || l.target.id===central ? 165 : 115;
+      const f = (dist-desired)*0.012, fx = dx/dist*f, fy = dy/dist*f;
+      if(!l.source.fixed) { l.source.x += fx; l.source.y += fy; }
+      if(!l.target.fixed) { l.target.x -= fx; l.target.y -= fy; }
+    });
+    for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++) {
+      const a=nodes[i], b=nodes[j], dx=b.x-a.x, dy=b.y-a.y, dist=Math.hypot(dx,dy)||1, min=a.size+b.size+38;
+      if(dist < min) { const f=(min-dist)/dist*0.028; if(!a.fixed) {a.x-=dx*f; a.y-=dy*f;} if(!b.fixed) {b.x+=dx*f; b.y+=dy*f;} }
+    }
+    nodes.forEach(n => {
+      if(n.id !== central && !n.fixed) { n.x += (width/2 - n.x)*0.0015; n.y += (height/2 - n.y)*0.0015; }
+      n.x = Math.max(40, Math.min(width-40, n.x)); n.y = Math.max(40, Math.min(height-40, n.y));
+    });
+  }
+  linkEls.forEach((el,i) => { const l=links[i]; el.setAttribute('x1',l.source.x); el.setAttribute('y1',l.source.y); el.setAttribute('x2',l.target.x); el.setAttribute('y2',l.target.y); });
+  nodeEls.forEach((el,i) => el.setAttribute('transform',`translate(${nodes[i].x},${nodes[i].y})`));
+  requestAnimationFrame(tick);
+}
+tick();
+function selectNode(n) {
+  nodeEls.forEach(el => el.classList.remove('selected','dim')); linkEls.forEach(el => el.classList.remove('dim'));
+  const neigh = new Set([n.id]);
+  links.forEach(l => { if(l.source.id===n.id) neigh.add(l.target.id); if(l.target.id===n.id) neigh.add(l.source.id); });
+  nodeEls.forEach(el => { if(!neigh.has(el.dataset.id)) el.classList.add('dim'); if(el.dataset.id===n.id) el.classList.add('selected'); });
+  linkEls.forEach((el,i) => { const l=links[i]; if(l.source.id!==n.id && l.target.id!==n.id) el.classList.add('dim'); });
+  details.innerHTML = `<h2>${escapeHtml(n.id)}</h2><span class="pill" style="background:${colors[n.group]}">${escapeHtml(n.group)}</span><p>${escapeHtml(n.detail)}</p><p class="mini"><strong>Connexions visibles :</strong> ${[...neigh].filter(x=>x!==n.id).map(escapeHtml).join(', ') || 'aucune'}</p>`;
+}
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+function showTip(n, ev) { tooltip.textContent = n.id + " — " + n.group; tooltip.style.opacity = 1; const rect = chart.getBoundingClientRect(); tooltip.style.left = (ev.clientX - rect.left) + 'px'; tooltip.style.top = (ev.clientY - rect.top) + 'px'; }
+function applyFilters() {
+  const q = document.getElementById('search').value.trim().toLowerCase(); let visible = 0;
+  nodeEls.forEach((el,i) => { const n = nodes[i]; const ok = activeGroups.has(n.group) && (!q || (n.id + " " + n.group + " " + n.detail).toLowerCase().includes(q)); el.classList.toggle('hidden', !ok); if(ok) visible++; });
+  linkEls.forEach((el,i) => { const l = links[i]; const sEl = nodeEls[nodes.indexOf(l.source)], tEl = nodeEls[nodes.indexOf(l.target)]; el.classList.toggle('hidden', sEl.classList.contains('hidden') || tEl.classList.contains('hidden')); });
+  countEl.textContent = visible + " nœuds affichés sur " + nodes.length;
+}
+document.getElementById('search').addEventListener('input', applyFilters); applyFilters();
+document.getElementById('reset').onclick = () => { document.getElementById('search').value = ""; document.querySelectorAll('#checks input').forEach(cb => { cb.checked=true; activeGroups.add(cb.value); }); nodeEls.forEach(el => el.classList.remove('selected','dim','hidden')); linkEls.forEach(el => el.classList.remove('dim','hidden')); applyFilters(); };
+document.getElementById('center').onclick = () => { currentZoom = 1; panX = 0; panY = 0; updateTransform(); };
+function drag(el,n) {
+  let down=false, ox=0, oy=0;
+  el.addEventListener('pointerdown', ev => { down=true; n.fixed=true; el.setPointerCapture(ev.pointerId); const pt = toSvg(ev); ox = n.x-pt.x; oy=n.y-pt.y; });
+  el.addEventListener('pointermove', ev => { if(!down) return; const pt=toSvg(ev); n.x=pt.x+ox; n.y=pt.y+oy; });
+  el.addEventListener('pointerup', ev => { down=false; el.releasePointerCapture(ev.pointerId); });
+}
+let currentZoom=1, panX=0, panY=0, panning=false, sx=0, sy=0;
+function updateTransform() { g.setAttribute('transform', `translate(${panX},${panY}) scale(${currentZoom})`); }
+function toSvg(ev) { const rect = svg.getBoundingClientRect(); return {x:(ev.clientX-rect.left-panX)/currentZoom, y:(ev.clientY-rect.top-panY)/currentZoom}; }
+svg.addEventListener('wheel', ev => { ev.preventDefault(); const scale = ev.deltaY < 0 ? 1.08 : 0.92; currentZoom = Math.max(.35, Math.min(2.8, currentZoom*scale)); updateTransform(); }, {passive:false});
+svg.addEventListener('pointerdown', ev => { if(ev.target===svg) { panning=true; sx=ev.clientX-panX; sy=ev.clientY-panY; svg.style.cursor='grabbing'; } });
+svg.addEventListener('pointermove', ev => { if(panning) { panX=ev.clientX-sx; panY=ev.clientY-sy; updateTransform(); } });
+svg.addEventListener('pointerup', () => { panning=false; svg.style.cursor='grab'; });
+window.addEventListener('resize', () => { width = chart.clientWidth; height = chart.clientHeight; svg.setAttribute('viewBox', [0,0,width,height].join(' ')); });
+</script>
+</body>
+</html>

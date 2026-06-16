@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Tableau de Bord Interactif — Matrices des Fast-Tracks IA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #f1f5f9;
+    --panel: #ffffff;
+    --text-main: #0f172a;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #1e1b4b;
+    --primary-light: #4338ca;
+    
+    /* Couleurs de la matrice de chaleur */
+    --color-fort: #ef4444;
+    --color-moyen: #f97316;
+    --color-faible: #22c55e;
+    --color-absent: #cbd5e1;
+    --color-bg-fort: #fee2e2;
+    --color-bg-moyen: #ffedd5;
+    --color-bg-faible: #dcfce7;
+    --color-bg-absent: #f1f5f9;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-main);
+    line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+    color: white;
+    padding: 20px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  header h1 { margin: 0; font-size: 22px; letter-spacing: -.02em; }
+  header p { margin: 6px 0 0; color: #cbd5e1; font-size: 13.5px; }
+
+  .container {
+    max-width: 1400px;
+    margin: 24px auto;
+    padding: 0 24px;
+  }
+
+  /* Navigation Onglets */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s ease;
+  }
+  .tab-btn:hover {
+    color: var(--primary-light);
+  }
+  .tab-btn.active {
+    color: var(--primary-light);
+    border-bottom-color: var(--primary-light);
+  }
+
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Composants Communs */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.02);
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .card-title {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    border-left: 4px solid var(--primary-light);
+    padding-left: 8px;
+  }
+
+  /* Tableaux interactifs stylisés */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13.5px;
+  }
+  th {
+    background-color: #f8fafc;
+    color: var(--muted);
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--border);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: .05em;
+  }
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:hover td { background-color: #f8fafc; }
+
+  /* Échelles et points de couleur (Badges) */
+  .dot-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+  .dot-fort { color: #b91c1c; background-color: #fee2e2; }
+  .dot-moyen { color: #c2410c; background-color: #ffedd5; }
+  .dot-faible { color: #15803d; background-color: #dcfce7; }
+  .dot-absent { color: #475569; background-color: #f1f5f9; }
+
+  .dot-indicator::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .dot-fort::before { background-color: var(--color-fort); }
+  .dot-moyen::before { background-color: var(--color-moyen); }
+  .dot-faible::before { background-color: var(--color-faible); }
+  .dot-absent::before { background-color: var(--color-muted); }
+
+  /* Matrice Thermique / Griefs (Heatmap cells) */
+  .heatmap-cell {
+    text-align: center;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: help;
+    transition: transform 0.1s ease;
+  }
+  .heatmap-cell:hover {
+    transform: scale(1.05);
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,0.1);
+  }
+  .cell-fort { background-color: var(--color-bg-fort) !important; color: var(--color-fort); }
+  .cell-moyen { background-color: var(--color-bg-moyen) !important; color: var(--color-moyen); }
+  .cell-faible { background-color: var(--color-bg-faible) !important; color: var(--color-faible); }
+  .cell-absent { background-color: var(--color-bg-absent) !important; color: var(--muted); }
+
+  /* Jauges d'intensité */
+  .gauge-container {
+    width: 100%;
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    height: 8px;
+    margin-top: 4px;
+  }
+  .gauge-bar {
+    height: 100%;
+    border-radius: 4px;
+  }
+  .gauge-fort { width: 100%; background-color: var(--color-fort); }
+  .gauge-moyen { width: 50%; background-color: var(--color-moyen); }
+
+  /* Layout Matrice Récits (Grid de cartes) */
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+  }
+  .project-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .project-card-header {
+    background-color: #f8fafc;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .project-card-header h3 { margin: 0; font-size: 15px; color: var(--primary); font-weight: 700; }
+  .project-card-body { padding: 16px; flex-grow: 1; }
+  
+  .narrative-block {
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .narrative-dominant {
+    background-color: #f0fdf4;
+    border-left: 4px solid var(--color-faible);
+  }
+  .narrative-counter {
+    background-color: #fef2f2;
+    border-left: 4px solid var(--color-fort);
+  }
+  .narrative-title { font-weight: 700; font-size: 11px; text-transform: uppercase; margin-bottom: 4px; }
+  .narrative-dominant .narrative-title { color: #16a34a; }
+  .narrative-counter .narrative-title { color: #dc2626; }
+
+  /* Contrôles de focus */
+  .selector-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+  select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 13.5px;
+    outline: none;
+    background-color: white;
+  }
+  .highlighted-row {
+    outline: 2px solid var(--primary-light);
+    background-color: #f5f3ff !important;
+  }
+  
+  .legend-box {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Matrices Analytiques & Comparatives — Fast-Tracks Énergétiques IA</h1>
+  <p>Visualisation dynamique croisée du niveau de conflictualité, des récits et des échelles de griefs de l'infrastructure nationale.</p>
+</header>
+
+<div class="container">
+  
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(event, 'tab-conflict')">1. Conflictualité & Risques</button>
+    <button class="tab-btn" onclick="switchTab(event, 'tab-griefs')">2. Thermographie des Griefs</button>
+    <button class="tab-btn" onclick="switchTab(event, 'tab-recits')">3. Matrice des Récits (Fouju/Bosquel...)</button>
+  </div>
+
+  <div id="tab-conflict" class="tab-content active">
+    <div class="card">
+      <div class="card-title">Matrice Comparative de Conflictualité</div>
+      <p style="font-size: 13.5px; color: var(--muted); margin-bottom: 20px;">
+        Cette matrice croise le niveau de conflictualité constaté sur le terrain, les indices structurels, les forces motrices et le niveau d'exposition au risque médiatique.
+      </p>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Projet / Site</th>
+              <th>Niveau de Conflictualité</th>
+              <th>Indices Principaux</th>
+              <th>Acteurs Moteurs</th>
+              <th>Griefs Dominants</th>
+              <th>Risque Médiatique</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Campus IA Fouju</strong></td>
+              <td><span class="dot-indicator dot-fort">FORT</span></td>
+              <td>Nombreux opposants nommés, associations, experts, procédure contestée.</td>
+              <td>FNE 77, Confédération paysanne, Alliance écologique et sociale, Data for Good.</td>
+              <td>Artificialisation, PFAS, énergie, procédure.</td>
+              <td>
+                <span class="dot-indicator dot-fort">FORT</span>
+                <div class="gauge-container"><div class="gauge-bar gauge-fort"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Cézanne / Sybilles</strong><br><small style="color:var(--muted)">Pennes-Mirabeau</small></td>
+              <td><span class="dot-indicator dot-fort">FORT</span></td>
+              <td>Recours, collectifs, CIQ, maires et adjoints critiques ou opposés.</td>
+              <td>Collectif Non au data center, CIQ, maires / adjoints.</td>
+              <td>Concertation, santé, sécurité, chaleur, énergie.</td>
+              <td>
+                <span class="dot-indicator dot-fort">FORT</span>
+                <div class="gauge-container"><div class="gauge-bar gauge-fort"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Google Ozans</strong><br><small style="color:var(--muted)">Châteauroux</small></td>
+              <td><span class="dot-indicator dot-fort">FORT</span></td>
+              <td>Collectif récent, partis, associations, élus critiques, CNDP.</td>
+              <td>Ozans dire non, Jérémie Godet, PCF, Écologistes, Confédération paysanne.</td>
+              <td>Artificialisation, opacité, PFAS, chaleur, emplois.</td>
+              <td>
+                <span class="dot-indicator dot-fort">FORT</span>
+                <div class="gauge-container"><div class="gauge-bar gauge-fort"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Bosquel</strong></td>
+              <td><span class="dot-indicator dot-moyen">MOYEN FAIBLE</span></td>
+              <td>Inquiétude eau, demande d'étude indépendante.</td>
+              <td>Arnaud De Monclin ; CC2SO en réponse.</td>
+              <td>Eau, nappe, Fast Track, énergie.</td>
+              <td>
+                <span class="dot-indicator dot-moyen">MOYEN</span>
+                <div class="gauge-container"><div class="gauge-bar gauge-moyen"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Escaudain</strong></td>
+              <td><span class="dot-indicator dot-absent">FAIBLE / N.D.</span></td>
+              <td>Soutiens institutionnels et industriels dominants ; opposition non documentée.</td>
+              <td>Agglomération, élus, consortium.</td>
+              <td>Emploi, énergie, reconversion.</td>
+              <td>
+                <span class="dot-indicator dot-moyen">MOYEN</span>
+                <div class="gauge-container"><div class="gauge-bar gauge-moyen"></div></div>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>SoftBank Dunkerque</strong></td>
+              <td><span class="dot-indicator dot-absent">FAIBLE / N.D.</span></td>
+              <td>Forte coalition favorable ; experts critiques signalés mais peu documentés.</td>
+              <td>Patrice Vergriete, Xavier Bertrand, SoftBank, Schneider.</td>
+              <td>Emploi, fiscalité, souveraineté, énergie.</td>
+              <td>
+                <span class="dot-indicator dot-moyen">MOYEN</span>
+                <div class="gauge-container"><div class="gauge-bar gauge-moyen"></div></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-griefs" class="tab-content">
+    <div class="card">
+      <div class="card-title">Matrice Thermique des Griefs & Vecteurs de Crise</div>
+      
+      <div class="selector-box">
+        <label for="project-focus">Mettre en valeur un site :</label>
+        <select id="project-focus" onchange="highlightProject(this.value)">
+          <option value="none">-- Aucun focus --</option>
+          <option value="p-fouju">Campus IA Fouju</option>
+          <option value="p-escaudain">Escaudain</option>
+          <option value="p-bosquel">Bosquel</option>
+          <option value="p-pennes">Cézanne / Pennes-Mirabeau</option>
+          <option value="p-chateauroux">Google Ozans / Châteauroux</option>
+          <option value="p-dunkerque">SoftBank Dunkerque</option>
+        </select>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Projet / Site</th>
+              <th style="text-align:center;">Foncier</th>
+              <th style="text-align:center;">Eau</th>
+              <th style="text-align:center;">Énergie</th>
+              <th style="text-align:center;">Biodiv.</th>
+              <th style="text-align:center;">Santé</th>
+              <th style="text-align:center;">PFAS</th>
+              <th style="text-align:center;">Concert.</th>
+              <th style="text-align:center;">Procédure</th>
+              <th style="text-align:center;">Emploi</th>
+              <th style="text-align:center;">Souver.</th>
+              <th style="text-align:center;">Sécurité</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr id="p-fouju">
+              <td><strong>Fouju</strong></td>
+              <td class="heatmap-cell cell-fort" title="人工土地 / Artificialisation : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-moyen" title="Consommation hydrique : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-fort" title="Consommation électrique : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-moyen" title="Risques sanitaires : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-fort" title="Fluides frigorifiques toxiques : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-moyen" title="Transparence des débats : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-fort" title="Procédure accélérée critiquée : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-moyen" title="Souveraineté disputée : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+            </tr>
+            <tr id="p-escaudain">
+              <td><strong>Escaudain</strong></td>
+              <td class="heatmap-cell cell-faible" title="Usage foncier : Faible (Reconversion de friche)">Faible</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-moyen" title="Consommation électrique : Impact Moyen (700 MW)">Moyen</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-absent" title="Grief Absent du dossier">Absent</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-faible" title="Fast Track présent mais non critiqué">Faible</td>
+              <td class="heatmap-cell cell-fort" title="Emploi : Fort comme promesse de reconversion">Fort</td>
+              <td class="heatmap-cell cell-moyen" title="Souveraineté : Moyen comme récit">Moyen</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+            </tr>
+            <tr id="p-bosquel">
+              <td><strong>Bosquel</strong></td>
+              <td class="heatmap-cell cell-moyen" title="Usage foncier : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-moyen" title="Inquiétude sur la nappe phréatique : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-fort" title="Consommation électrique : Impact Fort (1 GW pré-réservé)">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-absent" title="Grief Absent du dossier">Absent</td>
+              <td class="heatmap-cell cell-faible" title="Concertation : Faible (Présentation riverains promise)">Faible</td>
+              <td class="heatmap-cell cell-fort" title="Fast Track central : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-faible" title="Emploi : Impact Faible / Obligations étudiants">Faible</td>
+              <td class="heatmap-cell cell-moyen" title="Souveraineté : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+            </tr>
+            <tr id="p-pennes">
+              <td><strong>Pennes-Mirabeau</strong></td>
+              <td class="heatmap-cell cell-moyen" title="Usage foncier : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-moyen" title="Refroidissement / Rejets : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-fort" title="Alimentation électrique contestée : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-fort" title="Risques sanitaires et pollution : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-fort" title="Concertation jugée insuffisante : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-moyen" title="Délais et permis : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-faible" title="Création d'emplois contestée : Impact Faible">Faible</td>
+              <td class="heatmap-cell cell-faible" title="Souveraineté / Utilité sociale : Impact Faible">Faible</td>
+              <td class="heatmap-cell cell-fort" title="Risques incendie et sécurité : Impact Fort">Fort</td>
+            </tr>
+            <tr id="p-chateauroux">
+              <td><strong>Châteauroux</strong></td>
+              <td class="heatmap-cell cell-fort" title="Artificialisation : Fort (195 ha réservés)">Fort</td>
+              <td class="heatmap-cell cell-moyen" title="Refroidissement en zone de stress hydrique : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-fort" title="Lignes THT raccordement : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-moyen" title="Habitats naturels impactés : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-moyen" title="Suivi des nuisances : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-moyen" title="Fluides techniques : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-fort" title="Concertation CNDP contestée : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-moyen" title="Emplois promis contestés : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-moyen" title="Souveraineté numérique GAFAM : Impact Moyen">Moyen</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+            </tr>
+            <tr id="p-dunkerque">
+              <td><strong>Dunkerque</strong></td>
+              <td class="heatmap-cell cell-faible" title="Foncier portuaire : Faible / Non documenté">Faible</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-fort" title="Électricité décarbonée majeure : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-absent" title="Grief Absent du dossier">Absent</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+              <td class="heatmap-cell cell-fort" title="Emploi : Fort comme promesse industrielle">Fort</td>
+              <td class="heatmap-cell cell-fort" title="Souveraineté industrielle : Impact Fort">Fort</td>
+              <td class="heatmap-cell cell-absent" title="Donnée non documentée">N.D.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="legend-box">
+        <span><strong>Légende thermique :</strong></span>
+        <span style="color: var(--color-fort)">■ Fort (Grief / Tension aiguë)</span>
+        <span style="color: var(--color-moyen)">■ Moyen (Vigilance / Discussion)</span>
+        <span style="color: var(--color-faible)">■ Faible (Intégration validée)</span>
+        <span style="color: var(--muted)">■ Absent / N.D. (Non documenté)</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-recits" class="tab-content">
+    <div class="card">
+      <div class="card-title">Matrice d'Opposition des Récits (Choc Narrationnel)</div>
+      <p style="font-size: 13.5px; color: var(--muted); margin-bottom: 20px;">
+        Confrontation directe entre la communication industrielle favorable (Récit Dominant) et les arguments critiques des collectifs (Contre-Récit).
+      </p>
+      
+      <div class="matrix-grid">
+        <div class="project-card">
+          <div class="project-card-header">
+            <h3>Campus IA Fouju</h3>
+            <span class="dot-indicator dot-fort">Fort</span>
+          </div>
+          <div class="project-card-body">
+            <div class="narrative-block narrative-dominant">
+              <div class="narrative-title">Récit Dominant</div>
+              Souveraineté numérique européenne et déploiement de l'intelligence artificielle d'avenir.
+            </div>
+            <div class="narrative-block narrative-counter">
+              <div class="narrative-title">Contre-Récit Dominant</div>
+              Artificialisation de terres fertiles, pollution par les PFAS, consommation énergétique démesurée, procédure accélérée de force et absence de réel débat public.
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <h3>Bosquel (ZAC de 46 ha)</h3>
+            <span class="dot-indicator dot-moyen">Moyen-Faible</span>
+          </div>
+          <div class="project-card-body">
+            <div class="narrative-block narrative-dominant">
+              <div class="narrative-title">Récit Dominant</div>
+              Fast Track RTE de puissance, choix d'un nouveau lauréat (Silver Bands France), ancrage territorial et pôle technologique d'avenir.
+            </div>
+            <div class="narrative-block narrative-counter">
+              <div class="narrative-title">Contre-Récit Dominant</div>
+              Inquiétudes sur la nappe phréatique locale, demande d'étude hydrique indépendante et évitement initial de la concertation citoyenne.
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <h3>Google Ozans (Châteauroux)</h3>
+            <span class="dot-indicator dot-fort">Fort</span>
+          </div>
+          <div class="project-card-body">
+            <div class="narrative-block narrative-dominant">
+              <div class="narrative-title">Récit Dominant</div>
+              Chance historique pour le territoire berrichon, opportunité économique majeure et plan de redynamisation industrielle "Indre 2030".
+            </div>
+            <div class="narrative-block narrative-counter">
+              <div class="narrative-title">Contre-Récit Dominant</div>
+              Opacité contractuelle des GAFAM, artificialisation de 195 ha, îlot de chaleur thermique, risques PFAS et mirage des promesses d'emploi.
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <h3>Cézanne / Sybilles (Pennes-Mirabeau)</h3>
+            <span class="dot-indicator dot-fort">Fort</span>
+          </div>
+          <div class="project-card-body">
+            <div class="narrative-block narrative-dominant">
+              <div class="narrative-title">Récit Dominant</div>
+              Implantation industrielle d'envergure internationale portée par l'opérateur Telehouse / KDDI.
+            </div>
+            <div class="narrative-block narrative-counter">
+              <div class="narrative-title">Contre-Récit Dominant</div>
+              Absence de concertation, nuisances de voisinage, rejets de chaleur fatale, risques d'incendie accrus, impact sur la santé et blocage par recours collectif.
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <h3>Escaudain (Friche Usinor)</h3>
+            <span class="dot-indicator dot-absent">Faible</span>
+          </div>
+          <div class="project-card-body">
+            <div class="narrative-block narrative-dominant">
+              <div class="narrative-title">Récit Dominant</div>
+              Réindustrialisation lourde, promesse massive de 2 400 emplois, reconversion positive d'une ancienne friche sidérurgique et pépinière d'entreprises.
+            </div>
+            <div class="narrative-block narrative-counter" style="background-color: #f8fafc; border-left-color: var(--muted);">
+              <div class="narrative-title" style="color: var(--muted)">Contre-Récit Dominant</div>
+              Points de vigilance non structurés en opposition organisée dans le corpus (acceptabilité facilitée par le passé ouvrier du site).
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-card-header">
+            <h3>SoftBank Dunkerque</h3>
+            <span class="dot-indicator dot-absent">Faible</span>
+          </div>
+          <div class="project-card-body">
+            <div class="narrative-block narrative-dominant">
+              <div class="narrative-title">Récit Dominant</div>
+              Investissement historique d'envergure nationale (Choose France), souveraineté, création d'emplois, fiscalité locale et couplage avec l'usine de modules Schneider.
+            </div>
+            <div class="narrative-block narrative-counter" style="background-color: #f8fafc; border-left-color: var(--muted);">
+              <div class="narrative-title" style="color: var(--muted)">Contre-Récit Dominant</div>
+              Vigilance sur le long terme : experts critiques et experts en aménagement signalés mais non structurés localement.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Gestion de la navigation entre onglets
+  function switchTab(evt, tabId) {
+    const tabContents = document.getElementsByClassName("tab-content");
+    for (let i = 0; i < tabContents.length; i++) {
+      tabContents[i].classList.remove("active");
+    }
+    
+    const tabButtons = document.getElementsByClassName("tab-btn");
+    for (let i = 0; i < tabButtons.length; i++) {
+      tabButtons[i].classList.remove("active");
+    }
+    
+    document.getElementById(tabId).classList.add("active");
+    evt.currentTarget.classList.add("active");
+  }
+
+  // Fonction interactive de focus sur une ligne de projet (Matrice de chaleur)
+  function highlightProject(rowId) {
+    // Supprimer l'ancienne mise en valeur
+    const rows = document.querySelectorAll("tbody tr");
+    rows.forEach(row => row.classList.remove("highlighted-row"));
+    
+    // Appliquer la nouvelle
+    if (rowId !== "none") {
+      const targetRow = document.getElementById(rowId);
+      if (targetRow) {
+        targetRow.classList.add("highlighted-row");
+      }
+    }
+  }
+</script>
+</body>
+</html>

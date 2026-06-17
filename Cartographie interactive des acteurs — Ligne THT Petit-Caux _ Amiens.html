@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<!-- saved from url=(0135)file:///C:/Users/ROMANZ~1/AppData/Local/Temp/MicrosoftEdgeDownloads/36e1850e-ed63-487d-88ee-5902ab981291/gemini-code-1781703599532.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Cartographie interactive des acteurs — Ligne THT Petit-Caux / Amiens</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { 
+    --bg: #f8fafc; 
+    --panel: #ffffff; 
+    --text: #0f172a; 
+    --muted: #64748b; 
+    --border: #e2e8f0; 
+  }
+  * { box-sizing: border-box; }
+  body { 
+    margin: 0; 
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    overflow: hidden;
+  }
+  header { 
+    padding: 18px 22px 12px; 
+    background: linear-gradient(90deg, #1e1b4b, #451a03); 
+    color: white; 
+    height: 74px;
+  }
+  header h1 { margin: 0; font-size: 20px; letter-spacing: -.02em; }
+  header p { margin: 4px 0 0; color: #cbd5e1; font-size: 13px; }
+  
+  #wrap { 
+    display: grid; 
+    grid-template-columns: 320px 1fr 360px; 
+    height: calc(100vh - 74px); 
+  }
+  aside, #details { 
+    background: var(--panel); 
+    border-right: 1px solid var(--border); 
+    padding: 16px; 
+    overflow-y: auto; 
+  }
+  #details { border-right: 0; border-left: 1px solid var(--border); }
+  #chart { position: relative; overflow: hidden; }
+  
+  svg { 
+    width: 100%; 
+    height: 100%; 
+    display: block; 
+    cursor: grab; 
+    background: 
+      radial-gradient(circle at 30% 25%, rgba(99, 102, 241, .04), transparent 28%),
+      radial-gradient(circle at 70% 60%, rgba(249, 115, 22, .04), transparent 32%),
+      #f8fafc; 
+  }
+  svg.grabbing { cursor: grabbing; }
+  
+  .controls label { display: flex; align-items: center; gap: 8px; margin: 9px 0; font-size: 12.5px; cursor: pointer; }
+  .controls input[type="text"] { 
+    width: 100%; 
+    padding: 10px 11px; 
+    border: 1px solid var(--border); 
+    border-radius: 10px; 
+    font-size: 13px; 
+    outline: none;
+  }
+  .controls input[type="text"]:focus { border-color: #94a3b8; }
+  .btnrow { display: flex; gap: 8px; margin: 12px 0 14px; }
+  button { 
+    border: 1px solid var(--border); 
+    background: #fff; 
+    border-radius: 10px; 
+    padding: 8px 10px; 
+    cursor: pointer; 
+    font-size: 12px; 
+    font-weight: 600;
+  }
+  button:hover { background: #f1f5f9; }
+  .legend-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+  .hint { 
+    color: var(--muted); 
+    font-size: 12px; 
+    line-height: 1.4; 
+    padding: 10px; 
+    border: 1px dashed var(--border); 
+    border-radius: 10px; 
+    margin-bottom: 14px; 
+    background: #f8fafc; 
+  }
+  
+  .node circle { stroke: #fff; stroke-width: 2px; filter: drop-shadow(0 2px 4px rgba(15,23,42,.15)); cursor: pointer; }
+  .node text { 
+    font-size: 11px; 
+    font-weight: 600; 
+    paint-order: stroke; 
+    stroke: #fff; 
+    stroke-width: 4px; 
+    stroke-linejoin: round; 
+    fill: #0f172a; 
+    pointer-events: none; 
+    text-anchor: middle; 
+  }
+  .link { stroke: #94a3b8; stroke-opacity: .4; stroke-width: 1.2; }
+  
+  .node.dim, .link.dim { opacity: .12; }
+  .node.hidden, .link.hidden { display: none; }
+  .selected circle { stroke: #0f172a; stroke-width: 3px; }
+  .link.highlight { stroke-opacity: .85; stroke-width: 2.5; }
+  
+  #details h2 { margin: 0 0 8px; font-size: 18px; line-height: 1.25; color: #1e1b4b; }
+  #details h3 { 
+    font-size: 11px; 
+    text-transform: uppercase; 
+    letter-spacing: .05em; 
+    color: #475569; 
+    margin: 14px 0 4px; 
+    border-top: 1px solid var(--border); 
+    padding-top: 10px; 
+  }
+  .pill { display: inline-block; border-radius: 999px; color: white; padding: 4px 8px; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
+  #details p { font-size: 13.5px; line-height: 1.45; margin: 0; white-space: pre-line; }
+  .count { color: var(--muted); font-size: 12px; margin-top: 12px; font-weight: 600; }
+  .tooltip { 
+    position: absolute; 
+    pointer-events: none; 
+    background: #0f172a; 
+    color: white; 
+    padding: 6px 10px; 
+    border-radius: 8px; 
+    font-size: 12px; 
+    opacity: 0; 
+    transform: translate(-50%, -120%); 
+    white-space: nowrap; 
+    z-index: 5; 
+  }
+  @media(max-width: 1100px) { #wrap { grid-template-columns: 290px 1fr; } #details { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Cartographie interactive — Système relationnel de la ligne THT Petit-Caux / Amiens</h1>
+  <p>Nuage d'acteurs : projet d'infrastructure de transport électrique à 400 kV et cartographie des positions syndicales, citoyennes et publiques.</p>
+</header>
+
+<div id="wrap">
+  <aside>
+    <div class="hint"><strong>Utilisation :</strong> Recherche plein texte, filtres par catégorie d'acteurs. Cliquez sur un nœud pour ouvrir sa fiche d'analyse croisée et afficher ses liaisons directes.</div>
+    <div class="controls">
+      <input id="search" type="text" placeholder="Rechercher un acteur, une preuve, un grief...">
+      <div class="btnrow"><button id="reset">Tout réinitialiser</button><button id="center">Recentrer</button></div>
+      <strong>Catégories d'acteurs</strong>
+      <div id="checks"><label><input type="checkbox" checked="" value="Acteurs publics &amp; Régulateurs"><span class="legend-dot" style="background:#0d9488"></span><span>Acteurs publics &amp; Régulateurs</span></label><label><input type="checkbox" checked="" value="Griefs &amp; Points de vigilance"><span class="legend-dot" style="background:#be123c"></span><span>Griefs &amp; Points de vigilance</span></label><label><input type="checkbox" checked="" value="Médias &amp; Sources"><span class="legend-dot" style="background:#475569"></span><span>Médias &amp; Sources</span></label><label><input type="checkbox" checked="" value="Opposants &amp; Élus critiques"><span class="legend-dot" style="background:#dc2626"></span><span>Opposants &amp; Élus critiques</span></label><label><input type="checkbox" checked="" value="Projet central &amp; Porteurs"><span class="legend-dot" style="background:#0f172a"></span><span>Projet central &amp; Porteurs</span></label><label><input type="checkbox" checked="" value="Syndicats &amp; Collectifs agricoles"><span class="legend-dot" style="background:#ea580c"></span><span>Syndicats &amp; Collectifs agricoles</span></label></div>
+      <div class="count" id="count">33 entités affichées sur 33</div>
+    </div>
+  </aside>
+  
+  <main id="chart">
+    <div class="tooltip" id="tooltip" style="opacity: 0; left: 398px; top: 267px;"><strong>Le Courrier Picard</strong><br><small>Médias &amp; Sources</small></div>
+    <svg id="svg" viewBox="0 0 992 818"><g transform="translate(0, 0) scale(1)"><g><line class="link highlight" data-source="RTE" data-target="Ligne THT Petit-Caux - Amiens" x1="496.00536867512585" y1="512.2073322265012" x2="542" y2="390"></line><line class="link dim" data-source="Cyril Wagner" data-target="RTE" x1="410.3899788728236" y1="420.45901124715675" x2="496.00536867512585" y2="512.2073322265012"></line><line class="link dim" data-source="Enedis" data-target="RTE" x1="427.98412066355235" y1="371.3426778510902" x2="496.00536867512585" y2="512.2073322265012"></line><line class="link dim" data-source="Cyril Wagner" data-target="Forêt d&#39;Eu &amp; Biodiversité" x1="410.3899788728236" y1="420.45901124715675" x2="512.5912775314995" y2="309.51068593976726"></line><line class="link dim" data-source="Sylvain Finet" data-target="Stop THT 76-80" x1="663.0077620968343" y1="367.2602128341736" x2="616.5044560017451" y2="481.3295470909082"></line><line class="link highlight" data-source="Stop THT 76-80" data-target="Ligne THT Petit-Caux - Amiens" x1="616.5044560017451" y1="481.3295470909082" x2="542" y2="390"></line><line class="link dim" data-source="Christine Rodier" data-target="Stop THT 76-80" x1="511.0641115907273" y1="443.9780406603655" x2="616.5044560017451" y2="481.3295470909082"></line><line class="link dim" data-source="Christine Rodier" data-target="Forêt d&#39;Eu &amp; Biodiversité" x1="511.0641115907273" y1="443.9780406603655" x2="512.5912775314995" y2="309.51068593976726"></line><line class="link highlight" data-source="Francine et José Adam" data-target="Ligne THT Petit-Caux - Amiens" x1="550.7095640196142" y1="495.1505880548828" x2="542" y2="390"></line><line class="link dim" data-source="Maire de Touffreville-sur-Eu" data-target="Francine et José Adam" x1="468.6425034495171" y1="414.9092768156851" x2="550.7095640196142" y2="495.1505880548828"></line><line class="link highlight" data-source="Mathieu Massy" data-target="Ligne THT Petit-Caux - Amiens" x1="451.5773171364195" y1="466.1844239914665" x2="542" y2="390"></line><line class="link dim" data-source="Reynald Massy" data-target="Mathieu Massy" x1="483.48784418724216" y1="363.7406044293656" x2="451.5773171364195" y2="466.1844239914665"></line><line class="link dim" data-source="Reynald Massy" data-target="Eiffage" x1="483.48784418724216" y1="363.7406044293656" x2="521.5069325321637" y2="230.66168532195562"></line><line class="link dim" data-source="Mathieu Massy" data-target="Bonduelle" x1="451.5773171364195" y1="466.1844239914665" x2="565.9428534365085" y2="327.47250102903115"></line><line class="link highlight" data-source="FDSEA Somme &amp; Seine-Maritime" data-target="Ligne THT Petit-Caux - Amiens" x1="599.0692655632619" y1="541.7521832346081" x2="542" y2="390"></line><line class="link highlight" data-source="Jeunes Agriculteurs de la Somme" data-target="Ligne THT Petit-Caux - Amiens" x1="361.43719174748185" y1="448.2815916301434" x2="542" y2="390"></line><line class="link highlight" data-source="Chambre d’agriculture de la Somme" data-target="Ligne THT Petit-Caux - Amiens" x1="381.354397577311" y1="328.8261235273815" x2="542" y2="390"></line><line class="link highlight" data-source="FNSEA Nationale &amp; 76" data-target="Ligne THT Petit-Caux - Amiens" x1="444.1559206872682" y1="315.3947194487486" x2="542" y2="390"></line><line class="link highlight" data-source="CGB 80" data-target="Ligne THT Petit-Caux - Amiens" x1="629.6218696762758" y1="301.66121650410184" x2="542" y2="390"></line><line class="link dim" data-source="Propriétaires Privés Ruraux" data-target="FDSEA Somme &amp; Seine-Maritime" x1="571.196246374874" y1="440.12050454237516" x2="599.0692655632619" y2="541.7521832346081"></line><line class="link highlight" data-source="Rollon Mouchel-Blaisot" data-target="Ligne THT Petit-Caux - Amiens" x1="548.7527593264853" y1="555.3034347627984" x2="542" y2="390"></line><line class="link dim" data-source="Rollon Mouchel-Blaisot" data-target="Protocole d&#39;Accompagnement (PAP)" x1="548.7527593264853" y1="555.3034347627984" x2="668.5081608276265" y2="525.1749256240769"></line><line class="link dim" data-source="DDTM de la Somme" data-target="Rollon Mouchel-Blaisot" x1="667.6129992179292" y1="455.5207964039569" x2="548.7527593264853" y2="555.3034347627984"></line><line class="link dim" data-source="Emmanuel Moulard" data-target="Rollon Mouchel-Blaisot" x1="641.1311254304034" y1="589.1873237356813" x2="548.7527593264853" y2="555.3034347627984"></line><line class="link highlight" data-source="CNDP" data-target="Ligne THT Petit-Caux - Amiens" x1="409.5940731389747" y1="270.56727332206697" x2="542" y2="390"></line><line class="link highlight" data-source="Autorité Environnementale" data-target="Ligne THT Petit-Caux - Amiens" x1="572.8964493537934" y1="264.3614738279743" x2="542" y2="390"></line><line class="link highlight" data-source="Michel Vautrot" data-target="Ligne THT Petit-Caux - Amiens" x1="403.75079072987546" y1="485.9524773727973" x2="542" y2="390"></line><line class="link highlight" data-source="Ligne THT Petit-Caux - Amiens" data-target="Le Parisien" x1="542" y1="390" x2="366.1104703957151" y2="385.0853844681157"></line><line class="link highlight" data-source="Ligne THT Petit-Caux - Amiens" data-target="Le Courrier Picard" x1="542" y1="390" x2="470.1006161783334" y2="259.56188030631233"></line><line class="link dim" data-source="RTE" data-target="Radio France / ICI Normandie" x1="496.00536867512585" y1="512.2073322265012" x2="598.7927282422197" y2="371.0527916095056"></line><line class="link dim" data-source="Francine et José Adam" data-target="Actu.fr" x1="550.7095640196142" y1="495.1505880548828" x2="622.1951289615308" y2="415.3679801741896"></line><line class="link dim" data-source="FDSEA Somme &amp; Seine-Maritime" data-target="Action Agricole Picarde" x1="599.0692655632619" y1="541.7521832346081" x2="483.73328112425475" y2="578.3736944163064"></line><line class="link highlight" data-source="Ligne THT Petit-Caux - Amiens" data-target="Curebot &amp; Registre Numérique" x1="542" y1="390" x2="436.27130475675165" y2="530.7744094501227"></line></g><g><g class="node selected" data-id="Ligne THT Petit-Caux - Amiens" data-group="Projet central &amp; Porteurs" transform="translate(542,390)"><circle r="30" fill="#0f172a"></circle><text dy="43"><tspan x="0">Ligne THT</tspan><tspan x="0" dy="12">400 000 V</tspan></text></g><g class="node" data-id="RTE" data-group="Projet central &amp; Porteurs" transform="translate(496.00536867512585,512.2073322265012)"><circle r="25" fill="#0f172a"></circle><text dy="38"><tspan x="0">RTE</tspan></text></g><g class="node dim" data-id="Cyril Wagner" data-group="Projet central &amp; Porteurs" transform="translate(410.3899788728236,420.45901124715675)"><circle r="16" fill="#0f172a"></circle><text dy="29"><tspan x="0">Cyril Wagner</tspan></text></g><g class="node dim" data-id="Enedis" data-group="Projet central &amp; Porteurs" transform="translate(427.98412066355235,371.3426778510902)"><circle r="15" fill="#0f172a"></circle><text dy="28"><tspan x="0">Enedis</tspan></text></g><g class="node dim" data-id="Eiffage" data-group="Projet central &amp; Porteurs" transform="translate(521.5069325321637,230.66168532195562)"><circle r="14" fill="#0f172a"></circle><text dy="27"><tspan x="0">Eiffage</tspan></text></g><g class="node dim" data-id="Bonduelle" data-group="Projet central &amp; Porteurs" transform="translate(565.9428534365085,327.47250102903115)"><circle r="14" fill="#0f172a"></circle><text dy="27"><tspan x="0">Bonduelle</tspan></text></g><g class="node dim" data-id="Sylvain Finet" data-group="Opposants &amp; Élus critiques" transform="translate(663.0077620968343,367.2602128341736)"><circle r="18" fill="#dc2626"></circle><text dy="31"><tspan x="0">Sylvain Finet</tspan></text></g><g class="node" data-id="Francine et José Adam" data-group="Opposants &amp; Élus critiques" transform="translate(550.7095640196142,495.1505880548828)"><circle r="16" fill="#dc2626"></circle><text dy="29"><tspan x="0">Francine &amp; José</tspan><tspan x="0" dy="12">Adam</tspan></text></g><g class="node" data-id="Mathieu Massy" data-group="Opposants &amp; Élus critiques" transform="translate(451.5773171364195,466.1844239914665)"><circle r="15" fill="#dc2626"></circle><text dy="28"><tspan x="0">Mathieu Massy</tspan></text></g><g class="node dim" data-id="Reynald Massy" data-group="Opposants &amp; Élus critiques" transform="translate(483.48784418724216,363.7406044293656)"><circle r="15" fill="#dc2626"></circle><text dy="28"><tspan x="0">Reynald Massy</tspan></text></g><g class="node dim" data-id="Christine Rodier" data-group="Opposants &amp; Élus critiques" transform="translate(511.0641115907273,443.9780406603655)"><circle r="16" fill="#dc2626"></circle><text dy="29"><tspan x="0">Christine Rodier</tspan></text></g><g class="node" data-id="Stop THT 76-80" data-group="Syndicats &amp; Collectifs agricoles" transform="translate(616.5044560017451,481.3295470909082)"><circle r="22" fill="#ea580c"></circle><text dy="35"><tspan x="0">Stop THT</tspan><tspan x="0" dy="12">76-80</tspan></text></g><g class="node" data-id="FDSEA Somme &amp; Seine-Maritime" data-group="Syndicats &amp; Collectifs agricoles" transform="translate(599.0692655632619,541.7521832346081)"><circle r="20" fill="#ea580c"></circle><text dy="33"><tspan x="0">FDSEA 80 / 76</tspan></text></g><g class="node" data-id="Jeunes Agriculteurs de la Somme" data-group="Syndicats &amp; Collectifs agricoles" transform="translate(361.43719174748185,448.2815916301434)"><circle r="16" fill="#ea580c"></circle><text dy="29"><tspan x="0">JA 80</tspan></text></g><g class="node" data-id="Chambre d’agriculture de la Somme" data-group="Syndicats &amp; Collectifs agricoles" transform="translate(381.354397577311,328.8261235273815)"><circle r="16" fill="#ea580c"></circle><text dy="29"><tspan x="0">CA 80</tspan></text></g><g class="node" data-id="FNSEA Nationale &amp; 76" data-group="Syndicats &amp; Collectifs agricoles" transform="translate(444.1559206872682,315.3947194487486)"><circle r="16" fill="#ea580c"></circle><text dy="29"><tspan x="0">FNSEA</tspan></text></g><g class="node" data-id="CGB 80" data-group="Syndicats &amp; Collectifs agricoles" transform="translate(629.6218696762758,301.66121650410184)"><circle r="15" fill="#ea580c"></circle><text dy="28"><tspan x="0">CGB 80</tspan><tspan x="0" dy="12">(Betteraviers)</tspan></text></g><g class="node dim" data-id="Propriétaires Privés Ruraux" data-group="Syndicats &amp; Collectifs agricoles" transform="translate(571.196246374874,440.12050454237516)"><circle r="14" fill="#ea580c"></circle><text dy="27"><tspan x="0">PPR</tspan></text></g><g class="node" data-id="Rollon Mouchel-Blaisot" data-group="Acteurs publics &amp; Régulateurs" transform="translate(548.7527593264853,555.3034347627984)"><circle r="18" fill="#0d9488"></circle><text dy="31"><tspan x="0">Rollon</tspan><tspan x="0" dy="12">Mouchel-Blaisot</tspan></text></g><g class="node dim" data-id="Maire de Touffreville-sur-Eu" data-group="Acteurs publics &amp; Régulateurs" transform="translate(468.6425034495171,414.9092768156851)"><circle r="14" fill="#0d9488"></circle><text dy="27"><tspan x="0">Maire de</tspan><tspan x="0" dy="12">Touffreville</tspan></text></g><g class="node" data-id="CNDP" data-group="Acteurs publics &amp; Régulateurs" transform="translate(409.5940731389747,270.56727332206697)"><circle r="15" fill="#0d9488"></circle><text dy="28"><tspan x="0">CNDP</tspan></text></g><g class="node" data-id="Autorité Environnementale" data-group="Acteurs publics &amp; Régulateurs" transform="translate(572.8964493537934,264.3614738279743)"><circle r="14" fill="#0d9488"></circle><text dy="27"><tspan x="0">Autorité</tspan><tspan x="0" dy="12">Environnementale</tspan></text></g><g class="node dim" data-id="DDTM de la Somme" data-group="Acteurs publics &amp; Régulateurs" transform="translate(667.6129992179292,455.5207964039569)"><circle r="15" fill="#0d9488"></circle><text dy="28"><tspan x="0">DDTM 80</tspan></text></g><g class="node dim" data-id="Emmanuel Moulard" data-group="Acteurs publics &amp; Régulateurs" transform="translate(641.1311254304034,589.1873237356813)"><circle r="14" fill="#0d9488"></circle><text dy="27"><tspan x="0">Emmanuel Moulard</tspan></text></g><g class="node dim" data-id="Forêt d&#39;Eu &amp; Biodiversité" data-group="Griefs &amp; Points de vigilance" transform="translate(512.5912775314995,309.51068593976726)"><circle r="19" fill="#be123c"></circle><text dy="32"><tspan x="0">Forêt d'Eu</tspan><tspan x="0" dy="12">&amp; Busard cendré</tspan></text></g><g class="node dim" data-id="Protocole d&#39;Accompagnement (PAP)" data-group="Griefs &amp; Points de vigilance" transform="translate(668.5081608276265,525.1749256240769)"><circle r="17" fill="#be123c"></circle><text dy="30"><tspan x="0">Friction du PAP</tspan><tspan x="0" dy="12">&amp; Enveloppes</tspan></text></g><g class="node" data-id="Michel Vautrot" data-group="Griefs &amp; Points de vigilance" transform="translate(403.75079072987546,485.9524773727973)"><circle r="12" fill="#be123c"></circle><text dy="25"><tspan x="0">Michel Vautrot</tspan><tspan x="0" dy="12">(Artefact)</tspan></text></g><g class="node" data-id="Le Parisien" data-group="Médias &amp; Sources" transform="translate(366.1104703957151,385.0853844681157)"><circle r="13" fill="#475569"></circle><text dy="26"><tspan x="0">Le Parisien</tspan></text></g><g class="node" data-id="Le Courrier Picard" data-group="Médias &amp; Sources" transform="translate(470.1006161783334,259.56188030631233)"><circle r="13" fill="#475569"></circle><text dy="26"><tspan x="0">Le Courrier Picard</tspan></text></g><g class="node dim" data-id="Radio France / ICI Normandie" data-group="Médias &amp; Sources" transform="translate(598.7927282422197,371.0527916095056)"><circle r="13" fill="#475569"></circle><text dy="26"><tspan x="0">Radio France</tspan><tspan x="0" dy="12">ICI Normandie</tspan></text></g><g class="node dim" data-id="Actu.fr" data-group="Médias &amp; Sources" transform="translate(622.1951289615308,415.3679801741896)"><circle r="13" fill="#475569"></circle><text dy="26"><tspan x="0">Actu.fr</tspan></text></g><g class="node dim" data-id="Action Agricole Picarde" data-group="Médias &amp; Sources" transform="translate(483.73328112425475,578.3736944163064)"><circle r="13" fill="#475569"></circle><text dy="26"><tspan x="0">Action Agricole</tspan><tspan x="0" dy="12">Picarde</tspan></text></g><g class="node" data-id="Curebot &amp; Registre Numérique" data-group="Médias &amp; Sources" transform="translate(436.27130475675165,530.7744094501227)"><circle r="13" fill="#475569"></circle><text dy="26"><tspan x="0">Curebot</tspan><tspan x="0" dy="12">&amp; Registre</tspan></text></g></g></g></svg>
+  </main>
+  
+  <section id="details">
+    <h2>Ligne THT Petit-Caux - Amiens</h2>
+    <span class="pill" style="background:#0f172a">Projet central &amp; Porteurs</span>
+    <h3>Description / Rôle</h3><p>Projet de création d'une ligne de transport électrique aérienne à très haute tension s'étendant sur 80 km pour relier Petit-Caux à Amiens.</p>
+    <h3>Positionnement stratégique</h3><p>Infrastructure de réseau nationale indispensable d'ici 2032-2035.</p>
+    <h3>Verbatim &amp; Preuve factuelle</h3><p>Visée pour éviter la saturation et acheminer l'énergie décarbonée (EPR2 de Penly, éolien en mer de Dieppe/Le Tréport).</p>
+    <h3>Relations directes sur la carte</h3>
+    <p style="font-size:12.5px; line-height:1.45;">← RTE <i>(Lien : Maître d'ouvrage du projet)</i><br>← Stop THT 76-80 <i>(Lien : Opposition juridique et mobilisation)</i><br>← Francine et José Adam <i>(Lien : Refus de signature de convention de passage)</i><br>← Mathieu Massy <i>(Lien : Refus de deux pylônes sur ses parcelles)</i><br>← FDSEA Somme &amp; Seine-Maritime <i>(Lien : Rupture des négociations financières)</i><br>← Jeunes Agriculteurs de la Somme <i>(Lien : Dénonciation des entraves à l'irrigation)</i><br>← Chambre d’agriculture de la Somme <i>(Lien : Alerte sur la pérennité des exploitations)</i><br>← FNSEA Nationale &amp; 76 <i>(Lien : Exigence légale de la 'perte de chance')</i><br>← CGB 80 <i>(Lien : Contraintes de sécurité sur les silos)</i><br>← Rollon Mouchel-Blaisot <i>(Lien : Arbitrage d'intérêt national de l'État)</i><br>← CNDP <i>(Lien : Encadrement des débats (2022-2023))</i><br>← Autorité Environnementale <i>(Lien : Émission de l'avis officiel d'avril 2025)</i><br>← Michel Vautrot <i>(Lien : Lien purement fortuit d'erreur d'indexation)</i><br>→ Le Parisien <i>(Lien : Grand reportage terrain)</i><br>→ Le Courrier Picard <i>(Lien : Analyse des 70 fermes de la Somme)</i><br>→ Curebot &amp; Registre Numérique <i>(Lien : Hébergement de l'enquête de septembre 2025)</i></p>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+const colors = {
+  "Projet central & Porteurs": "#0f172a",
+  "Opposants & Élus critiques": "#dc2626",
+  "Syndicats & Collectifs agricoles": "#ea580c",
+  "Acteurs publics & Régulateurs": "#0d9488",
+  "Médias & Sources": "#475569",
+  "Griefs & Points de vigilance": "#be123c"
+};
+
+const graph = {
+  nodes: [
+    // 1. Projet central & Porteurs
+    {id: "Ligne THT Petit-Caux - Amiens", label: "Ligne THT\n400 000 V", group: "Projet central & Porteurs", size: 30, detail: "Projet de création d'une ligne de transport électrique aérienne à très haute tension s'étendant sur 80 km pour relier Petit-Caux à Amiens.", position: "Infrastructure de réseau nationale indispensable d'ici 2032-2035.", evidence: "Visée pour éviter la saturation et acheminer l'énergie décarbonée (EPR2 de Penly, éolien en mer de Dieppe/Le Tréport)."},
+    {id: "RTE", label: "RTE", group: "Projet central & Porteurs", size: 25, detail: "Réseau de Transport d'Électricité. Entreprise filiale d'EDF et maître d'ouvrage principal du projet THT.", position: "Défend l'infrastructure ; propose des revalorisations financières individuelles (+25 % au pylône) pour obtenir des accords amiables.", evidence: "Juge la ligne 'absolument indispensable' et cherche à dialoguer pour éviter la création d'une ZAD."},
+    {id: "Cyril Wagner", label: "Cyril Wagner", group: "Projet central & Porteurs", size: 16, detail: "Directeur adjoint ingénierie RTE Hauts-de-France et porte-parole officiel du projet.", position: "Porte-parole technique défendant les mesures d'évitement environnemental.", evidence: "Conteste l'impact majeur sur le busard cendré grâce à l'installation de dispositifs anti-collision."},
+    {id: "Enedis", label: "Enedis", group: "Projet central & Porteurs", size: 15, detail: "Gestionnaire de réseau de distribution d'électricité, co-porteur associé sur les infrastructures connexes.", position: "Aligné sur RTE pour le renforcement global du réseau.", evidence: "Porte conjointement le projet de poste électrique de Bresle à Beauchamps."},
+    {id: "Eiffage", label: "Eiffage", group: "Projet central & Porteurs", size: 14, detail: "Groupe de BTP et prestataire constructeur cité par l'écosystème de terrain.", position: "Prestataire technique d'avancement des chantiers.", evidence: "Décrit par les éleveurs locaux comme 'catégorique' concernant le déroulement et la mise en œuvre du calendrier du projet."},
+    {id: "Bonduelle", label: "Bonduelle", group: "Projet central & Porteurs", size: 14, detail: "Entreprise agroindustrielle d'envergure, acheteur majeur du secteur légumier local.", position: "Contrainte indirecte / Acteur économique tiers frileux.", evidence: "Cité par les agriculteurs comme refusant de collecter les récoltes poussant à proximité immédiate ou sous les lignes THT en période de canicule."},
+
+    // 2. Opposants nommément cités & Élus critiques
+    {id: "Sylvain Finet", label: "Sylvain Finet", group: "Opposants & Élus critiques", size: 18, detail: "Président de l'association de défense Stop THT 76-80.", position: "Conteste l'utilité structurelle de la ligne et l'argumentaire de croissance de consommation de RTE.", evidence: "« RTE est incapable de justifier de manière claire et précise la création de cette ligne ». Prépare une bataille juridique."},
+    {id: "Francine et José Adam", label: "Francine & José\nAdam", group: "Opposants & Élus critiques", size: 16, detail: "Riverains retraités installés à Touffreville-sur-Eu, directement impactés au niveau résidentiel.", position: "Opposition ferme et définitive ; refus catégorique de signer la convention de passage de RTE.", evidence: "Dénoncent l'abattage de leurs arbres protecteurs et une perte de valeur de leur maison de 30 à 40 % : « Rien que dans cette proposition, notre dignité est atteinte »."},
+    {id: "Mathieu Massy", label: "Mathieu Massy", group: "Opposants & Élus critiques", size: 15, detail: "Agriculteur de terrain directement impacté par le tracé sur ses parcelles culturales.", position: "Inquiet et opposé au projet.", evidence: "Refuse de signer la convention de passage : « Nous serons très touchés et sommes inquiets » pour ses terres devant accueillir deux pylônes."},
+    {id: "Reynald Massy", label: "Reynald Massy", group: "Opposants & Élus critiques", size: 15, detail: "Éleveur local, père de l'exploitant Mathieu Massy.", position: "Fermement opposé pour préserver l'intégrité de son cheptel bovin.", evidence: "Dénonce la destruction prévue d’un bosquet d'ombrage protecteur : « Cela peut mettre notre élevage en péril... aucune signature ne se fera »."},
+    {id: "Christine Rodier", label: "Christine Rodier", group: "Opposants & Élus critiques", size: 16, detail: "Maire de la commune de Millebosc (élue depuis 2014).", position: "En colère et opposée au tracé aérien ; refuse le sacrifice écologique au nom de compensations financières communales.", evidence: "« Ce projet est un non-sens à l'époque où on nous parle de biodiversité [...] Nous sommes vent debout avec l'association »."},
+
+    // 3. Syndicats & Collectifs agricoles
+    {id: "Stop THT 76-80", label: "Stop THT\n76-80", group: "Syndicats & Collectifs agricoles", size: 22, detail: "Association structurée regroupant riverains, agriculteurs, éleveurs et élus locaux de la Somme et de Seine-Maritime.", position: "Collectif d'opposition juridique et citoyenne.", evidence: "Mobilise la population, bloque les signatures de conventions individuelles et mandate des avocats spécialisés pour contester le déboisement de la forêt d'Eu."},
+    {id: "FDSEA Somme & Seine-Maritime", label: "FDSEA 80 / 76", group: "Syndicats & Collectifs agricoles", size: 20, detail: "Syndicats agricoles départementaux majoritaires représentés localement par Denis Bully (président FDSEA 80) et Thibaut Henocque (élu FDSEA 80).", position: "Critiques / Rupture officielle des négociations avec le maître d'ouvrage.", evidence: "Jugent les offres financières de RTE « insultantes » et bloquent collectivement les signatures en exigeant l'inscription juridique d'une 'perte de chance'."},
+    {id: "Jeunes Agriculteurs de la Somme", label: "JA 80", group: "Syndicats & Collectifs agricoles", size: 16, detail: "Syndicat agricole des jeunes exploitants de la Somme, mené par son président Quentin Porquier.", position: "Critiques / Solidaires du blocage des négociations.", evidence: "Dénoncent les contraintes de manœuvre des engins agricoles, l'impossibilité d'irriguer et réclament de fortes indemnités individuelles."},
+    {id: "Chambre d’agriculture de la Somme", label: "CA 80", group: "Syndicats & Collectifs agricoles", size: 16, detail: "Organisme consulaire agricole départemental présidé par Françoise Crété.", position: "Inquiète pour l'économie agricole et la diversification.", evidence: "Met en avant dans les concertations les menaces pesant sur la diversification et la pérennité financière des exploitations du département."},
+    {id: "FNSEA Nationale & 76", label: "FNSEA", group: "Syndicats & Collectifs agricoles", size: 16, detail: "Syndicat agricole au niveau national et antenne 76, représenté par Franck Grémont (FNSEA 76) et Laurence Fournier (FNSEA nationale).", position: "Critique au niveau réglementaire et foncier.", evidence: "Qualifie l'offre de RTE d'« aumône » et porte la défense technique et juridique nationale du concept de 'perte de chance'."},
+    {id: "CGB 80", label: "CGB 80\n(Betteraviers)", group: "Syndicats & Collectifs agricoles", size: 15, detail: "Syndicat spécialisé des producteurs de betteraves de la Somme, représenté par Jean-Jacques Fatous.", position: "Inquiet pour la logistique de récolte.", evidence: "Souligne l'impossibilité réglementaire de poser des silos de betteraves en bout de champ sous les câbles à cause des distances de sécurité THT."},
+    {id: "Propriétaires Privés Ruraux", label: "PPR", group: "Syndicats & Collectifs agricoles", size: 14, detail: "Association de défense des propriétaires ruraux, co-organisatrice des réunions d'information.", position: "Alignée sur le bloc syndical d'opposition.", evidence: "Refuse catégoriquement de valider les conventions individuelles avant l'obtention d'un accord-cadre collectif satisfaisant."},
+
+    // 4. Acteurs publics & Régulateurs
+    {id: "Rollon Mouchel-Blaisot", label: "Rollon\nMouchel-Blaisot", group: "Acteurs publics & Régulateurs", size: 18, detail: "Préfet du département de la Somme.", position: "Institutionnel / Médiateur de crise de l'État.", evidence: "Rappelle la nécessité énergétique nationale d'acheminement tout en reconnaissant que 'la Somme n'en tire aucun bénéfice direct'. Pousse pour le dialogue autour du PAP."},
+    {id: "Maire de Touffreville-sur-Eu", label: "Maire de\nTouffreville", group: "Acteurs publics & Régulateurs", size: 14, detail: "Maire de la commune impactée de Touffreville-sur-Eu (non nommé dans le texte).", position: "Présence d'accompagnement / Ambigu.", evidence: "Présent physiquement sur le terrain en avril aux côtés de RTE et des géomètres lors de la visite d'explication chez les riverains époux Adam."},
+    {id: "CNDP", label: "CNDP", group: "Acteurs publics & Régulateurs", size: 15, detail: "Commission Nationale du Débat Public. Autorité administrative indépendante.", position: "Organisateur neutre de la concertation préalable.", evidence: "Garantit le cadre réglementaire des débats et orchestre les réunions publiques de restitution initiale (2022-2023)."},
+    {id: "Autorité Environnementale", label: "Autorité\nEnvironnementale", group: "Acteurs publics & Régulateurs", size: 14, detail: "Institution étatique supérieure de contrôle environnemental.", position: "Statut documentaire neutre.", evidence: "Émetteur d'un avis officiel délibéré inséré au dossier réglementaire daté du 10 avril 2025."},
+    {id: "DDTM de la Somme", label: "DDTM 80", group: "Acteurs publics & Régulateurs", size: 15, detail: "Direction Départementale des Territoires et de la Mer, représentée par Xavier Rousset (directeur) et Jean-Luc Becel (chef de service agricole).", position: "Administration d'État en appui technique.", evidence: "Participe activement aux réunions de crise et d'arbitrage en préfecture avec le bloc agricole."},
+    {id: "Emmanuel Moulard", label: "Emmanuel Moulard", group: "Acteurs publics & Régulateurs", size: 14, detail: "Secrétaire général de la préfecture de la Somme.", position: "Représentant de l'État pour les volets financiers collectifs.", evidence: "Rapporte et applique les règles strictes de répartition financière du Protocole d'accompagnement de projet (PAP)."},
+
+    // 5. Griefs & Points de vigilance
+    {id: "Forêt d'Eu & Biodiversité", label: "Forêt d'Eu\n& Busard cendré", group: "Griefs & Points de vigilance", size: 19, detail: "Espace naturel préservé traversé par le tracé aérien (destruction prévue de 10 hectares ou 1,1 km de déboisement).", position: "Point de tension écologique majeur.", evidence: "Cristallise la colère des élus (Millebosc) et de l'association en raison des menaces d'impact sur le busard cendré, espèce protégée."},
+    {id: "Protocole d'Accompagnement (PAP)", label: "Friction du PAP\n& Enveloppes", group: "Griefs & Points de vigilance", size: 17, detail: "Dispositif financier collectif d'indemnisation destiné aux territoires traversés par RTE.", position: "Source de rupture de confiance.", evidence: "Les revirements et désaccords sur la répartition des enveloppes collectives du PAP ont brisé les négociations en préfecture."},
+    {id: "Michel Vautrot", label: "Michel Vautrot\n(Artefact)", group: "Griefs & Points de vigilance", size: 12, detail: "Ancien arbitre international de football représenté en image dans le corpus.", position: "Aucune prise de position / Objet hors sujet.", evidence: "Inclusion aberrante issue d'un artefact d'indexation visuel de la plateforme d'origine, sans aucun lien textuel avec la ligne THT."},
+
+    // 6. Médias & Sources
+    {id: "Le Parisien", label: "Le Parisien", group: "Médias & Sources", size: 13, detail: "Média de presse quotidienne nationale.", position: "Source de presse nationale.", evidence: "Réalise un grand reportage de terrain donnant directement la parole à Sylvain Finet, à la maire de Millebosc et au bloc agricole."},
+    {id: "Le Courrier Picard", label: "Le Courrier Picard", group: "Médias & Sources", size: 13, detail: "Média de presse quotidienne régionale (PQR).", position: "Source de presse régionale.", evidence: "Fournit l'analyse chiffrée fine de l'impact sur les 70 exploitants agricoles de la Somme."},
+    {id: "Radio France / ICI Normandie", label: "Radio France\nICI Normandie", group: "Médias & Sources", size: 13, detail: "Média radiophonique et d'antenne locale publique.", position: "Source d'actualité.", evidence: "Relate l'ouverture de l'enquête publique de septembre 2025 et recueille les verbatims de RTE (Cyril Wagner)."},
+    {id: "Actu.fr", label: "Actu.fr", group: "Médias & Sources", size: 13, detail: "Plateforme d'actualité numérique locale.", position: "Source d'information de proximité.", evidence: "Documente de manière précise l'impact parcellaire et l'abattage d'arbres d'ornement chez les riverains de Touffreville-sur-Eu."},
+    {id: "Action Agricole Picarde", label: "Action Agricole\nPicarde", group: "Médias & Sources", size: 13, detail: "Média professionnel et syndical agricole régional.", position: "Source spécialisée corporatiste.", evidence: "Assure le suivi technique des tables rondes en préfecture et documente la rupture des négociations financières."},
+    {id: "Curebot & Registre Numérique", label: "Curebot\n& Registre", group: "Médias & Sources", size: 13, detail: "Plateformes de veille informationnelle et d'hébergement numérique.", position: "Support de consultation documentaire.", evidence: "Centralise le flux d'articles et héberge le registre numérique officiel de l'enquête publique de septembre 2025."}
+  ],
+  links: [
+    {source: "RTE", target: "Ligne THT Petit-Caux - Amiens", kind: "Maître d'ouvrage du projet"},
+    {source: "Cyril Wagner", target: "RTE", kind: "Directeur adjoint ingénierie et porte-parole"},
+    {source: "Enedis", target: "RTE", kind: "Partenaire de renforcement (Poste de Bresle)"},
+    {source: "Cyril Wagner", target: "Forêt d'Eu & Biodiversité", kind: "Défense des mesures anti-collision"},
+    
+    {source: "Sylvain Finet", target: "Stop THT 76-80", kind: "Présidence de l'association"},
+    {source: "Stop THT 76-80", target: "Ligne THT Petit-Caux - Amiens", kind: "Opposition juridique et mobilisation"},
+    {source: "Christine Rodier", target: "Stop THT 76-80", kind: "Soutien politique et alliance"},
+    {source: "Christine Rodier", target: "Forêt d'Eu & Biodiversité", kind: "Dénonciation du sacrifice de 10 ha"},
+    
+    {source: "Francine et José Adam", target: "Ligne THT Petit-Caux - Amiens", kind: "Refus de signature de convention de passage"},
+    {source: "Maire de Touffreville-sur-Eu", target: "Francine et José Adam", kind: "Accompagnement de la visite terrain d'avril"},
+    
+    {source: "Mathieu Massy", target: "Ligne THT Petit-Caux - Amiens", kind: "Refus de deux pylônes sur ses parcelles"},
+    {source: "Reynald Massy", target: "Mathieu Massy", kind: "Père et fils exploitants solidaires"},
+    {source: "Reynald Massy", target: "Eiffage", kind: "Interpellation sur la rigidité du chantier"},
+    {source: "Mathieu Massy", target: "Bonduelle", kind: "Alerte sur le refus de collecte en canicule"},
+    
+    {source: "FDSEA Somme & Seine-Maritime", target: "Ligne THT Petit-Caux - Amiens", kind: "Rupture des négociations financières"},
+    {source: "Jeunes Agriculteurs de la Somme", target: "Ligne THT Petit-Caux - Amiens", kind: "Dénonciation des entraves à l'irrigation"},
+    {source: "Chambre d’agriculture de la Somme", target: "Ligne THT Petit-Caux - Amiens", kind: "Alerte sur la pérennité des exploitations"},
+    {source: "FNSEA Nationale & 76", target: "Ligne THT Petit-Caux - Amiens", kind: "Exigence légale de la 'perte de chance'"},
+    {source: "CGB 80", target: "Ligne THT Petit-Caux - Amiens", kind: "Contraintes de sécurité sur les silos"},
+    {source: "Propriétaires Privés Ruraux", target: "FDSEA Somme & Seine-Maritime", kind: "Alignement sur le refus d'accord individuel"},
+    
+    {source: "Rollon Mouchel-Blaisot", target: "Ligne THT Petit-Caux - Amiens", kind: "Arbitrage d'intérêt national de l'État"},
+    {source: "Rollon Mouchel-Blaisot", target: "Protocole d'Accompagnement (PAP)", kind: "Négociation des enveloppes collectives"},
+    {source: "DDTM de la Somme", target: "Rollon Mouchel-Blaisot", kind: "Appui administratif aux tables rondes de crise"},
+    {source: "Emmanuel Moulard", target: "Rollon Mouchel-Blaisot", kind: "Cadrage des règles de répartition du PAP"},
+    
+    {source: "CNDP", target: "Ligne THT Petit-Caux - Amiens", kind: "Encadrement des débats (2022-2023)"},
+    {source: "Autorité Environnementale", target: "Ligne THT Petit-Caux - Amiens", kind: "Émission de l'avis officiel d'avril 2025"},
+    {source: "Michel Vautrot", target: "Ligne THT Petit-Caux - Amiens", kind: "Lien purement fortuit d'erreur d'indexation"},
+    
+    {source: "Ligne THT Petit-Caux - Amiens", target: "Le Parisien", kind: "Grand reportage terrain"},
+    {source: "Ligne THT Petit-Caux - Amiens", target: "Le Courrier Picard", kind: "Analyse des 70 fermes de la Somme"},
+    {source: "RTE", target: "Radio France / ICI Normandie", kind: "Prise de parole de Cyril Wagner"},
+    {source: "Francine et José Adam", target: "Actu.fr", kind: "Focus sur la perte de valeur immobilière"},
+    {source: "FDSEA Somme & Seine-Maritime", target: "Action Agricole Picarde", kind: "Suivi de la crise en préfecture"},
+    {source: "Ligne THT Petit-Caux - Amiens", target: "Curebot & Registre Numérique", kind: "Hébergement de l'enquête de septembre 2025"}
+  ]
+};
+
+const svg = document.getElementById("svg");
+const chart = document.getElementById("chart");
+const details = document.getElementById("details");
+const tooltip = document.getElementById("tooltip");
+const checks = document.getElementById("checks");
+const countEl = document.getElementById("count");
+const search = document.getElementById("search");
+const ns = "http://www.w3.org/2000/svg";
+
+let width = chart.clientWidth;
+let height = chart.clientHeight;
+svg.setAttribute("viewBox", [0, 0, width, height].join(" "));
+
+const g = document.createElementNS(ns, "g");
+const linkG = document.createElementNS(ns, "g");
+const nodeG = document.createElementNS(ns, "g");
+g.appendChild(linkG);
+g.appendChild(nodeG);
+svg.appendChild(g);
+
+const groups = [...new Set(graph.nodes.map(n => n.group))].sort();
+const activeGroups = new Set(groups);
+
+groups.forEach(gr => {
+  const label = document.createElement("label");
+  label.innerHTML = `<input type="checkbox" checked value="${gr}"><span class="legend-dot" style="background:${colors[gr] || "#64748b"}"></span><span>${gr}</span>`;
+  checks.appendChild(label);
+});
+
+const nodes = graph.nodes.map(d => Object.assign({}, d, {x: 0, y: 0, fixed: false}));
+const nodeById = new Map(nodes.map(d => [d.id, d]));
+const links = graph.links.map(d => Object.assign({}, d, {source: nodeById.get(d.source), target: nodeById.get(d.target)})).filter(d => d.source && d.target);
+
+const linkEls = links.map(l => {
+  const line = document.createElementNS(ns, "line");
+  line.classList.add("link");
+  line.dataset.source = l.source.id;
+  line.dataset.target = l.target.id;
+  linkG.appendChild(line);
+  return line;
+});
+
+const nodeEls = nodes.map(n => {
+  const el = document.createElementNS(ns, "g");
+  el.classList.add("node");
+  el.dataset.id = n.id;
+  el.dataset.group = n.group;
+
+  const c = document.createElementNS(ns, "circle");
+  c.setAttribute("r", n.size);
+  c.setAttribute("fill", colors[n.group] || "#64748b");
+
+  const t = document.createElementNS(ns, "text");
+  t.setAttribute("dy", n.size + 13);
+  
+  const parts = n.label.split("\n");
+  parts.forEach((part, i) => {
+    const tsp = document.createElementNS(ns, "tspan");
+    tsp.textContent = part;
+    tsp.setAttribute("x", 0);
+    if (i > 0) tsp.setAttribute('dy', 12);
+    t.appendChild(tsp);
+  });
+
+  el.appendChild(c);
+  el.appendChild(t);
+  nodeG.appendChild(el);
+
+  el.addEventListener("click", () => selectNode(n));
+  el.addEventListener("mouseenter", ev => showTip(n, ev));
+  el.addEventListener("mousemove", ev => showTip(n, ev));
+  el.addEventListener("mouseleave", () => tooltip.style.opacity = 0);
+  drag(el, n);
+
+  return el;
+});
+
+function initialPosition() {
+  const ring = {
+    "Projet central & Porteurs": 0,
+    "Opposants & Élus critiques": 140,
+    "Syndicats & Collectifs agricoles": 220,
+    "Acteurs publics & Régulateurs": 250,
+    "Griefs & Points de vigilance": 290,
+    "Médias & Sources": 350
+  };
+  const baseAngle = {
+    "Projet central & Porteurs": 0,
+    "Opposants & Élus critiques": -0.5,
+    "Syndicats & Collectifs agricoles": 0.6,
+    "Acteurs publics & Régulateurs": 1.8,
+    "Griefs & Points de vigilance": -1.8,
+    "Médias & Sources": 3.0
+  };
+  
+  const byGroup = {};
+  nodes.forEach(n => (byGroup[n.group] ||= []).push(n));
+  nodes.forEach(n => {
+    n.fixed = false;
+    if(n.id === "Ligne THT Petit-Caux - Amiens"){
+      n.x = width / 2;
+      n.y = height / 2;
+      n.fixed = true;
+      return;
+    }
+    const arr = byGroup[n.group];
+    const idx = arr.indexOf(n);
+    const total = arr.length;
+    const spread = Math.PI * 2 / Math.max(total, 1);
+    const angle = (baseAngle[n.group] || 0) + idx * spread;
+    const r = Math.min(ring[n.group] || 260, Math.min(width, height) * 0.45);
+    n.x = width / 2 + Math.cos(angle) * r;
+    n.y = height / 2 + Math.sin(angle) * r;
+  });
+}
+
+function physics() {
+  for(let k = 0; k < 3; k++) {
+    links.forEach(l => {
+      const dx = l.target.x - l.source.x;
+      const dy = l.target.y - l.source.y;
+      const dist = Math.hypot(dx, dy) || 1;
+      const desired = (l.source.group === "Projet central & Porteurs" || l.target.group === "Projet central & Porteurs") ? 150 : 110;
+      const f = (dist - desired) * 0.009;
+      const fx = dx / dist * f;
+      const fy = dy / dist * f;
+      if(!l.source.fixed){ l.source.x += fx; l.source.y += fy; }
+      if(!l.target.fixed){ l.target.x -= fx; l.target.y -= fy; }
+    });
+
+    for(let i = 0; i < nodes.length; i++) {
+      for(let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const min = a.size + b.size + 42;
+        if(dist < min) {
+          const f = (min - dist) / dist * 0.022;
+          if(!a.fixed){ a.x -= dx * f; a.y -= dy * f; }
+          if(!b.fixed){ b.x += dx * f; b.y += dy * f; }
+        }
+      }
+    }
+
+    nodes.forEach(n => {
+      if(n.id === "Ligne THT Petit-Caux - Amiens") return;
+      if(!n.fixed) {
+        n.x += (width / 2 - n.x) * 0.0018;
+        n.y += (height / 2 - n.y) * 0.0018;
+      }
+      n.x = Math.max(30, Math.min(width - 30, n.x));
+      n.y = Math.max(30, Math.min(height - 30, n.y));
+    });
+  }
+
+  linkEls.forEach((el, i) => {
+    const l = links[i];
+    el.setAttribute("x1", l.source.x);
+    el.setAttribute("y1", l.source.y);
+    el.setAttribute("x2", l.target.x);
+    el.setAttribute("y2", l.target.y);
+  });
+
+  nodeEls.forEach((el, i) => {
+    el.setAttribute("transform", `translate(${nodes[i].x},${nodes[i].y})`);
+  });
+}
+
+function animate() {
+  physics();
+  requestAnimationFrame(animate);
+}
+
+function selectNode(n) {
+  nodeEls.forEach(el => el.classList.remove("selected", "dim"));
+  linkEls.forEach(el => el.classList.remove("dim", "highlight"));
+
+  const neighbors = new Set([n.id]);
+  links.forEach(l => {
+    if(l.source.id === n.id) neighbors.add(l.target.id);
+    if(l.target.id === n.id) neighbors.add(l.source.id);
+  });
+
+  nodeEls.forEach(el => {
+    if(!neighbors.has(el.dataset.id)) el.classList.add("dim");
+    if(el.dataset.id === n.id) el.classList.add("selected");
+  });
+
+  linkEls.forEach((el, i) => {
+    const l = links[i];
+    if(l.source.id === n.id || l.target.id === n.id) el.classList.add("highlight");
+    else el.classList.add("dim");
+  });
+
+  const conns = links
+    .filter(l => l.source.id === n.id || l.target.id === n.id)
+    .filter(l => {
+      const other = l.source.id === n.id ? l.target : l.source;
+      const otherEl = nodeEls[nodes.indexOf(other)];
+      return otherEl && !otherEl.classList.contains("hidden");
+    })
+    .map(l => (l.source.id === n.id ? "→ " + l.target.id : "← " + l.source.id) + " <i>(Lien : " + l.kind + ")</i>");
+
+  details.innerHTML = `
+    <h2>${escapeHtml(n.id)}</h2>
+    <span class="pill" style="background:${colors[n.group] || "#64748b"}">${escapeHtml(n.group)}</span>
+    <h3>Description / Rôle</h3><p>${escapeHtml(n.detail || "Non documenté.")}</p>
+    <h3>Positionnement stratégique</h3><p>${escapeHtml(n.position || "Non spécifié.")}</p>
+    <h3>Verbatim & Preuve factuelle</h3><p>${escapeHtml(n.evidence || "Aucun verbatim direct inséré.")}</p>
+    <h3>Relations directes sur la carte</h3>
+    <p style="font-size:12.5px; line-height:1.45;">${conns.length ? conns.join("<br>") : "Aucune connexion visible avec les filtres actuels."}</p>
+  `;
+}
+
+function applyFilters() {
+  const q = search.value.trim().toLowerCase();
+  let visible = 0;
+
+  nodeEls.forEach((el, i) => {
+    const n = nodes[i];
+    const haystack = (n.id + " " + n.group + " " + (n.detail || "") + " " + (n.position || "") + " " + (n.evidence || "")).toLowerCase();
+    const matchesFilter = activeGroups.has(n.group) && (!q || haystack.includes(q));
+    el.classList.toggle("hidden", !matchesFilter);
+    if(matchesFilter) visible++;
+  });
+
+  linkEls.forEach((el, i) => {
+    const l = links[i];
+    const sEl = nodeEls[nodes.indexOf(l.source)];
+    const tEl = nodeEls[nodes.indexOf(l.target)];
+    el.classList.toggle("hidden", sEl.classList.contains("hidden") || tEl.classList.contains("hidden"));
+  });
+
+  countEl.textContent = `${visible} entité${visible > 1 ? "s affichées" : " affichée"} sur ${nodes.length}`;
+}
+
+checks.addEventListener("change", e => {
+  if(e.target.type === "checkbox") {
+    e.target.checked ? activeGroups.add(e.target.value) : activeGroups.delete(e.target.value);
+    applyFilters();
+  }
+});
+
+search.addEventListener("input", applyFilters);
+
+document.getElementById("reset").onclick = () => {
+  search.value = "";
+  activeGroups.clear();
+  groups.forEach(g => activeGroups.add(g));
+  document.querySelectorAll("#checks input").forEach(cb => cb.checked = true);
+  nodeEls.forEach(el => el.classList.remove("selected", "dim", "hidden"));
+  linkEls.forEach(el => el.classList.remove("dim", "hidden", "highlight"));
+  details.innerHTML = `<h2>Ligne THT Petit-Caux — Amiens</h2><span class="pill" style="background:#0f172a">Projet central</span><p>Sélectionnez un acteur ou une organisation sur la carte pour afficher sa fiche analytique (Rôle, Position stratégique, Verbatims et Preuves factuelles).</p>`;
+  zoom = 1; panX = 0; panY = 0;
+  updateTransform();
+  initialPosition();
+  applyFilters();
+};
+
+document.getElementById("center").onclick = () => { zoom = 1; panX = 0; panY = 0; updateTransform(); };
+
+function drag(el, n) {
+  let down = false, ox = 0, oy = 0;
+  el.addEventListener("pointerdown", ev => {
+    ev.stopPropagation();
+    down = true;
+    n.fixed = true;
+    el.setPointerCapture(ev.pointerId);
+    const pt = toSvg(ev);
+    ox = n.x - pt.x;
+    oy = n.y - pt.y;
+  });
+  el.addEventListener("pointermove", ev => {
+    if(!down) return;
+    const pt = toSvg(ev);
+    n.x = pt.x + ox;
+    n.y = pt.y + oy;
+  });
+  el.addEventListener("pointerup", ev => {
+    down = false;
+    if(n.id !== "Ligne THT Petit-Caux - Amiens") n.fixed = false;
+    try { el.releasePointerCapture(ev.pointerId); } catch(e) {}
+  });
+}
+
+let zoom = 1, panX = 0, panY = 0, panning = false, sx = 0, sy = 0;
+
+function updateTransform() {
+  g.setAttribute("transform", `translate(${panX}, ${panY}) scale(${zoom})`);
+}
+
+function toSvg(ev) {
+  const rect = svg.getBoundingClientRect();
+  return {x: (ev.clientX - rect.left - panX) / zoom, y: (ev.clientY - rect.top - panY) / zoom};
+}
+
+svg.addEventListener("wheel", ev => {
+  ev.preventDefault();
+  const rect = svg.getBoundingClientRect();
+  const mx = ev.clientX - rect.left;
+  const my = ev.clientY - rect.top;
+  const oldZoom = zoom;
+  zoom = Math.max(.25, Math.min(2.5, zoom * (ev.deltaY < 0 ? 1.08 : 0.92)));
+  panX = mx - (mx - panX) * (zoom / oldZoom);
+  panY = my - (my - panY) * (zoom / oldZoom);
+  updateTransform();
+}, {passive: false});
+
+svg.addEventListener("pointerdown", ev => {
+  if(evt.target === svg) {
+    panning = true;
+    sx = ev.clientX - panX;
+    sy = ev.clientY - panY;
+    svg.classList.add("grabbing");
+  }
+});
+
+svg.addEventListener("pointermove", ev => {
+  if(panning) {
+    panX = ev.clientX - sx;
+    panY = ev.clientY - sy;
+    updateTransform();
+  }
+});
+
+svg.addEventListener("pointerup", () => { panning = false; svg.classList.remove("grabbing"); });
+svg.addEventListener("pointerleave", () => { panning = false; svg.classList.remove("grabbing"); });
+
+window.addEventListener("resize", () => {
+  width = chart.clientWidth;
+  height = chart.clientHeight;
+  svg.setAttribute("viewBox", [0, 0, width, height].join(" "));
+});
+
+function showTip(n, ev) {
+  tooltip.innerHTML = `<strong>${escapeHtml(n.id)}</strong><br><small>${escapeHtml(n.group)}</small>`;
+  tooltip.style.opacity = 1;
+  const rect = chart.getBoundingClientRect();
+  tooltip.style.left = (ev.clientX - rect.left) + "px";
+  tooltip.style.top = (ev.clientY - rect.top) + "px";
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"}[m]));
+}
+
+initialPosition();
+applyFilters();
+updateTransform();
+animate();
+
+})();
+</script>
+
+</body></html>

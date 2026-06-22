@@ -49,8 +49,22 @@ const graphData = {
     {"id": "L’ADN", "label": "L’ADN", "group": "Médias / relais / lieux cités", "size": 15, "detail": "Média ayant publié le reportage sur Marseille, hub mondial et luttes locales."}, 
     {"id": "France 3 Provence-Alpes-Côte d’Azur", "label": "France 3\nPACA", "group": "Médias / relais / lieux cités", "size": 16, "detail": "Média ayant couvert la résistance d’élus et de riverains aux Pennes-Mirabeau / Saint-Victoret."}, 
     {"id": "Mucem", "label": "Mucem", "group": "Médias / relais / lieux cités", "size": 15, "detail": "Institution culturelle ayant abandonné son partenariat avec Digital Realty sous pression du Nuage était sous nos pieds."}, 
-    {"id": "Grand Port Maritime de Marseille", "label": "Grand Port\nMaritime de\nMarseille", "group": "Médias / relais / lieux cités", "size": 16, "detail": "Acteur cité dans les conflits d’usage électriques, notamment autour de l’électrification des quais."}
-  ], 
+    {"id": "Grand Port Maritime de Marseille", "label": "Grand Port\nMaritime de\nMarseille", "group": "Médias / relais / lieux cités", "size": 16, "detail": "Acteur cité dans les conflits d’usage électriques, notamment autour de l’électrification des quais."}, 
+    {"id": "Philippe Chabeaudy", "label": "Philippe\nChabeaudy", "group": "Experts / voix critiques", "size": 15, "detail": "Habitant des Pennes-Mirabeau, craint le risque d'incendie lié aux rejets thermiques du projet Cézanne."},
+    {"id": "Lou Welgryn", "label": "Lou Welgryn", "group": "Experts / voix critiques", "size": 15, "detail": "Coprésidente de Data for Good, critique le gigantisme et la fuite en avant des projets."},
+    {"id": "Cécile Diguet", "label": "Cécile Diguet", "group": "Experts / voix critiques", "size": 15, "detail": "Urbaniste, pointe l'incompatibilité des émissions carbone avec les stratégies environnementales locales."},
+    {"id": "Maxime Colin", "label": "Maxime Colin", "group": "Experts / voix critiques", "size": 15, "detail": "Juriste à FNE Île-de-France, dénonce une législation de plus en plus permissive et opaque."},
+    {"id": "Maxime Efoui-Hess", "label": "Maxime\nEfoui-Hess", "group": "Experts / voix critiques", "size": 15, "detail": "Membre du Shift Project, alerte sur les conflits d'usage de l'électricité décarbonée."},
+    {"id": "Shift Project", "label": "Shift Project", "group": "Experts / voix critiques", "size": 17, "detail": "Think tank alertant sur la trajectoire énergétique insoutenable des data centers."},
+    {"id": "Associations de Wissous", "label": "Associations\nWissous", "group": "Experts / voix critiques", "size": 15, "detail": "Collectifs luttant juridiquement contre le saucissonnage de projets en Essonne."},
+    {"id": "France Datacenter", "label": "France\nDatacenter", "group": "Porteurs industriels", "size": 17, "detail": "Association de la filière défendant les investissements et l'acceptabilité locale."},
+    {"id": "Michaël Reffay", "label": "Michaël Reffay", "group": "Porteurs industriels", "size": 15, "detail": "Délégué général de France Datacenter, porte-parole des industriels."},
+    {"id": "Ademe", "label": "Ademe", "group": "Élus / acteurs favorables ou moteurs", "size": 17, "detail": "Agence publique documentant la forte hausse à venir de la consommation électrique."},
+    {"id": "Gouvernement français", "label": "Gouvernement\nfrançais", "group": "Élus / acteurs favorables ou moteurs", "size": 19, "detail": "Pousse massivement les investissements dans l'intelligence artificielle."},
+    {"id": "Risque d'incendie", "label": "Risque\nd'incendie", "group": "Points de vigilance / griefs", "size": 17, "detail": "Crainte majeure soulevée aux Pennes-Mirabeau face aux rejets de chaleur près de la pinède."},
+    {"id": "Saucissonnage de projet", "label": "Saucissonnage", "group": "Points de vigilance / griefs", "size": 15, "detail": "Contournement suspecté de la réglementation environnementale pour faciliter l'implantation."},
+    {"id": "Conflit d'usage électrique", "label": "Conflit\nd'usage", "group": "Points de vigilance / griefs", "size": 17, "detail": "Priorisation de l'électricité pour les centres de données au détriment d'autres usages écologiques."}
+  ],
   "links": [
     {"source": "Data center Cézanne — Sybilles", "target": "Collectif Non au data center", "kind": "position / rôle"}, 
     {"source": "Data center Cézanne — Sybilles", "target": "CIQ des Pallières", "kind": "position / rôle"}, 
@@ -127,6 +141,14 @@ const graphData = {
     {"source": "Data center Cézanne — Sybilles", "target": "La Provence", "kind": "couverture médiatique"}, 
     {"source": "Data center Cézanne — Sybilles", "target": "Marsactu", "kind": "couverture médiatique"}, 
     {"source": "Data center Cézanne — Sybilles", "target": "L’ADN", "kind": "couverture médiatique"}, 
-    {"source": "Data center Cézanne — Sybilles", "target": "France 3 Provence-Alpes-Côte d’Azur", "kind": "couverture médiatique"}
+    {"source": "Data center Cézanne — Sybilles", "target": "France 3 Provence-Alpes-Côte d’Azur", "kind": "couverture médiatique"}, 
+    {"source": "Philippe Chabeaudy", "target": "Data center Cézanne — Sybilles", "kind": "opposition locale"},
+    {"source": "Philippe Chabeaudy", "target": "Risque d'incendie", "kind": "alerte et crainte"},
+    {"source": "Lou Welgryn", "target": "Data for Good", "kind": "représentation"},
+    {"source": "Maxime Colin", "target": "France Nature Environnement", "kind": "représentation"},
+    {"source": "Maxime Efoui-Hess", "target": "Shift Project", "kind": "représentation"},
+    {"source": "Maxime Efoui-Hess", "target": "Conflit d'usage électrique", "kind": "alerte"},
+    {"source": "Michaël Reffay", "target": "France Datacenter", "kind": "représentation"},
+    {"source": "Associations de Wissous", "target": "Saucissonnage de projet", "kind": "dénonciation juridique"}
   ]
 };

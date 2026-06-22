@@ -16,7 +16,7 @@ const graphData = {
     {"id": "Usinor", "label": "Usinor", "group": "Porteurs industriels / économiques", "size": 15, "detail": "Ancien groupe sidérurgique dont la friche sert de support au projet ; symbole de la reconversion économique du territoire."}, 
     {"id": "RTE", "label": "RTE", "group": "Énergie / raccordement", "size": 24, "detail": "Gestionnaire du réseau de transport d’électricité. Acteur clé du raccordement du site, qui figure parmi les sites fast track capables d’accueillir plus de 700 MW."}, 
     {"id": "Nathalie Lemaître", "label": "Nathalie Lemaître", "group": "Énergie / raccordement", "size": 18, "detail": "Directrice générale du pôle Clients Systèmes Innovation chez RTE. Intervient dans le cadrage national des raccordements et la priorisation des projets."}, 
-    {"id": "Poste de Mastaing", "label": "Poste de Mastaing", "group": "Énergie / raccordement", "size": 15, "detail": "Infrastructure électrique structurante située à proximité du site, mise en avant pour justifier la rapidité possible du raccordement."}, 
+    {"id": "Poste de Mastaing", "label": "Poste de Mastaing", "group": "Énergie / raccordement", "size": 15, "detail": "Infrastructure électrique structurante située à proximité du site, mise en avant pour justifyer la rapidité possible du raccordement."}, 
     {"id": "Enedis", "label": "Enedis", "group": "Énergie / raccordement", "size": 15, "detail": "Acteur du paysage régional de l’électrification, cité dans des réunions plus larges autour des projets data centers dans le Nord."}, 
     {"id": "700 MW", "label": "700 MW", "group": "Énergie / raccordement", "size": 15, "detail": "Capacité de raccordement mise en avant comme objectif à terme pour le site d’Escaudain."}, 
     {"id": "Anne Le Hénanff", "label": "Anne Le Hénanff", "group": "État / cadrage national", "size": 18, "detail": "Ministre déléguée chargée de l’Intelligence artificielle et du Numérique. Associe Escaudain à la politique nationale de sécurisation et d’accélération des data centers."}, 
@@ -40,7 +40,7 @@ const graphData = {
     {"id": "20 Minutes", "label": "20 Minutes", "group": "Médias / sources cités", "size": 15, "detail": "Source nationale relayant l’officialisation du projet près de Valenciennes."}, 
     {"id": "Economie Matin", "label": "Economie Matin", "group": "Médias / sources cités", "size": 15, "detail": "Source revenant sur la dimension stratégique et souveraine du projet."}, 
     {"id": "Les Smart Grids", "label": "Les Smart Grids", "group": "Médias / sources cités", "size": 15, "detail": "Source centrée sur la dimension énergétique et technique du campus."}, 
-    {"id": "Next", "label": "Next", "group": "Médias / sources cités", "size": 15, "detail": "Source évoquant Escaudain dans le cadre national des sites fast track."}
+    {"id": "Next", "label": "Next", "group": "Médias / sources cités", "size": 15, "detail": "Source évoquant Escaudain dans le cadre national des sites fast track."},
     {"id": "Olivier Micheli", "label": "Olivier\nMicheli", "group": "Porteurs industriels / économiques", "size": 18, "detail": "Président et CEO de Data4, insiste sur la fiabilité de son entreprise face aux annonces concurrentes."},
     {"id": "Emmanuel Macron", "label": "Emmanuel\nMacron", "group": "État / cadrage national", "size": 20, "detail": "Président de la République, a soutenu le projet via l'initiative Choose France et a négocié d'autres mégaprojets régionaux."},
     {"id": "Région Hauts-de-France", "label": "Région\nHauts-de-France", "group": "Élus / acteurs territoriaux moteurs", "size": 20, "detail": "Collectivité organisatrice du forum « l’IA et nous » lors duquel le projet a été officialisé."},
@@ -136,8 +136,8 @@ const graphData = {
     {"source": "Campus de data centers — Escaudain", "target": "20 Minutes", "kind": "source / couverture"}, 
     {"source": "Campus de data centers — Escaudain", "target": "Economie Matin", "kind": "source / couverture"}, 
     {"source": "Campus de data centers — Escaudain", "target": "Les Smart Grids", "kind": "source / couverture"}, 
-    {"source": "Campus de data centers — Escaudain", "target": "Next", "kind": "source / couverture"}
-     {"source": "Olivier Micheli", "target": "Data4", "kind": "rôle / position"},
+    {"source": "Campus de data centers — Escaudain", "target": "Next", "kind": "source / couverture"},
+    {"source": "Olivier Micheli", "target": "Data4", "kind": "rôle / position"},
     {"source": "Emmanuel Macron", "target": "Campus de data centers — Escaudain", "kind": "soutien politique"},
     {"source": "Emmanuel Macron", "target": "Masayoshi Son", "kind": "interaction / négociation"},
     {"source": "Emmanuel Macron", "target": "Softbank", "kind": "interaction / rattachement"},

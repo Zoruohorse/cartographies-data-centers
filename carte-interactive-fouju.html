@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Cartographie interactive — acteurs Campus IA Fouju</title>
+<title>Cartographie interactive — Acteurs Campus IA Fouju</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root {
@@ -13,7 +13,7 @@
   header { padding:18px 22px 12px; background:linear-gradient(90deg,#0f172a,#334155); color:white; }
   header h1 { margin:0; font-size:22px; letter-spacing:-.02em; }
   header p { margin:6px 0 0; color:#cbd5e1; font-size:13px; }
-  #wrap { display:grid; grid-template-columns: 310px 1fr 340px; min-height: calc(100vh - 74px); }
+  #wrap { display:grid; grid-template-columns: 320px 1fr 350px; min-height: calc(100vh - 74px); }
   aside, #details { background:var(--panel); border-right:1px solid var(--border); padding:16px; overflow:auto; }
   #details { border-right:0; border-left:1px solid var(--border); }
   #chart { position:relative; overflow:hidden; }
@@ -43,14 +43,14 @@
   .tooltip { position:absolute; pointer-events:none; background:#0f172a; color:white; padding:7px 9px; border-radius:8px; font-size:12px; opacity:0; transform:translate(-50%,-120%); white-space:nowrap; }
 </style>
 
-<!-- APPEL DU FICHIER DE DONNÉES (Étape 2) -->
+<!-- APPEL DU FICHIER DE DONNÉES -->
 <script src="data-fouju.js"></script>
 
 </head>
 <body>
 <header>
   <h1>Cartographie interactive des acteurs — Campus IA Fouju</h1>
-  <p>Nuage relationnel lisible : opposants, élus, organisations locales, collectifs élargis et médias militants.</p>
+  <p>Nuage relationnel complet actualisé : Intégration de l'actionnariat MGX, attributions industrielles Eiffage et coalitions citoyennes.</p>
 </header>
 <div id="wrap">
   <aside>
@@ -81,12 +81,23 @@
 </div>
 
 <script>
-// -----> ÉTAPE 3 : LA LIGNE MAGIQUE <-----
-// On connecte la carte aux données du fichier data.js
+// -----> LA LIGNE DE CONNEXION <-----
 const graph = graphData;
 
-const colors = {"Projet central": "#111827", "Opposants nommés": "#dc2626", "Habitants cités": "#f97316", "Élus critiques": "#7c3aed", "Élus favorables / nuancés": "#2563eb", "Organisations locales": "#16a34a", "Réseau élargi": "#0891b2", "Médias militants": "#64748b"};
-const groups = ["Habitants cités", "Médias militants", "Opposants nommés", "Organisations locales", "Projet central", "Réseau élargi", "Élus critiques", "Élus favorables / nuancés"];
+/* CONFIGURATION DU PORTFOLIO DES COULEURS CONFORMÉMENT AUX INSTANCES D'ORIGINE */
+const colors = {
+  "Projet central": "#111827",
+  "Opposants nommés": "#dc2626",
+  "Habitants cités": "#f97316",
+  "Élus critiques": "#7c3aed",
+  "Élus favorables / nuancés": "#2563eb",
+  "Organisations locales": "#16a34a",
+  "Porteurs / partenaires économiques": "#1e1b4b",
+  "Réseau élargi": "#0891b2",
+  "Médias et sources": "#64748b"
+};
+
+const groups = ["Habitants cités", "Médias et sources", "Opposants nommés", "Organisations locales", "Porteurs / partenaires économiques", "Projet central", "Réseau élargi", "Élus critiques", "Élus favorables / nuancés"];
 
 const svg = document.getElementById('svg');
 const chart = document.getElementById('chart');
@@ -95,6 +106,10 @@ const tooltip = document.getElementById('tooltip');
 const checks = document.getElementById('checks');
 const countEl = document.getElementById('count');
 let width = chart.clientWidth, height = chart.clientHeight;
+
+// ---> REMÈDE AU DOUBLE RENDU STATIQUE : VIDAGE DU CONTENEUR AVANT INJECTION <---
+svg.innerHTML = '';
+
 svg.setAttribute('viewBox', [0,0,width,height].join(' '));
 
 const ns = "http://www.w3.org/2000/svg";
@@ -119,7 +134,7 @@ checks.addEventListener('change', e => {
 
 const nodes = graph.nodes.map(d => Object.assign({}, d));
 const nodeById = new Map(nodes.map(d => [d.id,d]));
-const links = graph.links.map(d => Object.assign({}, d, {source: nodeById.get(d.source), target: nodeById.get(d.target)}));
+const links = graph.links.map(d => Object.assign({}, d, {source: nodeById.get(d.source), target: nodeById.get(d.target)})).filter(d => d.source && d.target);
 
 const linkEls = links.map(l => {
   const line = document.createElementNS(ns,'line');
@@ -159,12 +174,13 @@ function initialPosition() {
   const ring = {
     "Projet central": 0,
     "Organisations locales": 145,
-    "Opposants nommés": 255,
-    "Élus critiques": 335,
-    "Élus favorables / nuancés": 335,
-    "Habitants cités": 255,
+    "Porteurs / partenaires économiques": 180,
+    "Opposants nommés": 260,
+    "Habitants cités": 260,
+    "Élus critiques": 340,
+    "Élus favorables / nuancés": 340,
     "Réseau élargi": 420,
-    "Médias militants": 420
+    "Médias et sources": 420
   };
   const byGroup = {};
   nodes.forEach(n => (byGroup[n.group] ||= []).push(n));
@@ -183,7 +199,6 @@ function initialPosition() {
 initialPosition();
 
 function tick() {
-  // Basic force layout
   for(let k=0;k<2;k++) {
     links.forEach(l => {
       const dx = l.target.x-l.source.x, dy = l.target.y-l.source.y;
@@ -301,7 +316,7 @@ function toSvg(ev) {
 svg.addEventListener('wheel', ev => {
   ev.preventDefault();
   const scale = ev.deltaY < 0 ? 1.08 : 0.92;
-  currentZoom = Math.max(.35, Math.min(2.8, currentZoom*scale));
+  currentZoom = Math.max(.25, Math.min(2.8, currentZoom*scale));
   updateTransform();
 }, {passive:false});
 svg.addEventListener('pointerdown', ev => { if(ev.target===svg) { panning=true; sx=ev.clientX-panX; sy=ev.clientY-panY; svg.style.cursor='grabbing'; } });

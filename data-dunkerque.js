@@ -36,7 +36,21 @@ const graphData = {
     {"id": "Les Echos", "label": "Les Echos", "group": "Médias / sources cités", "size": 15, "detail": "Cite notamment le projet d’usine Schneider à Dunkerque."}, 
     {"id": "Le Républicain Lorrain", "label": "Le Républicain Lorrain", "group": "Médias / sources cités", "size": 15, "detail": "Fournit un cadrage critique sur l’emploi et l’impact économique des data centers."}, 
     {"id": "Zonebourse", "label": "Zonebourse", "group": "Médias / sources cités", "size": 15, "detail": "Relaye le partenariat industriel et technologique de Schneider Electric avec SoftBank."}
-  ], 
+  {"id": "Pôle industriel Foselev — Petite-Synthe", "label": "Pôle industriel\nFoselev", "group": "Projet central", "size": 30, "detail": "Nouveau hub industriel de 13 hectares et 34 000 m² d'ateliers près de Dunkerque, regroupant quatre filiales du groupe."},
+    {"id": "Foselev", "label": "Foselev", "group": "Porteurs industriels / économiques", "size": 24, "detail": "Groupe aixois spécialisé dans le levage et la maintenance industrielle. Vise jusqu'à 1 000 embauches à terme dans la région."},
+    {"id": "Henri Brière", "label": "Henri Brière", "group": "Porteurs industriels / économiques", "size": 18, "detail": "Fondateur de Foselev, ambitionne de reproduire le modèle d'ensemblier industriel de Fos-sur-Mer dans le Dunkerquois."},
+    {"id": "Coficiel Solutions Modulaires", "label": "Coficiel\nSolutions", "group": "Filiales et écosystème interne", "size": 15, "detail": "Filiale intégrée au nouveau pôle de Petite-Synthe."},
+    {"id": "Foselev Hauts-de-France", "label": "Foselev\nHauts-de-France", "group": "Filiales et écosystème interne", "size": 15, "detail": "Filiale intégrée au nouveau pôle de Petite-Synthe."},
+    {"id": "Cimat Sartec", "label": "Cimat Sartec", "group": "Filiales et écosystème interne", "size": 15, "detail": "Filiale intégrée au nouveau pôle de Petite-Synthe."},
+    {"id": "Technic Hydro Formation", "label": "Technic Hydro\nFormation", "group": "Filiales et écosystème interne", "size": 15, "detail": "Filiale intégrée au nouveau pôle de Petite-Synthe."},
+    {"id": "Sise", "label": "Sise", "group": "Filiales et écosystème interne", "size": 15, "detail": "Filiale basée à Fort-Mardyck, conservant son implantation originelle."},
+    {"id": "STL", "label": "STL", "group": "Filiales et écosystème interne", "size": 15, "detail": "Filiale basée à Ruitz, conservant son implantation originelle."},
+    {"id": "EPR2 de Gravelines", "label": "EPR2\nGravelines", "group": "Projets territoriaux cibles", "size": 18, "detail": "Grand projet d'infrastructure énergétique ciblé par Foselev pour ses prestations de service."},
+    {"id": "Canal Seine-Nord Europe", "label": "Canal\nSeine-Nord", "group": "Projets territoriaux cibles", "size": 18, "detail": "Grand chantier d'infrastructure ciblé par la stratégie de développement de Foselev."},
+    {"id": "Projets Datacenters", "label": "Projets\nDatacenters", "group": "Projets territoriaux cibles", "size": 18, "detail": "Marché visé par l'offre de construction modulaire et de maintenance."},
+    {"id": "Gigafactories", "label": "Gigafactories", "group": "Projets territoriaux cibles", "size": 18, "detail": "Usines de batteries en développement, représentant un relais de croissance majeur."},
+    {"id": "Port de Dunkerque", "label": "Port de\nDunkerque", "group": "Projets territoriaux cibles", "size": 18, "detail": "Gisement de projets industriels justifiant le renforcement capacitaire du groupe sur le territoire."}
+  ],
   "links": [
     {"source": "Data center SoftBank — Loon-Plage / Dunkerque", "target": "Usine de modules Schneider — port de Dunkerque", "kind": "rôle / position"}, 
     {"source": "Data center SoftBank — Loon-Plage / Dunkerque", "target": "Loon-Plage", "kind": "rôle / position"}, 
@@ -102,6 +116,19 @@ const graphData = {
     {"source": "Data center SoftBank — Loon-Plage / Dunkerque", "target": "Ici", "kind": "source / couverture"}, 
     {"source": "Data center SoftBank — Loon-Plage / Dunkerque", "target": "Les Echos", "kind": "source / couverture"}, 
     {"source": "Data center SoftBank — Loon-Plage / Dunkerque", "target": "Le Républicain Lorrain", "kind": "source / couverture"}, 
-    {"source": "Data center SoftBank — Loon-Plage / Dunkerque", "target": "Zonebourse", "kind": "source / couverture"}
+    {"source": "Data center SoftBank — Loon-Plage / Dunkerque", "target": "Zonebourse", "kind": "source / couverture"}, 
+    {"source": "Henri Brière", "target": "Foselev", "kind": "rôle / position"},
+    {"source": "Foselev", "target": "Pôle industriel Foselev — Petite-Synthe", "kind": "interaction / rattachement"},
+    {"source": "Pôle industriel Foselev — Petite-Synthe", "target": "Coficiel Solutions Modulaires", "kind": "interaction / rattachement"},
+    {"source": "Pôle industriel Foselev — Petite-Synthe", "target": "Foselev Hauts-de-France", "kind": "interaction / rattachement"},
+    {"source": "Pôle industriel Foselev — Petite-Synthe", "target": "Cimat Sartec", "kind": "interaction / rattachement"},
+    {"source": "Pôle industriel Foselev — Petite-Synthe", "target": "Technic Hydro Formation", "kind": "interaction / rattachement"},
+    {"source": "Foselev", "target": "Sise", "kind": "interaction / rattachement"},
+    {"source": "Foselev", "target": "STL", "kind": "interaction / rattachement"},
+    {"source": "Foselev", "target": "EPR2 de Gravelines", "kind": "cible stratégique / positionnement"},
+    {"source": "Foselev", "target": "Canal Seine-Nord Europe", "kind": "cible stratégique / positionnement"},
+    {"source": "Foselev", "target": "Projets Datacenters", "kind": "cible stratégique / positionnement"},
+    {"source": "Foselev", "target": "Gigafactories", "kind": "cible stratégique / positionnement"},
+    {"source": "Foselev", "target": "Port de Dunkerque", "kind": "cible stratégique / positionnement"}
   ]
 };

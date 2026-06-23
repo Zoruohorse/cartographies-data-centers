@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<!-- saved from url=(0135)file:///C:/Users/ROMANZ~1/AppData/Local/Temp/MicrosoftEdgeDownloads/b19b8c26-4e42-4dfb-8257-6fab5d59768f/gemini-code-1782118868847.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartographie Interactive — Campus IA Fouju</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            --color-opposed: #ef4444;
+            --color-opposed-light: #fee2e2;
+            --color-favorable: #22c55e;
+            --color-favorable-light: #dcfce7;
+            --color-neutral: #f59e0b;
+            --color-neutral-light: #fef3c7;
+            
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 2rem;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Menu Onglets */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            background-color: var(--border-color);
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Interface Cartographie */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar Filtres */
+        .filters-sidebar {
+            background-color: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-section h3 {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-btn .count {
+            font-size: 0.75rem;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+        }
+
+        .filter-btn.active .count {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Grille des Cartes Acteurs */
+        .actors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .actor-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .actor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        .actor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+        }
+
+        .actor-card.opposed::before { background-color: var(--color-opposed); }
+        .actor-card.favorable::before { background-color: var(--color-favorable); }
+        .actor-card.neutral::before { background-color: var(--color-neutral); }
+
+        .actor-header {
+            margin-bottom: 1rem;
+        }
+
+        .actor-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+
+        .actor-role {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .actor-body {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .actor-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            letter-spacing: 0.025em;
+        }
+
+        .badge.opposed { background-color: var(--color-opposed-light); color: var(--color-opposed); }
+        .badge.favorable { background-color: var(--color-favorable-light); color: var(--color-favorable); }
+        .badge.neutral { background-color: var(--color-neutral-light); color: var(--color-neutral); }
+
+        .certitude {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Modal Détails Acteur */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            max-width: 600px;
+            width: 100%;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            position: relative;
+            animation: modalAnim 0.2s ease-out;
+        }
+
+        @keyframes modalAnim {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-field {
+            margin-bottom: 1.25rem;
+        }
+
+        .modal-field label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-field p {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .modal-verbatim {
+            background-color: var(--bg-primary);
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            font-style: italic;
+        }
+
+        /* Styles Onglet Griefs */
+        .griefs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+            gap: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            .griefs-container { grid-template-columns: 1fr; }
+        }
+
+        .grief-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .grief-card h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Listes & Sources */
+        .list-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .list-card h2 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .list-card ul {
+            padding-left: 1.5rem;
+        }
+
+        .list-card li {
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cartographie Interactive — Campus IA à Fouju</h1>
+        <p>Analyse consolidée et structurée des collèges d'acteurs, forces en présence, griefs techniques et points de vigilance.</p>
+    </header>
+
+    <nav class="tabs">
+        <button class="tab-btn active" onclick="switchTab(&#39;carto&#39;)">Cartographie des Acteurs</button>
+        <button class="tab-btn" onclick="switchTab(&#39;griefs&#39;)">Synthèse des Griefs</button>
+        <button class="tab-btn" onclick="switchTab(&#39;vigilance&#39;)">Points de Vigilance &amp; Sources</button>
+    </nav>
+
+    <!-- ONGLET 1 : CARTOGRAPHIE -->
+    <div id="tab-carto" class="tab-content active">
+        <div class="dashboard-layout">
+            <!-- Sidebar de filtrage dynamique -->
+            <aside class="filters-sidebar">
+                <div class="filter-section">
+                    <h3>Collèges d'acteurs</h3>
+                    <div class="filter-options">
+                        <button class="filter-btn active" onclick="filterCategory(&#39;all&#39;, this)" id="btn-cat-all">
+                            <span>Tous les acteurs</span> <span class="count" id="count-all">56</span>
+                        </button>
+                        <button class="filter-btn" onclick="filterCategory(&#39;opposants&#39;, this)">
+                            <span>Opposants &amp; Experts</span> <span class="count" id="count-opposants">23</span>
+                        </button>
+                        <button class="filter-btn" onclick="filterCategory(&#39;elus-opp&#39;, this)">
+                            <span>Élus Opposés/Critiques</span> <span class="count" id="count-elus-opp">6</span>
+                        </button>
+                        <button class="filter-btn" onclick="filterCategory(&#39;elus-fav&#39;, this)">
+                            <span>Élus Favorables/Prudents</span> <span class="count" id="count-elus-fav">8</span>
+                        </button>
+                        <button class="filter-btn" onclick="filterCategory(&#39;orgs&#39;, this)">
+                            <span>Orgs &amp; Collectifs</span> <span class="count" id="count-orgs">12</span>
+                        </button>
+                        <button class="filter-btn" onclick="filterCategory(&#39;porteurs&#39;, this)">
+                            <span>Porteurs &amp; Économie</span> <span class="count" id="count-porteurs">7</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Positionnement</h3>
+                    <div class="filter-options">
+                        <button class="filter-btn" onclick="filterStance(&#39;all&#39;, this)" id="btn-stance-all">
+                            <span>Toutes les positions</span>
+                        </button>
+                        <button class="filter-btn" onclick="filterStance(&#39;opposed&#39;, this)">
+                            <span>Opposé / Critique</span>
+                        </button>
+                        <button class="filter-btn" onclick="filterStance(&#39;favorable&#39;, this)">
+                            <span>Favorable / Soutien</span>
+                        </button>
+                        <button class="filter-btn active" onclick="filterStance(&#39;neutral&#39;, this)">
+                            <span>Prudent / Ambigü</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Grille dynamique d'affichage des fiches -->
+            <main class="actors-grid" id="actors-grid"><div class="actor-card neutral">
+                    <div class="actor-header">
+                        <div class="actor-name">Christian Poteau / Pointeau</div>
+                        <div class="actor-role">Président de la CC Brie des Rivières et Châteaux</div>
+                    </div>
+                    <div class="actor-body">Plutôt favorable au projet mais affiche une vigilance sur l'intégration infrastructurelle.</div>
+                    <div class="actor-footer">
+                        <span class="badge neutral">Prudent / Ambigü</span>
+                        <span class="certitude">Certitude : Haute</span>
+                    </div>
+                </div><div class="actor-card neutral">
+                    <div class="actor-header">
+                        <div class="actor-name">Hervé Jeannin</div>
+                        <div class="actor-role">Maire de Crisenoy</div>
+                    </div>
+                    <div class="actor-body">Prudent, nuancé et géographiquement inquiet de la proximité du site.</div>
+                    <div class="actor-footer">
+                        <span class="badge neutral">Prudent / Ambigü</span>
+                        <span class="certitude">Certitude : Haute</span>
+                    </div>
+                </div><div class="actor-card neutral">
+                    <div class="actor-header">
+                        <div class="actor-name">Valérie Pécresse</div>
+                        <div class="actor-role">Président de la région Île-de-France</div>
+                    </div>
+                    <div class="actor-body">Ambiguë / Ne se prononce pas publiquement sur le fond du projet.</div>
+                    <div class="actor-footer">
+                        <span class="badge neutral">Prudent / Ambigü</span>
+                        <span class="certitude">Certitude : Haute</span>
+                    </div>
+                </div><div class="actor-card neutral">
+                    <div class="actor-header">
+                        <div class="actor-name">MRAe (Mission Régionale d'Autorité Env.)</div>
+                        <div class="actor-role">Instance institutionnelle d'évaluation</div>
+                    </div>
+                    <div class="actor-body">Alerte technique neutre mais sévère sur la viabilité environnementale du dossier.</div>
+                    <div class="actor-footer">
+                        <span class="badge neutral">Prudent / Ambigü</span>
+                        <span class="certitude">Certitude : Haute</span>
+                    </div>
+                </div><div class="actor-card neutral">
+                    <div class="actor-header">
+                        <div class="actor-name">The Shift Project</div>
+                        <div class="actor-role">Think tank de la transition énergétique</div>
+                    </div>
+                    <div class="actor-body">Apporte des analyses macro-économiques critiques sur les arbitrages énergétiques nationaux.</div>
+                    <div class="actor-footer">
+                        <span class="badge neutral">Prudent / Ambigü</span>
+                        <span class="certitude">Certitude : Haute</span>
+                    </div>
+                </div><div class="actor-card neutral">
+                    <div class="actor-header">
+                        <div class="actor-name">Bpifrance (BPI)</div>
+                        <div class="actor-role">Banque publique d'investment de l'État français</div>
+                    </div>
+                    <div class="actor-body">Actionnaire minoritaire à 25 %, visant à garantir théoriquement la présence de l'intérêt public au conseil.</div>
+                    <div class="actor-footer">
+                        <span class="badge neutral">Prudent / Ambigü</span>
+                        <span class="certitude">Certitude : Haute</span>
+                    </div>
+                </div><div class="actor-card neutral">
+                    <div class="actor-header">
+                        <div class="actor-name">RTE</div>
+                        <div class="actor-role">Gestionnaire du réseau de transport d'électricité</div>
+                    </div>
+                    <div class="actor-body">Acteur technique neutre, exécuteur industriel de la puissance de raccordement électrique sollicitée.</div>
+                    <div class="actor-footer">
+                        <span class="badge neutral">Prudent / Ambigü</span>
+                        <span class="certitude">Certitude : Haute</span>
+                    </div>
+                </div></main>
+        </div>
+    </div>
+
+    <!-- ONGLET 2 : SYNTHÈSE DES GRIEFS -->
+    <div id="tab-griefs" class="tab-content">
+        <div class="griefs-container">
+            <div class="grief-card">
+                <h2>⚡ Démesure énergétique &amp; Foncière</h2>
+                <p>Emprise colossale de <strong>90 hectares</strong> (l'équivalent de 130 terrains de football) de terres agricoles franciliennes artificialisées. Le site projeté consommerait à terme <strong>1,4 GW (10,5 TWh)</strong>, soit 2 % de la puissance électrique française globale et 17 % de celle de l'Île-de-France, mobilisant la production équivalente d'un réacteur nucléaire EPR complet.</p>
+            </div>
+            <div class="grief-card">
+                <h2>🌐 Monopolisation et saturation des réseaux</h2>
+                <p>L'accaparement massif par les infrastructures de type data centers représente la moitié de l'ensemble des demandes de raccordement auprès de RTE. Cette concentration induit des surcoûts structurels de réseau et génère d'importants retards pour les autres secteurs dont l'électrification immédiate est requise pour réussir la décarbonation nationale (logement, transports, industries manufacturières).</p>
+            </div>
+            <div class="grief-card">
+                <h2>☣️ Risques écologiques et industriels majeurs</h2>
+                <p>Le stockage sur site de <strong>31 000 tonnes de fioul</strong> destiné à alimenter 613 groupes électrogènes de secours (équipés de cheminées de 30 mètres de haut) dépasse de loin les seuils de sécurité sanitaire. S'y ajoutent l'utilisation par les disjoncteurs du gaz SF6 (au pouvoir de réchauffement 25 200 fois supérieur au CO2) et des risques avérés de fuites de <strong>PFAS (polluants éternels)</strong> évalués à 3 % dans les circuits frigorigènes par la MRAe.</p>
+            </div>
+            <div class="grief-card">
+                <h2>📑 Contournement démocratique et réglementaire</h2>
+                <p>Dénonciation unanime par les élus d'un « subterfuge juridique » consistant à découper de manière artificielle le projet global entre plusieurs entités d'exploitation de taille réduite dans l'unique but d'éviter un classement global en site <strong>Seveso Seuil Haut</strong>. Opacité complète au niveau du Conseil régional, le projet ayant été géographiquement masqué derrière la planification d'un centre pénitentiaire.</p>
+            </div>
+            <div class="grief-card">
+                <h2>🔒 Souveraineté factice et ingérence étrangère</h2>
+                <p>Derrière les discours officiels d'indépendance numérique, les structures capitalistiques démontrent que le projet est contrôlé à <strong>70 % par MGX</strong>, un fonds souverain des Émirats arabes unis directement lié à son appareil sécuritaire étatique et aux technologies de surveillance de masse. De plus, les serveurs loués hébergeront les Big Tech américaines, soumises au droit extraterritorial américain (Cloud Act).</p>
+            </div>
+            <div class="grief-card">
+                <h2>💼 Mirage socio-économique</h2>
+                <p>Les syndicats contestent fortement les promesses de créations massives d'emplois locaux pérennes. Ils s'appuient sur le précédent industriel défaillant de STMicroelectronics (Sommet Choose France 2022), où un partenariat similaire censé créer initialement 1 000 emplois s'est finalement soldé par une perte nette de 1 000 salariés sur le site en activité.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ONGLET 3 : POINTS DE VIGILANCE & SOURCES -->
+    <div id="tab-vigilance" class="tab-content">
+        <div class="list-card">
+            <h2>🔍 Points de vigilance majeurs (Limites et incertitudes)</h2>
+            <ul>
+                <li><strong>Dissimulation sous le Secret des Affaires :</strong> Le registre officiel exact des augmentations successives de capital ainsi que les droits précis ou vetos accordés à Bpifrance dans la gouvernance demeurent confidentiels, empêchant un contrôle démocratique global.</li>
+                <li><strong>Flou nominatif autour de Mistral AI :</strong> Le corpus mentionne une audition parlementaire clé menée le 18 mai avec le "patron de Mistral AI" (actionnaire à 1 %), mais sans expliciter formellement l'identité physique nominative de l'intervenant.</li>
+                <li><strong>Divergence radicale d'analyse territoriale :</strong> Conflit ouvert d'interprétation. Les porteurs de projet affirment avoir saisi régulièrement la CNDP fin 2025 et respecter les schémas d'aménagement, tandis que les élus régionaux affirment l'inverse (absence complète de débat à la région et violation des objectifs de sobriété).</li>
+            </ul>
+        </div>
+
+        <div class="list-card">
+            <h2>📰 Médias et sources d'investigation répertoriés</h2>
+            <ul>
+                <li><strong>mesinfos.fr :</strong> Suivi économique et légal officiel. Publication de l'attribution du marché industriel d'infrastructure majeur à Eiffage en date du 11 juin 2026.</li>
+                <li><strong>L’Humanité :</strong> Enquêtes d'investigation approfondies (Pierric Marissal). Révélation précise de l'actionnariat à 70 % de MGX et documentation technique détaillée des risques écologiques (8 juin 2026).</li>
+                <li><strong>Observatoire des multinationales :</strong> Analyse macro-économique critique des coulisses du sommet Choose France et démantèlement de l'organigramme financier réel du projet.</li>
+                <li><strong>Le Monde / Le Chiffon / Actualité des luttes :</strong> Suivi des mouvements de terrain, des dynamiques militantes locales et de la convergence citoyenne en Île-de-France.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- FENÊTRE MODALE DE DÉTAIL -->
+    <div class="modal" id="actor-modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="toggleModal(false)">×</button>
+            <div class="modal-field">
+                <label>Nom / Entité</label>
+                <h2 id="modal-name" style="font-size:1.6rem; font-weight:700;">Valérie Pécresse</h2>
+            </div>
+            <div class="modal-field">
+                <label>Fonction / Rattachement</label>
+                <p id="modal-role">Président de la région Île-de-France</p>
+            </div>
+            <div class="modal-field">
+                <label>Positionnement ou Argument Principal</label>
+                <p id="modal-position">Ambiguë / Ne se prononce pas publiquement sur le fond du projet.</p>
+            </div>
+            <div class="modal-field">
+                <label>Verbatim / Preuve documentaire</label>
+                <p id="modal-verbatim" class="modal-verbatim">Citée exclusivement dans le dossier en tant que pouvoir décisionnaire final pour l'arbitrage d'un éventuel financement régional.</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <div class="modal-field" style="margin:0;">
+                    <label>Orientation</label>
+                    <span id="modal-stance-badge" class="badge neutral">Prudent / Institutionnel</span>
+                </div>
+                <div class="modal-field" style="margin:0; text-align: right;">
+                    <label>Niveau de certitude</label>
+                    <p id="modal-certainty" class="certitude">Haute</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de données unifiée extraite du corpus analytique
+        const actorsData = [
+            // 1. Opposants nommément cités
+            { name: "Jean-François Dupont", category: "opposants", role: "FNE 77", position: "Dénonce le caractère « hors norme », l’artificialisation, les risques PFAS et la procédure accélérée.", evidence: "Demande une prolongation de l’enquête publique.", certainty: "Haute", stance: "opposed" },
+            { name: "Jane Buisson", category: "opposants", role: "Vice-présidente de FNE 77", position: "Demande une rallonge de l’enquête et une nouvelle réunion publique.", evidence: "Remise d'une contribution écrite à l’enquête publique.", certainty: "Haute", stance: "opposed" },
+            { name: "Pauline Isambert", category: "opposants", role: "Confédération paysanne 77", position: "Dénonce la perte de terres agricoles de premier choix et conteste l'argument de souveraineté alimentaire.", evidence: "Souligne factuellement que 9 exploitations agricoles locales ont déjà vendu leurs parcelles.", certainty: "Haute", stance: "opposed" },
+            { name: "Aline Aurias", category: "opposants", role: "Porte-parole de la Confédération paysanne", position: "Opposée à la démesure globale du projet et au flou entretenu sur la gestion de l'eau et du foncier.", evidence: "Critique de manière virulente une pseudo-souveraineté financée par des capitaux privés étrangers.", certainty: "Haute", stance: "opposed" },
+            { name: "William Elie", category: "opposants", role: "Alliance écologique et sociale", position: "Exige un moratoire immédiat et cherche à politiser le dossier à l'échelle du débat national.", evidence: "Appel officiel public à un moratoire sur les infrastructures d'IA.", certainty: "Haute", stance: "opposed" },
+            { name: "William", category: "opposants", role: "Syndicat Solidaires de l’Essonne", position: "Réclame l'arrêt immédiat des phases de constructions en cours.", evidence: "« On dit stop, on veut un moratoire sur la construction de data centers ».", certainty: "Moyenne (Doublon très probable avec W. Elie)", stance: "opposed" },
+            { name: "Dorothée Villemaux", category: "opposants", role: "Écologistes de Melun Val de Seine", position: "Alerte de façon continue la population locale sur les impacts environnementaux directs.", evidence: "Estime publiquement et formellement que le projet de campus « pose question ».", certainty: "Haute", stance: "opposed" },
+            { name: "Maxime Colin", category: "opposants", role: "Juriste à FNE Île-de-France", position: "Conteste fermement l’argument officiel de souveraineté numérique brandi par l'exécutif.", evidence: "Met directement en cause le financement majoritaire par l'État des Émirats arabes unis.", certainty: "Haute", stance: "opposed" },
+            { name: "Lou Welgrym", category: "opposants", role: "Secrétaire générale de Data for Good", position: "Critique vivement la réduction drastique des capacités de recours juridiques des citoyens.", evidence: "Dénonce un mouvement global de dérégulation sous couvert de simplification industrielle.", certainty: "Haute", stance: "opposed" },
+            { name: "Anne-Laure Ligozat", category: "opposants", role: "Professeure, LISN", position: "Critique l’absence totale de grand débat national portant sur les usages réels de ces technologies de calcul.", evidence: "Pointe le manque sévère de concertation publique en amont du projet.", certainty: "Haute", stance: "opposed" },
+            { name: "Marie Garin", category: "opposants", role: "Postdoctorante au CNRS", position: "Juge que le déploiement massif de l'infrastructure repose uniquement sur un pari hautement spéculatif.", evidence: "Souligne que les besoins de calcul réels à cette échelle ne sont aucunement établis.", certainty: "Haute", stance: "opposed" },
+            { name: "Marlène De Bank", category: "opposants", role: "Ingénieure, The Shift Project", position: "Alerte sur les conflits et la concurrence d'accès sur le réseau électrique.", evidence: "Pointe un risque majeur d'arbitrage défavorable face aux impératifs de la transition énergétique.", certainty: "Haute", stance: "opposed" },
+            { name: "Ophélie Coelho", category: "opposants", role: "Chercheuse spécialisée à l’IRIS", position: "Estime que les simulacres de concertations publiques arrivent bien après que les décisions stratégiques ont été actées.", evidence: "« La machine industrielle est déjà en route ».", certainty: "Haute", stance: "opposed" },
+            { name: "Irénée Régnauld", category: "opposants", role: "Doctorant en sociologie", position: "Critique le gigantisme matériel des infrastructures et la dépendance technologique générée.", evidence: "Exige la mise en place d'un pôle public de planification numérique.", certainty: "Haute", stance: "opposed" },
+            { name: "Olivier Petitjean", category: "opposants", role: "Observatoire des multinationales", position: "Dénonce la soumission complète aux intérêts financiers étrangers et à la Silicon Valley.", evidence: "« Accueillir à bras ouverts ce type d'acteur pour des projets qui ne font que se soumettre à la fuite en avant écologique et numérique... »", certainty: "Haute", stance: "opposed" },
+            { name: "Nadia Salhi", category: "opposants", role: "Déléguée CGT chez STMicroelectronics", position: "Conteste les promesses d'emplois futurs en se basant sur les précédents historiques du directeur de projet.", evidence: "« De ce partenariat qui devait créer 1 000 emplois on n’a rien vu. Au contraire, depuis, on a perdu 1 000 salariés sur le site ».", certainty: "Haute", stance: "opposed" },
+            { name: "Laurence Allard", category: "opposants", role: "Sociologue des usages du numérique", position: "Observe une convergence citoyenne inédite et une forte appropriation technique de la lutte par la base.", evidence: "« C’est déjà une mobilisation exemplaire et transdisciplinaire ».", certainty: "Haute", stance: "opposed" },
+            { name: "Pauline Denis", category: "opposants", role: "Ingénieure au Shift Project", position: "Alerte sur le monopole de raccordement RTE et le découpage juridique du projet visant à contourner la législation.", evidence: "« Je trouve révoltant qu’un projet de cette envergure [...] se retrouve ainsi découpé dans le but d’éviter le classement en Seveso ».", certainty: "Haute", stance: "opposed" },
+            { name: "Mme et M. Fernique", category: "opposants", role: "Habitants de la commune de Fouju", position: "Dénoncent un projet industriel lourd imposé d'en haut sans transparence.", evidence: "« Est-ce qu’on a vraiment besoin de ce centre de données ? »", certainty: "Haute", stance: "opposed" },
+            { name: "Christine Scialom", category: "opposants", role: "Propriétaire foncière de parcelles", position: "Exprime un profond sentiment de déclassement territorial pour la Seine-et-Marne.", evidence: "« On a l’impression d’être les poubelles de Paris ».", certainty: "Haute", stance: "opposed" },
+            { name: "Maud*", category: "opposants", role: "Maraîchère biologique locale", position: "Inquiète au plus haut point des risques de pollutions locales des eaux et sols par les PFAS.", evidence: "Met en avant les menaces directes sur la viabilité de l'agriculture biologique de proximité.", certainty: "Haute", stance: "opposed" },
+            { name: "“Pop”", category: "opposants", role: "Collectif 'Le Nuage était sous nos pieds'", position: "Critique la propagande économique massive orchestrée par les promoteurs du Campus.", evidence: "Pointe la pression et le chantage à l'emploi exercés sur les institutions locales.", certainty: "Haute", stance: "opposed" },
+            { name: "Marie-Paule Direur", category: "opposants", role: "Habitante mobilisée (Le Bourget)", position: "Contestation élargie et systémique de l'implantation effrénée des data centers en Île-de-France.", evidence: "Mobilisation militante active hors site pour créer des solidarités inter-luttes.", certainty: "Haute", stance: "opposed" },
+
+            // 2. Élus opposés ou critiques
+            { name: "Arnaud Saint-Martin", category: "elus-opp", role: "Député LFI de Seine-et-Marne (1re circ.)", position: "Principal opposant politique national et local. Dénonce un projet inutile, imposé, la perte de souveraineté réelle et l'opacité financière du directeur.", evidence: "« Fouju devient une cause nationale ». « Thibaud Desfossés est un genre de courtier [...] en prétextant la souveraineté française ». « Il est bientôt fini le temps où on pouvait voir les étoiles à Fouju ».", certainty: "Haute", stance: "opposed" },
+            { name: "Marianne Margaté", category: "elus-opp", role: "Sénatrice communiste de Seine-et-Marne", position: "S'oppose frontalement. Dépose une question écrite officielle au gouvernement ciblant le détournement des seuils réglementaires.", evidence: "« Nous sommes sur un territoire servant, mais très peu servi ». « Je trouve révoltant qu’un projet de cette envergure [...] se retrouve ainsi découpé dans le but d’éviter le classement en Seveso ».", certainty: "Haute", stance: "opposed" },
+            { name: "Céline Malaisé", category: "elus-opp", role: "Présidente groupe Gauche Communiste, Écologiste, Citoyenne (Région IDF)", position: "Dénonce l'opacité démocratique et la dissimulation géographique volontaire du projet à l'échelle du Conseil régional.", evidence: "« C’est tellement opaque ! Il faut comprendre que ce projet colossal n’a jamais été débattu à la région, et ne le sera pas... »", certainty: "Haute", stance: "opposed" },
+            { name: "Stéphanie Le Meur", category: "elus-opp", role: "Maire-adjointe socialiste de Moissy-Cramayel", position: "Critique la strangulation financière des collectivités qui les force à accepter les retombées fiscales de projets destructeurs.", evidence: "« Comme les communes sont étranglées budgétairement, il était très mal vu de voter contre Campus IA au niveau de l’agglomération ».", certainty: "Haute", stance: "opposed" },
+            { name: "Jean-Luc Mélenchon", category: "elus-opp", role: "Figure nationale LFI", position: "Critique macro-économique systémique globale du modèle.", evidence: "Accuse directement l'exécutif de transformer la France en « colonie numérique » des capitaux étrangers.", certainty: "Haute", stance: "opposed" },
+            { name: "Députés socialistes non nommés", category: "elus-opp", role: "Groupe PS à l'Assemblée nationale", position: "Position d'encadrement critique et de garde-fous par voie législative.", evidence: "Dépôt de plusieurs amendements parlementaires contre la simplification sans garanties extraterritoriales strictes.", certainty: "Haute", stance: "opposed" },
+
+            // 3. Élus favorables, prudents ou ambigus
+            { name: "Emmanuel Macron", category: "elus-fav", role: "Président de la République", position: "Totalement favorable. Promeut activement le projet comme fleuron de l'attractivité industrielle nationale.", evidence: "Célébration officielle lors du sommet Choose France : « MGX choisit la France », validant l'objectif de monter à 3 GW sur le territoire.", certainty: "Haute", stance: "favorable" },
+            { name: "Jonathan Wochenmayer", category: "elus-fav", role: "Maire de Fouju (sans étiquette)", position: "Inconditionnellement favorable. Repousse systématiquement toutes les contestations citoyennes de sa commune.", evidence: "Met en avant les retombées fiscales massives pour les caisses de la commune. A pris un arrêté municipal interdisant les rassemblements militants sur son territoire.", certainty: "Haute", stance: "favorable" },
+            { name: "Jean-Louis Thiériot", category: "elus-fav", role: "Député LR de Seine-et-Marne", position: "Très favorable au projet au nom de la compétition géopolitique.", evidence: "Invoque l'argument de la souveraineté technologique absolue de la France face aux blocs des États-Unis et de la Chine.", certainty: "Haute", stance: "favorable" },
+            { name: "Aymeric Durox", category: "elus-fav", role: "Sénateur RN de Seine-et-Marne", position: "Favorable par pur pragmatisme économique et compétitivité territoriale.", evidence: "« Il vaut mieux que cela se fasse dans notre pays qu’ailleurs ».", certainty: "Haute", stance: "favorable" },
+            { name: "Christian Poteau / Pointeau", category: "elus-fav", role: "Président de la CC Brie des Rivières et Châteaux", position: "Plutôt favorable au projet mais affiche une vigilance sur l'intégration infrastructurelle.", evidence: "Exige de solides retombées et garanties sur la gestion de l'eau, les mobilités et le tissu commercial de proximité.", certainty: "Haute", stance: "neutral" },
+            { name: "Hervé Jeannin", category: "elus-fav", role: "Maire de Crisenoy", position: "Prudent, nuancé et géographiquement inquiet de la proximité du site.", evidence: "Alerte de façon formelle sur l'insertion paysagère (hauteurs de bâtiments), les risques accrus d'inondations et le voisinage immédiat de la prison.", certainty: "Haute", stance: "neutral" },
+            { name: "Denis Larghero", category: "elus-fav", role: "Maire UDI de Meudon", position: "Favorable au modèle économique global des infrastructures lourdes du numérique.", evidence: "Voit de manière générale les data centers comme de formidables leviers d'attractivité territoriale moderne.", certainty: "Haute", stance: "favorable" },
+            { name: "Valérie Pécresse", category: "elus-fav", role: "Président de la région Île-de-France", position: "Ambiguë / Ne se prononce pas publiquement sur le fond du projet.", evidence: "Citée exclusivement dans le dossier en tant que pouvoir décisionnaire final pour l'arbitrage d'un éventuel financement régional.", certainty: "Haute", stance: "neutral" },
+
+            // 4. Organisations, associations, syndicats et collectifs
+            { name: "Stop Campus IA", category: "orgs", role: "Collectif d'opposition citoyenne locale", position: "Fer de lance de la contestation sur le terrain, coordonne les actions directes.", evidence: "Frontalement opposé au projet.", certainty: "Haute", stance: "opposed" },
+            { name: "FNE 77 / FNE Île-de-France", category: "orgs", role: "Fédération environnementale agréée", position: "Pivot technique, juridique et scientifique de la contestation (conférence de presse du 13 mai, dépôt de mémoires).", evidence: "Frontalement opposée.", certainty: "Haute", stance: "opposed" },
+            { name: "Confédération paysanne (77 et IDF)", category: "orgs", role: "Syndicat agricole", position: "Mobilisation de terrain et défense syndicale des terres nourricières face au bétonnage massif francilien.", evidence: "Frontalement opposé.", certainty: "Haute", stance: "opposed" },
+            { name: "Les Soulèvements de la Terre", category: "orgs", role: "Mouvement écologiste national", position: "Relais militant actif apportant une logistique de masse et une visibilité nationale aux rassemblements.", evidence: "Participation active aux manifestations (200 personnes mobilisées le 24 mai).", certainty: "Haute", stance: "opposed" },
+            { name: "Attac", category: "orgs", role: "Association altermondialiste", position: "Critique du capitalisme de surveillance et de l'accaparement des ressources communes.", evidence: "Présence officielle lors de la mobilisation transdisciplinaire du 24 mai.", certainty: "Haute", stance: "opposed" },
+            { name: "Les Amis de la Terre", category: "orgs", role: "Association environnementale", position: "Intégrée pleinement à la coalition de contestation publique et juridique.", evidence: "Opposée au projet.", certainty: "Haute", stance: "opposed" },
+            { name: "Extinction Rebellion", category: "orgs", role: "Collectif écologiste d'action directe", position: "Actions de désobéissance civile et déploiement de terrain.", evidence: "Présent de manière active lors des mobilisations de terrain à Champeaux.", certainty: "Haute", stance: "opposed" },
+            { name: "LPO 77 (Ligue de Protection des Oiseaux)", category: "orgs", role: "Association de protection de la biodiversité", position: "Alerte sur la destruction de l'avifaune et des écosystèmes locaux.", evidence: "Membre actif de la coalition Stop Campus IA, propose de réaliser des contre-inventaires naturalistes du site.", certainty: "Haute", stance: "opposed" },
+            { name: "Solidaires Informatique / Solidaires Essonne", category: "orgs", role: "Syndicats professionnels du secteur numérique", position: "Co-organisateurs des points presse et apport d'une contre-expertise technique pointue sur les infrastructures.", evidence: "Opposés (exigent un moratoire immédiat).", certainty: "Haute", stance: "opposed" },
+            { name: "MRAe (Mission Régionale d'Autorité Env.)", category: "orgs", role: "Instance institutionnelle d'évaluation", position: "Alerte technique neutre mais sévère sur la viabilité environnementale du dossier.", evidence: "Émet un avis technique officiel mi-avril pointant l'usage de gaz à fort effet de serre (SF6) et l'évaluation insuffisante des PFAS.", certainty: "Haute", stance: "neutral" },
+            { name: "The Shift Project", category: "orgs", role: "Think tank de la transition énergétique", position: "Apporte des analyses macro-économiques critiques sur les arbitrages énergétiques nationaux.", evidence: "Critique / Prône ouvertement un plafonnement réglementaire de la puissance des centres de données.", certainty: "Haute", stance: "neutral" },
+            { name: "La Quadrature du Net / Hiatus / STopMicro", category: "orgs", role: "Associations techno-critiques nationales", position: "Références doctrinales nationales exigeant des limites strictes à l'expansion de l'infrastructure numérique.", evidence: "Positions techno-critiques documentées.", certainty: "Haute", stance: "opposed" },
+
+            // 5. Porteurs de projet, institutions et acteurs économiques
+            { name: "Thibaud Desfossés", category: "porteurs", role: "Président de Campus IA / Directeur chez MGX", position: "Représentant légal, promoteur en chef et figure publique du projet. Ancien cadre du fonds souverain émirati Mubadala.", evidence: "Invoque la souveraineté : « Un des buts de ce projet est de participer à l’indépendance et à la souveraineté du pays ». Verrouille la gouvernance sous le secret des affaires.", certainty: "Haute", stance: "favorable" },
+            { name: "MGX", category: "porteurs", role: "Fonds d'investissement souverain (Émirats arabes unis)", position: "Actionnaire majoritaire absolu à 70 % du capital du projet Campus IA Fouju.", evidence: "Porteur financier principal. Vient de signer une rallonge massive de 7,5 milliards d'euros lors du sommet Choose France. Gouvernance intimement liée à l'appareil sécuritaire d'Abou Dabi (Cheikh Tahnoun ben Zayed).", certainty: "Haute", stance: "favorable" },
+            { name: "Bpifrance (BPI)", category: "porteurs", role: "Banque publique d'investment de l'État français", position: "Actionnaire minoritaire à 25 %, visant à garantir théoriquement la présence de l'intérêt public au conseil.", evidence: "Favorable mais prudente : concède explicitement par écrit que « le degré de souveraineté variera donc d’un projet à l’autre » en fonction des profils des clients finaux.", certainty: "Haute", stance: "neutral" },
+            { name: "Nvidia", category: "porteurs", role: "Multinationale technologique (États-Unis)", position: "Actionnaire technologique à 4 %. Équipe l'intégralité du site avec ses processeurs et puces graphiques de dernière génération.", evidence: "Partenaire technologique indispensable et exclusif du projet.", certainty: "Haute", stance: "favorable" },
+            { name: "Mistral AI", category: "porteurs", role: "Fleuron français de l'IA", position: "Actionnaire à 1 %. Cherche à sécuriser par tous les moyens ses futures capacités souveraines de calcul de données.", evidence: "Son dirigeant définit publiquement cette infrastructure comme un levier pour « faire en sorte que la demande publique ruisselle ».", certainty: "Haute", stance: "favorable" },
+            { name: "Eiffage / Eiffage Énergie Systèmes", category: "porteurs", role: "Groupe industriel de construction et d'énergie", position: "Attributaire officiel du marché industriel d'infrastructure majeur de plus de 120 millions d'euros.", evidence: "Favorable. Célèbre le passage officiel en phase opérationnelle du chantier. Ludovic Duplan vante une « réponse intégrée à la hauteur de l'ambition industrielle ».", certainty: "Haute", stance: "favorable" },
+            { name: "RTE", category: "porteurs", role: "Gestionnaire du réseau de transport d'électricité", position: "Acteur technique neutre, exécuteur industriel de la puissance de raccordement électrique sollicitée.", evidence: "A formellement signé le contrat de raccordement électrique du site de Fouju en amont du déclenchement de l'enquête publique.", certainty: "Haute", stance: "neutral" }
+        ];
+
+        // États des filtres actifs (Filtres croisés)
+        let activeCategory = 'all';
+        let activeStance = 'all';
+
+        // Initialisation de la page
+        document.addEventListener("DOMContentLoaded", () => {
+            calculateCounts();
+            renderGrid();
+        });
+
+        // Gestion des onglets
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+
+        // Calcul dynamique des compteurs de la sidebar
+        function calculateCounts() {
+            document.getElementById('count-all').innerText = actorsData.length;
+            document.getElementById('count-opposants').innerText = actorsData.filter(a => a.category === 'opposants').length;
+            document.getElementById('count-elus-opp').innerText = actorsData.filter(a => a.category === 'elus-opp').length;
+            document.getElementById('count-elus-fav').innerText = actorsData.filter(a => a.category === 'elus-fav').length;
+            document.getElementById('count-orgs').innerText = actorsData.filter(a => a.category === 'orgs').length;
+            document.getElementById('count-porteurs').innerText = actorsData.filter(a => a.category === 'porteurs').length;
+        }
+
+        // Activation des filtres par catégorie
+        function filterCategory(category, element) {
+            document.querySelectorAll('.filter-section:nth-of-type(1) .filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            activeCategory = category;
+            renderGrid();
+        }
+
+        // Activation des filtres par positionnement (stance)
+        function filterStance(stance, element) {
+            document.querySelectorAll('.filter-section:nth-of-type(2) .filter-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            activeStance = stance;
+            renderGrid();
+        }
+
+        // Rendu dynamique de la grille filtrée
+        function renderGrid() {
+            const grid = document.getElementById('actors-grid');
+            grid.innerHTML = '';
+
+            const filteredActors = actorsData.filter(actor => {
+                const matchCategory = (activeCategory === 'all' || actor.category === activeCategory);
+                const matchStance = (activeStance === 'all' || actor.stance === activeStance);
+                return matchCategory && matchStance;
+            });
+
+            if(filteredActors.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted); font-weight: 500;">Aucun acteur ne correspond à ce croisement de filtres.</div>`;
+                return;
+            }
+
+            filteredActors.forEach((actor, index) => {
+                const card = document.createElement('div');
+                card.className = `actor-card ${actor.stance}`;
+                card.onclick = () => showActorDetails(actor);
+
+                let stanceLabel = "Prudent / Ambigü";
+                if(actor.stance === 'opposed') stanceLabel = "Opposé";
+                if(actor.stance === 'favorable') stanceLabel = "Favorable";
+
+                card.innerHTML = `
+                    <div class="actor-header">
+                        <div class="actor-name">${actor.name}</div>
+                        <div class="actor-role">${actor.role}</div>
+                    </div>
+                    <div class="actor-body">${actor.position}</div>
+                    <div class="actor-footer">
+                        <span class="badge ${actor.stance}">${stanceLabel}</span>
+                        <span class="certitude">Certitude : ${actor.certainty.split(' ')[0]}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Affichage de la modale de détails d'un acteur
+        function showActorDetails(actor) {
+            document.getElementById('modal-name').innerText = actor.name;
+            document.getElementById('modal-role').innerText = actor.role;
+            document.getElementById('modal-position').innerText = actor.position;
+            document.getElementById('modal-verbatim').innerText = actor.evidence;
+            document.getElementById('modal-certainty').innerText = actor.certainty;
+
+            const badge = document.getElementById('modal-stance-badge');
+            badge.className = `badge ${actor.stance}`;
+            if(actor.stance === 'opposed') badge.innerText = "Opposé / Critique";
+            if(actor.stance === 'favorable') badge.innerText = "Favorable / Soutien";
+            if(actor.stance === 'neutral') badge.innerText = "Prudent / Institutionnel";
+
+            toggleModal(true);
+        }
+
+        function toggleModal(show) {
+            const modal = document.getElementById('actor-modal');
+            if(show) modal.classList.add('active');
+            else modal.classList.remove('active');
+        }
+
+        function closeModal(event) {
+            if(event.target === document.getElementById('actor-modal')) {
+                toggleModal(false);
+            }
+        }
+    </script>
+
+</body></html>

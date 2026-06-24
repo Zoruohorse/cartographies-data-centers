@@ -1,4 +1,4 @@
-{
+const graphData = {
   "new_nodes": [
     {"id": "Michel", "label": "Michel", "group": "Opposants / critiques nommément cités", "size": 15, "detail": "Habitant dénonçant la prédation énergétique et foncière."},
     {"id": "Philippe", "label": "Philippe", "group": "Opposants / critiques nommément cités", "size": 15, "detail": "Habitant critique sur le manque d'information citoyenne."},

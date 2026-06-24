@@ -1,5 +1,5 @@
 const graphData = {
-  {
+  
   "new_nodes": [
     {
       "id": "Data Center de Petit-Landau",

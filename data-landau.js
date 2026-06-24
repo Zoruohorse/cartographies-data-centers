@@ -21,18 +21,24 @@ const graphData = {
     {"id": "RTE", "label": "RTE", "group": "Porteurs / institutions du projet", "size": 25, "detail": "Aménageur du réseau et du transformateur électrique pour le site."},
     {"id": "SMO", "label": "SMO Ports Sud Alsace", "group": "Porteurs / institutions du projet", "size": 20, "detail": "Syndicat mixte vendeur des terrains agricoles."}
   ],
-  "new_links": [
+ "new_links": [
     {"source": "Microsoft", "target": "Data Center de Petit-Landau", "kind": "Porteur industriel"},
-    {"source": "RTE", "target": "Data Center de Petit-Landau", "kind": "Raccordement au réseau électrique"},
+    {"source": "RTE", "target": "Data Center de Petit-Landau", "kind": "Raccordement réseau (GRT)"},
     {"source": "SMO", "target": "Data Center de Petit-Landau", "kind": "Vente du foncier agricole"},
+    {"source": "Olivier Becht", "target": "Data Center de Petit-Landau", "kind": "Initiateur politique"},
+    {"source": "Fabian Jordan", "target": "Data Center de Petit-Landau", "kind": "Soutien et validation locale"},
+    {"source": "Laurent Riche", "target": "Data Center de Petit-Landau", "kind": "Soutien (développement économique)"},
+    {"source": "Carole Talleux", "target": "Data Center de Petit-Landau", "kind": "Accueil sur le ban communal"},
+    {"source": "MRAe Grand Est", "target": "Data Center de Petit-Landau", "kind": "Instruction et réserves environnementales"},
     {"source": "Collectif IA pas moyen", "target": "Data Center de Petit-Landau", "kind": "Opposition frontale"},
     {"source": "Alsace Nature", "target": "Data Center de Petit-Landau", "kind": "Opposition frontale"},
     {"source": "Alter Alsace Énergies", "target": "Data Center de Petit-Landau", "kind": "Opposition frontale"},
     {"source": "Confédération paysanne", "target": "Data Center de Petit-Landau", "kind": "Opposition à l'artificialisation"},
-    {"source": "Thierry Engasser", "target": "Data Center de Petit-Landau", "kind": "Opposition et dénonciation de déconnexion"},
-    {"source": "Cécile Germain-Ecuer", "target": "Data Center de Petit-Landau", "kind": "Demande de suspension de la procédure"},
-    {"source": "MRAe Grand Est", "target": "Data Center de Petit-Landau", "kind": "Avis critique et demande de compléments"},
-    {"source": "Fabian Jordan", "target": "Data Center de Petit-Landau", "kind": "Soutien et validation politique locale"},
-    {"source": "Laurent Riche", "target": "Data Center de Petit-Landau", "kind": "Soutien au développement économique"}
+    {"source": "Mouvement écologiste indépendant", "target": "Data Center de Petit-Landau", "kind": "Opposition (Rhin)"},
+    {"source": "Cécile Germain-Ecuer", "target": "Data Center de Petit-Landau", "kind": "Demande de suspension"},
+    {"source": "Thierry Engasser", "target": "Data Center de Petit-Landau", "kind": "Opposition institutionnelle"},
+    {"source": "Léonie Hebert", "target": "Data Center de Petit-Landau", "kind": "Critique politique"},
+    {"source": "Michel", "target": "Data Center de Petit-Landau", "kind": "Opposition citoyenne"},
+    {"source": "Philippe", "target": "Data Center de Petit-Landau", "kind": "Critique (information citoyenne)"}
   ]
 }

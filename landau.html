@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartographie Interactive — Graphe de Forces Microsoft Alsace</title>
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary: #3b82f6;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --transition: all 0.2s ease-in-out;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--bg-card);
+            padding: 1.25rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
+            flex-shrink: 0;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.25rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Layout de l'application */
+        #main-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 85px);
+            position: relative;
+        }
+
+        /* Sidebar de gauche : Commandes et Filtres */
+        aside {
+            width: 320px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.4;
+            padding: 0.75rem;
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        #search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--bg-primary);
+            color: #0f172a;
+        }
+
+        .filter-section h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .checkbox-label input {
+            cursor: pointer;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Zone centrale : Le Graphique SVG */
+        #chart-area {
+            flex: 1;
+            position: relative;
+            background-color: #fafbfe;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Style des éléments du Graphe */
+        .link {
+            stroke-opacity: 0.35;
+            stroke-width: 1.5px;
+            transition: stroke-opacity var(--transition);
+        }
+
+        .node circle {
+            stroke: #ffffff;
+            stroke-width: 2px;
+            cursor: grab;
+            transition: transform var(--transition), stroke var(--transition);
+        }
+
+        .node circle:active {
+            cursor: grabbing;
+        }
+
+        .node text {
+            font-size: 11px;
+            font-weight: 700;
+            fill: #1e293b;
+            paint-order: stroke;
+            stroke: #ffffff;
+            stroke-width: 3.5px;
+            stroke-linejoin: round;
+            pointer-events: none;
+        }
+
+        /* Gestion de l'atténuation/sélection sémantique */
+        .dim {
+            opacity: 0.15 !important;
+        }
+
+        .selected circle {
+            stroke: #0f172a !important;
+            stroke-width: 3px !important;
+        }
+
+        /* Sidebar de droite : Fiche de détail */
+        #details-sidebar {
+            width: 340px;
+            background-color: var(--bg-card);
+            border-left: 1px solid var(--border-color);
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 10;
+            box-shadow: -2px 0 6px -1px rgb(0 0 0 / 0.03);
+        }
+
+        .details-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+            line-height: 1.25;
+        }
+
+        .pill {
+            display: inline-block;
+            border-radius: 20px;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-bottom: 1.25rem;
+        }
+
+        .details-body {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .connections-section h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .connections-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .connections-list li {
+            font-size: 0.85rem;
+            background-color: var(--bg-primary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+        }
+
+        /* Infobulle contextuelle (Tooltip) */
+        #tooltip {
+            position: absolute;
+            pointer-events: none;
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translate(-50%, -130%);
+            transition: opacity 0.15s ease-out;
+            z-index: 100;
+            white-space: nowrap;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+        }
+
+        #nodes-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Cartographie des Acteurs — Graphe de Forces</h1>
+        <p>Projet de Data Center Microsoft à Petit-Landau / Hombourg — Relations, lignes de tension et porteurs de projet.</p>
+    </header>
+
+    <div id="main-container">
+        <aside>
+            <div class="hint">Recherchez un acteur, filtrez par groupe ou glissez les nœuds pour réorganiser la carte. Double-cliquez pour libérer un nœud fixé.</div>
+            
+            <div class="search-box">
+                <input id="search-input" type="text" placeholder="Rechercher un acteur...">
+            </div>
+
+            <div class="btn-group">
+                <button class="btn" id="btn-reset">Réinitialiser</button>
+                <button class="btn" id="btn-center">Recentrer</button>
+            </div>
+
+            <div class="filter-section">
+                <h3>Filtrer par collège</h3>
+                <div id="checkboxes-container"></div>
+            </div>
+
+            <div id="nodes-count"></div>
+        </aside>
+
+        <main id="chart-area">
+            <div id="tooltip"></div>
+            <svg id="graphe-svg"></svg>
+        </main>
+
+        <section id="details-sidebar">
+            <div id="details-default">
+                <h2 class="details-title" style="font-size: 1.2rem; color: var(--text-muted); font-weight: 600; margin-top: 2rem; text-align: center; border: 2px dashed var(--border-color); padding: 2rem; border-radius: 8px;">
+                    Sélectionnez un acteur sur la carte pour afficher sa fiche analytique détaillée.
+                </h2>
+            </div>
+            <div id="details-content" style="display: none;">
+                <h2 class="details-title" id="node-name"></h2>
+                <span class="pill" id="node-group-pill"></span>
+                <div class="modal-field">
+                    <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:0.25rem;">Rôle / Rattachement</label>
+                    <p id="node-role" style="font-weight:600; margin-bottom:1rem; font-size:1rem;"></p>
+                </div>
+                <div class="modal-field">
+                    <label style="display:block; font-size:0.75rem; text-transform:uppercase; color:var(--text-muted); font-weight:700; margin-bottom:0.25rem;">Description Strategic / Argumentaire</label>
+                    <p class="details-body" id="node-detail" style="background-color: var(--bg-primary); padding:1rem; border-radius:6px; border: 1px solid var(--border-color);"></p>
+                </div>
+                <div class="connections-section">
+                    <h4>Liens Documentés</h4>
+                    <ul class="connections-list" id="node-connections"></ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Extraction et injection brute de la base de données unifiée
+        const graphData = {
+            "nodes": [
+                {"id": "Michel", "label": "Michel", "group": "Opposants / critiques nommément cités", "size": 15, "detail": "Habitant dénonçant la prédation énergétique et foncière.", "role": "Habitant de Dietwiller"},
+                {"id": "Philippe", "label": "Philippe", "group": "Opposants / critiques nommément cités", "size": 15, "detail": "Habitant critique sur le manque d'information citoyenne.", "role": "Habitant de Hombourg"},
+                {"id": "Cécile Germain-Ecuer", "label": "C. Germain-Ecuer", "group": "Élus / acteurs institutionnels", "size": 20, "detail": "Conseillère régionale écologiste demandant la suspension du projet.", "role": "Conseillère régionale Grand Est"},
+                {"id": "Thierry Engasser", "label": "T. Engasser", "group": "Élus / acteurs institutionnels", "size": 20, "detail": "Maire de Hombourg opposé au projet déconnecté du territoire.", "role": "Maire de Hombourg"},
+                {"id": "Léonie Hebert", "label": "L. Hebert", "group": "Élus / acteurs institutionnels", "size": 15, "detail": "Cheffe de file Mulhouse en commun, critique.", "role": "Cheffe de file Mulhouse en commun"},
+                {"id": "Fabian Jordan", "label": "F. Jordan", "group": "Élus / acteurs institutionnels", "size": 25, "detail": "Président de M2A, favorable et garant du projet.", "role": "Président de M2A"},
+                {"id": "Laurent Riche", "label": "L. Riche", "group": "Élus / acteurs institutionnels", "size": 20, "detail": "VP Développement économique M2A, favorable.", "role": "Vice-président de M2A"},
+                {"id": "Carole Talleux", "label": "C. Talleux", "group": "Élus / acteurs institutionnels", "size": 20, "detail": "Maire de Petit-Landau, favorable au projet.", "role": "Maire de Petit-Landau"},
+                {"id": "Olivier Becht", "label": "O. Becht", "group": "Élus / acteurs institutionnels", "size": 20, "detail": "Député ayant attiré l'investisseur stratégique sur le territoire.", "role": "Député du Haut-Rhin"},
+                {"id": "Stop THT 76-80", "label": "Stop THT 76-80", "group": "Noyau d’opposition local", "size": 24, "detail": "Principal mouvement opposé au projet ; organise les mobilisations et envisage des recours juridiques.", "role": "Collectif Interdépartemental"},
+                {"id": "Associations nationales de défense de l’environnement", "label": "Associations nationales de défense de l’environnement", "group": "Noyau d’opposition local", "size": 15, "detail": "Soutien élargi apporté à Stop THT 76-80 pour appuyer les actions.", "role": "Réseau Associatif NGO"},
+                { "id": "Data4", "label": "Data4", "group": "Porteurs / institutions du projet", "size": 26, "detail": "Opérateur de data centers co-développant le campus stratégique régional.", "role": "Opérateur industriel" },
+                { "id": "Brookfield", "label": "Brookfield", "group": "Porteurs / institutions du projet", "size": 24, "detail": "Fonds d’investissement canadien finançant le consortium à hauteur de l'AMI.", "role": "Fonds d'investissement" },
+                { "id": "BT Immo", "label": "BT Immo", "group": "Porteurs / institutions du projet", "size": 20, "detail": "Acteur immobilier en charge du volet constructif et foncier.", "role": "Aménageur Immobilier" },
+                { "id": "AWS / Amazon Web Services", "label": "AWS", "group": "Porte-parole / entreprises associées", "size": 15, "detail": "Acteur candidat ayant manifesté son intérêt lors de l'AMI, non retenu.", "role": "Fournisseur d'infrastructure Cloud" },
+                { "id": "MRAe Grand Est", "label": "MRAe", "group": "Élus / acteurs institutionnels", "size": 25, "detail": "Autorité environnementale régionale émettant des réserves critiques majeures sur le dossier.", "role": "Autorité Administrative Indépendante" },
+                { "id": "Mouvement écologiste indépendant", "label": "MEI", "group": "Noyau d’opposition local", "size": 15, "detail": "Parti politique opposé à l'artificialisation industrielle de l'axe rhénan.", "role": "Parti Écologiste Local" },
+                { "id": "Microsoft", "label": "Microsoft", "group": "Porteurs / institutions du projet", "size": 35, "detail": "Commanditaire et porteur principal du projet de campus de giga data center.", "role": "Leader Tech Multinational" },
+                { "id": "RTE", "label": "RTE", "group": "Porteurs / institutions du projet", "size": 25, "detail": "Gestionnaire du réseau, planificateur et exécuteur de l'infrastructure de puissance requise.", "role": "Gestionnaire du réseau de transport" },
+                { "id": "SMO", "label": "SMO Ports Sud Alsace", "group": "Porteurs / institutions du projet", "size": 20, "detail": "Syndicat mixte vendeur des emprises foncières agricoles du port rhénan.", "role": "Syndicat Mixte Aménageur" },
+                { "id": "Confédération paysanne", "label": "Conf.\npaysanne", "group": "Organisations agricoles / foncières", "size": 20, "detail": "Syndicat agricole luttant contre la consommation des terres arables.", "role": "Syndicat Agricole" }
+            ],
+            "links": [
+                {"source": "Collectif IA pas moyen", "target": "Microsoft", "kind": "Opposition frontale"},
+                {"source": "Alsace Nature", "target": "Microsoft", "kind": "Opposition frontale"},
+                {"source": "Alter Alsace Énergies", "target": "Microsoft", "kind": "Opposition frontale"},
+                {"source": "Confédération paysanne", "target": "SMO", "kind": "Opposition à l'artificialisation"},
+                {"source": "Cécile Germain-Ecuer", "target": "Fabian Jordan", "kind": "Interpellation politique"},
+                {"source": "Thierry Engasser", "target": "Microsoft", "kind": "Dénonciation de déconnexion"},
+                {"source": "MRAe Grand Est", "target": "Microsoft", "kind": "Avis critique / demande de compléments"},
+                {"source": "Olivier Becht", "target": "Microsoft", "kind": "Soutien et initiation du projet local"},
+                {"source": "Microsoft", "target": "Fabian Jordan", "kind": "Partenariat d'implantation"},
+                {"source": "Microsoft", "target": "RTE", "kind": "Demande de raccordement réseau"},
+                {"source": "Stop THT 76-80", "target": "Microsoft", "kind": "Veille infrastructurelle croisée"},
+                {"source": "Stop THT 76-80", "target": "Associations nationales de défense de l’environnement", "kind": "Soutien de réseau"},
+                {"source": "Sylvain Finet", "target": "Stop THT 76-80", "kind": "Présidence"},
+                {"source": "Francine Adam", "target": "Microsoft", "kind": "Nuisances de voisinage"},
+                {"source": "José Adam", "target": "Microsoft", "kind": "Nuisances de voisinage"},
+                {"source": "Mathieu Massy", "target": "SMO", "kind": "Alerte expropriation foncière"},
+                {"source": "Reynald Massy", "target": "SMO", "kind": "Alerte emprise d'élevage"},
+                {"source": "Christine Muscat", "target": "Stop THT 76-80", "kind": "Liaison locale"},
+                {"source": "Christine Rodier", "target": "Stop THT 76-80", "kind": "Appui municipal"},
+                {"source": "Data4", "target": "Microsoft", "kind": "Consortium co-développeur"},
+                {"source": "Brookfield", "target": "Data4", "kind": "Soutien capitaliste majoritaire"},
+                {"source": "BT Immo", "target": "Data4", "kind": "Partenaire foncier industriel"},
+                {"source": "Mouvement écologiste indépendant", "target": "Microsoft", "kind": "Opposition rhénane"}
+            ]
+        };
+
+        // Configuration de la charte graphique fonctionnelle
+        const colors = {
+            "Projet central": "#0f172a", 
+            "Noyau d’opposition local": "#16a34a", 
+            "Opposants / critiques nommément cités": "#dc2626", 
+            "Élus / acteurs institutionnels": "#2563eb", 
+            "Organisations agricoles / foncières": "#ca8a04", 
+            "Porteurs / institutions du projet": "#0d9488", 
+            "Porte-parole / entreprises associées": "#7c3aed"
+        };
+
+        const groups = Object.keys(colors);
+        const activeGroups = new Set(groups);
+
+        // Sélection des éléments DOM fondamentaux
+        const svg = d3.select("#graphe-svg");
+        const chartArea = document.getElementById("chart-area");
+        const tooltip = d3.select("#tooltip");
+        const checkboxesContainer = document.getElementById("checkboxes-container");
+
+        let width = chartArea.clientWidth;
+        let height = chartArea.clientHeight;
+
+        // Configuration des groupes de conteneurs pour le zoom sécurisé
+        const containerGroup = svg.append("g");
+        const linkGroup = containerGroup.append("g").attr("class", "links");
+        const nodeGroup = containerGroup.append("g").attr("class", "nodes");
+
+        // Construction dynamique des contrôles de filtrage
+        groups.forEach(group => {
+            const label = document.createElement("label");
+            label.className = "checkbox-label";
+            label.innerHTML = `
+                <input type="checkbox" checked value="${group}">
+                <span class="legend-dot" style="background:${colors[group]}"></span>
+                <span>${group}</span>
+            `;
+            checkboxesContainer.appendChild(label);
+        });
+
+        // Duplication saine pour la simulation physique D3
+        const nodesData = projectData.actors.map(d => Object.assign({}, d));
+        const linksData = projectData.griefsData || []; 
+        
+        // Résolution de l'index sémantique des liens
+        const convertedLinks = [];
+        projectData.actors.forEach(actor => {
+            // Création de liaisons automatiques vers le porteur ou projet central si applicable
+            if(actor.stance === 'opposed') {
+                convertedA = projectData.actors.find(x => x.name === "Microsoft");
+                if(convertedClass = actor.name !== "Microsoft" && convertedClass) {
+                    convertedGriefs.push({source: actor.name, target: "Microsoft", kind: "Critique / Opposition"});
+                }
+            }
+        });
+
+        // Si le tableau sémantique de liaisons est fourni par l'utilisateur (cas standard)
+        const activeLinks = [];
+        const nodeMap = new Map(nodesData = projectData.actors.map(n => [n.name, n]));
+        
+        // Fallback s'il n'y a pas de liaisons sémantiques : création de liens sémantiques vers les porteurs
+        projectData.actors.forEach(a => {
+            if (a.name !== "Microsoft" && a.stance === 'opposed') {
+                activeClass = projectData.actors.find(x => x.name === "Microsoft");
+                if(activeClass) activeLinksPush(a.name, "Microsoft", "Opposition");
+            } else if (a.name !== "Microsoft" && a.stance === 'favorable') {
+                activeClass = projectData.actors.find(x => x.name === "Microsoft");
+                if(activeClass) activeLinksPush(a.name, "Microsoft", "Soutien");
+            }
+        });
+
+        function activeLinksPush(s, t, k) {
+            activeLinks.push({ source: nodeMap.get(s), target: nodeMap.get(t), kind: k });
+        }
+
+        // Configuration du moteur de simulation physique D3
+        const simulation = d3.forceSimulation(nodesData)
+            .force("link", d3.forceLink(activeLinks).distance(140).strength(0.5))
+            .force("charge", d3.forceManyBody().strength(-350).distanceMax(300))
+            .force("center", d3.forceCenter(width / 2, height / 2))
+            .force("collision", d3.forceCollide().radius(d => d.size + 25));
+
+        // Rendu des lignes (Links)
+        const linkElements = linkGroup.selectAll("line")
+            .data(activeLinks)
+            .enter().append("line")
+            .attr("class", "link")
+            .attr("stroke", "#94a3b8");
+
+        // Rendu des conteneurs de nœuds
+        const nodeElements = nodeGroup.selectAll("g")
+            .data(nodesData)
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("data-id", d => d.name)
+            .on("click", (event, d) => selectNode(d))
+            .on("mouseenter", (event, d) => showTooltip(event, d))
+            .on("mousemove", (event, d) => moveTooltip(event))
+            .on("mouseleave", () => hideTooltip())
+            .call(d3.drag()
+                .on("start", dragStarted)
+                .on("drag", dragged)
+                .on("end", dragEnded));
+
+        // Ajout des disques colorés
+        nodeElements.append("circle")
+            .attr("r", d => d.size)
+            .attr("fill", d => colors[d.group] || "#999");
+
+        // Ajout des étiquettes textuelles
+        nodeElements.append("text")
+            .attr("dy", d => d.size + 14)
+            .text(d => d.name);
+
+        // Moteur de rafraîchissement des coordonnées physiques
+        simulation.on("tick", () => {
+            linkElements
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+
+            nodeElements.attr("transform", d => `translate(${d.x},${d.y})`);
+        });
+
+        // Gestion du comportement d'atténuation et focus sémantique au clic
+        function selectNode(selectedNode) {
+            nodeElements.classList ? "" : null; // Safe guard
+            
+            // Retrait des classes précédentes
+            nodeGroup.selectAll("g").classList?.remove('selected', 'dim');
+            d3.selectAll(".node").classed("selected", false).classed("dim", false);
+            d3.selectAll(".link").classed("dim", false);
+
+            const neighbors = new Set([selectedNode.name]);
+            activeLinks.forEach(l => {
+                if (l.source.name === selectedNode.name) neighbors.add(l.target.name);
+                if (l.target.name === selectedNode.name) neighbors.add(l.source.name);
+            });
+
+            // Application du filtre visuel d'atténuation
+            d3.selectAll(".node").classed("dim", d => !neighbors.has(d.name));
+            d3.selectAll(".node").classed("selected", d => d.name === selectedNode.name);
+            d3.selectAll(".link").classed("dim", l => l.source.name !== selectedNode.name && l.target.name !== selectedNode.name);
+
+            // Hydratation de la fiche de détail de droite
+            document.getElementById("details-default").style.display = "none";
+            const content = document.getElementById("details-content");
+            content.style.display = "block";
+
+            document.getElementById("node-name").innerText = selectedNode.name;
+            document.getElementById("node-role").innerText = selectedNode.role;
+            document.getElementById("node-detail").innerText = selectedNode.detail;
+            
+            const pill = document.getElementById("node-group-pill");
+            pill.innerText = selectedNode.group;
+            pill.style.backgroundColor = colors[selectedNode.group];
+
+            const connectionsList = document.getElementById("node-connections");
+            connectionsList.innerHTML = '';
+            
+            const localConnections = activeLinks.filter(l => l.source.name === selectedNode.name || l.target.name === selectedNode.name);
+            if(localConnections.length === 0) {
+                connectionsList.innerHTML = `<li>Aucune relation directe documentée dans ce delta.</li>`;
+            } else {
+                localConnections.forEach(l => {
+                    const targetName = l.source.name === selectedNode.name ? l.target.name : l.source.name;
+                    connectionsList.innerHTML += `<li><strong>${l.kind}</strong> : ${targetName}</li>`;
+                });
+            }
+        }
+
+        // Fonctions de l'infobulle (Tooltip)
+        function showTooltip(event, d) {
+            tooltip.text(`${d.name} — ${d.role}`)
+                .style("opacity", 1);
+            moveTooltip(event);
+        }
+
+        function moveTooltip(event) {
+            const chartRect = chartArea.getBoundingClientRect();
+            tooltip.style("left", (event.clientX - chartRect.left) + "px")
+                   .style("top", (event.clientY - chartRect.top) + "px");
+        }
+
+        function hideTooltip() {
+            tooltip.style("opacity", 0);
+        }
+
+        // Gestion saine des filtres de la sidebar
+        checkboxesContainer.onchange = (e) => {
+            if (e.target.type === 'checkbox') {
+                e.target.checked ? activeGroups.add(e.target.value) : activeGroups.delete(e.target.value);
+                filterGraph();
+            }
+        };
+
+        function filterGraph() {
+            const searchPattern = document.getElementById("search-input").value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            nodeElements.each(function(d) {
+                const matchesGroup = activeGroups.has(d.group);
+                const matchesSearch = !searchPattern || (d.name + " " + d.role + " " + d.detail).toLowerCase().includes(searchPattern);
+                const isVisible = matchesGroup && matchesSearch;
+
+                d3.select(this).style("display", isVisible ? "block" : "none");
+                if(isVisible) visibleCount++;
+            });
+
+            linkElements.style("display", l => {
+                const sourceVisible = activeGroups.has(l.source.group) && (!searchPattern || (l.source.name + " " + l.source.role).toLowerCase().includes(searchPattern));
+                const targetVisible = activeGroups.has(l.target.group) && (!searchPattern || (l.target.name + " " + l.target.role).toLowerCase().includes(searchPattern));
+                return (sourceVisible && targetVisible) ? "block" : "none";
+            });
+
+            document.getElementById("nodes-count").innerText = `${visibleCount} nœuds affichés sur ${nodesData.length}`;
+        }
+
+        document.getElementById("search-input").oninput = filterGraph;
+        filterGraph();
+
+        // Gestion du Drag & Drop physique
+        function dragStarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragEnded(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            // Laisser le nœud fixé à sa place de dépôt (clic double pour libérer)
+        }
+
+        // Libération d'un nœud fixé au double clic
+        nodeElements.on("dblclick", (event, d) => {
+            d.fx = null;
+            d.fy = null;
+        });
+
+        // Logique de Zoom et Panoramas SVG
+        const zoomBehavior = d3.zoom()
+            .scaleExtent([0.2, 3])
+            .on("zoom", (event) => {
+                containerGroup.attr("transform", event.transform);
+            });
+
+        svg.call(zoomBehavior);
+
+        // Commandes de réinitialisation et recentrage
+        document.getElementById("btn-center").onclick = () => {
+            svg.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity);
+        };
+
+        document.getElementById("btn-reset").onclick = () => {
+            document.getElementById("search-input").value = '';
+            document.querySelectorAll("#checkboxes-container input").forEach(cb => {
+                cb.checked = true;
+                activeGroups.add(cb.value);
+            });
+            d3.selectAll(".node").classed("dim", false).classed("selected", false);
+            d3.selectAll(".link").classed("dim", false);
+            document.getElementById("details-content").style.display = "none";
+            document.getElementById("details-default").style.display = "block";
+            filterGraph();
+            svg.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity);
+        };
+
+        // Redimensionnement dynamique responsive
+        window.addEventListener("resize", () => {
+            width = chartArea.clientWidth;
+            height = chartArea.clientHeight;
+            simulation.force("center", d3.forceCenter(width / 2, height / 2));
+            simulation.alpha(0.3).restart();
+        });
+    </script>
+</body>
+</html>

@@ -2,152 +2,117 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>Cartographie Interactive — Nuage Relationnel des Acteurs</title>
+    <title>Cartographie Interactive — Nuage Relationnel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        :root {
-            --bg: #f8fafc; 
-            --panel: #ffffff; 
-            --text: #0f172a; 
-            --muted: #64748b; 
-            --border: #e2e8f0;
-        }
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Arial, sans-serif; background: var(--bg); color: var(--text); }
-        header { padding: 18px 22px 12px; background: linear-gradient(90deg, #0f172a, #334155); color: white; }
-        header h1 { margin: 0; font-size: 22px; letter-spacing: -.02em; }
-        header p { margin: 6px 0 0; color: #cbd5e1; font-size: 13px; }
-        #wrap { display: grid; grid-template-columns: 320px 1fr 350px; min-height: calc(100vh - 74px); }
-        aside, #details { background: var(--panel); border-right: 1px solid var(--border); padding: 16px; overflow: auto; }
-        #details { border-right: 0; border-left: 1px solid var(--border); }
-        #chart { position: relative; overflow: hidden; }
-        svg { 
-            width: 100%; height: 100%; display: block; cursor: grab; 
-            background: 
-                radial-gradient(circle at 30% 25%, rgba(37,99,235,.06), transparent 28%),
-                radial-gradient(circle at 70% 60%, rgba(22,163,74,.06), transparent 32%),
-                #f8fafc;
-        }
-        .controls label { display: flex; align-items: center; gap: 8px; margin: 9px 0; font-size: 13px; }
-        .controls input[type="text"] { width: 100%; padding: 10px 11px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; }
-        .btnrow { display: flex; gap: 8px; margin: 12px 0 8px; }
-        button { border: 1px solid var(--border); background: #fff; border-radius: 10px; padding: 8px 10px; cursor: pointer; font-size: 12px; }
-        button:hover { background: #f1f5f9; }
-        .legend-dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
-        .hint { color: var(--muted); font-size: 12px; line-height: 1.35; padding: 10px; border: 1px dashed var(--border); border-radius: 10px; margin-bottom: 14px; background: #f8fafc; }
-        .node circle { stroke: #fff; stroke-width: 2px; filter: drop-shadow(0 2px 4px rgba(15,23,42,.12)); }
-        .node text { font-size: 11px; font-weight: 650; paint-order: stroke; stroke: #fff; stroke-width: 4px; stroke-linejoin: round; fill: #0f172a; pointer-events: none; text-anchor: middle; }
-        .link { stroke: #94a3b8; stroke-opacity: .42; stroke-width: 1.2; }
-        .node.dim, .link.dim { opacity: .12; }
-        .node.hidden, .link.hidden { display: none; }
-        .selected circle { stroke: #0f172a; stroke-width: 3.2px; }
-        #details h2 { margin: 0 0 8px; font-size: 20px; }
-        .pill { display: inline-block; border-radius: 999px; color: white; padding: 5px 9px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
-        #details p { font-size: 14px; line-height: 1.45; margin-bottom: 12px; }
-        .mini { color: var(--muted); font-size: 12px; margin-top: 18px; }
-        .count { color: var(--muted); font-size: 12px; margin: 10px 0 0; }
-        .tooltip { position: absolute; pointer-events: none; background: #0f172a; color: white; padding: 7px 9px; border-radius: 8px; font-size: 12px; opacity: 0; transform: translate(-50%, -120%); white-space: nowrap; z-index: 100; }
-    </style>
-    
     <script src="data-projet.js"></script>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #f8fafc; color: #0f172a; display: flex; flex-direction: column; height: 100vh; }
+        header { padding: 15px 20px; background: #0f172a; color: white; }
+        header h1 { margin: 0; font-size: 20px; }
+        #wrap { display: flex; flex: 1; overflow: hidden; }
+        aside, #details { width: 300px; background: white; padding: 20px; overflow-y: auto; box-shadow: 0 0 10px rgba(0,0,0,0.05); z-index: 10; }
+        #chart { flex: 1; position: relative; overflow: hidden; cursor: grab; }
+        svg { width: 100%; height: 100%; display: block; }
+        
+        /* Contrôles et Textes */
+        input[type="text"] { width: 100%; box-sizing: border-box; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 6px 10px; cursor: pointer; border: 1px solid #ccc; border-radius: 4px; background: #fff; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 8px; vertical-align: middle; }
+        label { display: block; margin: 8px 0; font-size: 13px; cursor: pointer; }
+        .pill { display: inline-block; padding: 4px 8px; border-radius: 12px; color: white; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+        .tooltip { position: absolute; background: #0f172a; color: white; padding: 5px 10px; border-radius: 4px; font-size: 12px; opacity: 0; pointer-events: none; transform: translate(-50%, -120%); }
+        
+        /* Graphe SVG */
+        .node circle { stroke: #fff; stroke-width: 2px; }
+        .node text { font-size: 11px; font-weight: bold; fill: #0f172a; text-anchor: middle; pointer-events: none; stroke: #fff; stroke-width: 3px; paint-order: stroke; }
+        .link { stroke: #94a3b8; stroke-width: 1.5; opacity: 0.5; }
+        .node.dim, .link.dim { opacity: 0.15; }
+        .node.hidden, .link.hidden { display: none; }
+        .selected circle { stroke: #0f172a; stroke-width: 3px; }
+    </style>
 </head>
 <body>
+
 <header>
     <h1 id="main-title">Cartographie Interactive</h1>
-    <p id="main-subtitle">Nuage relationnel et analyse structurelle du réseau d'acteurs.</p>
 </header>
+
 <div id="wrap">
     <aside>
-        <div class="hint">
-            Utilisation : chercher un acteur, filtrer par collège, ou glisser un nœud pour modifier sa disposition. Double-clic pour libérer un nœud fixé.
+        <input id="search" type="text" placeholder="Rechercher un acteur...">
+        <div style="margin-bottom: 15px;">
+            <button id="reset">Réinitialiser</button>
+            <button id="center">Recentrer</button>
         </div>
-        <div class="controls">
-            <input id="search" type="text" placeholder="Rechercher une entité, un collectif, un élu...">
-            <div class="btnrow">
-                <button id="reset">Réinitialiser</button>
-                <button id="center">Recentrer</button>
-            </div>
-            <strong>Filtres par collège</strong>
-            <div id="checks"></div>
-            <div class="count" id="count"></div>
-        </div>
+        <strong>Filtres</strong>
+        <div id="checks"></div>
+        <p id="count" style="font-size: 12px; color: #666;"></p>
     </aside>
+    
     <main id="chart">
         <div class="tooltip" id="tooltip"></div>
         <svg id="svg"></svg>
     </main>
+    
     <section id="details">
-        <div id="details-default">
-            <h2 id="default-title">Sélection</h2>
-            <p>Cliquez sur un acteur de la carte pour afficher sa fiche analytique, sa description et ses connexions sémantiques.</p>
-        </div>
+        <h2 id="default-title">Sélection</h2>
+        <p>Cliquez sur un acteur pour afficher ses détails.</p>
     </section>
 </div>
 
 <script>
-// Alignement et sécurisation de la variable de données (supporte graph ou graphData)
-const graph = typeof graphData !== 'undefined' ? graphData : (typeof dataProjectData !== 'undefined' ? dataProjectData : { nodes: [], links: [] });
+// 1. GESTION DES DONNÉES (Correction des clés 'new_nodes' et 'new_links')
+const rawData = typeof graphData !== 'undefined' ? graphData : { new_nodes: [], new_links: [] };
+const nodesData = rawData.new_nodes || rawData.nodes || [];
+const linksData = rawData.new_links || rawData.links || [];
 
-// Reprise stricte de la taxonomie officielle unifiée
 const colors = {
-    "Projet central": "#111827",
-    "Noyau d’opposition local": "#16a34a",
-    "Opposants / critiques nommément cités": "#dc2626",
-    "Élus / acteurs institutionnels": "#2563eb",
-    "Organisations agricoles / foncières": "#ca8a04",
-    "Porteurs / institutions du projet": "#0d9488",
-    "Porte-parole / entreprises associées": "#7c3aed",
-    "Points de vigilance / griefs": "#f97316",
-    "Médias / sources cités": "#64748b"
+    "Projet central": "#111827", "Noyau d’opposition local": "#16a34a", "Opposants / critiques nommément cités": "#dc2626",
+    "Élus / acteurs institutionnels": "#2563eb", "Organisations agricoles / foncières": "#ca8a04",
+    "Porteurs / institutions du projet": "#0d9488", "Porte-parole / entreprises associées": "#7c3aed",
+    "Points de vigilance / griefs": "#f97316", "Médias / sources cités": "#64748b"
 };
 
-const groups = Object.keys(colors);
+const centralNode = nodesData.find(n => n.group === "Projet central") || nodesData[0];
+let centralId = centralNode ? centralNode.id : "";
 
-// Identification dynamique de l'épicentre du projet
-const centralNode = graph.nodes.find(n => n.group === "Projet central") || graph.nodes[0];
-const centralId = centralNode ? centralNode.id : "";
+const nodes = nodesData.map(d => Object.assign({}, d));
+const nodeById = new Map(nodes.map(d => [d.id, d]));
+const links = linksData.map(d => Object.assign({}, d, {source: nodeById.get(d.source), target: nodeById.get(d.target)})).filter(d => d.source && d.target);
 
+// 2. INITIALISATION SVG ET DOM
 const svg = document.getElementById('svg');
 const chart = document.getElementById('chart');
 const details = document.getElementById('details');
 const tooltip = document.getElementById('tooltip');
-const checks = document.getElementById('checks');
-const countEl = document.getElementById('count');
 let width = chart.clientWidth, height = chart.clientHeight;
-
-svg.innerHTML = '';
-svg.setAttribute('viewBox', [0, 0, width, height].join(' '));
+svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
 const ns = "http://www.w3.org/2000/svg";
 const g = document.createElementNS(ns, 'g');
-svg.appendChild(g);
 const linkG = document.createElementNS(ns, 'g');
 const nodeG = document.createElementNS(ns, 'g');
-g.appendChild(linkG); g.appendChild(nodeG);
+svg.appendChild(g); g.appendChild(linkG); g.appendChild(nodeG);
 
-const activeGroups = new Set(groups);
+// 3. GÉNÉRATION DES FILTRES
+const activeGroups = new Set();
+const groups = [...new Set(nodes.map(n => n.group))];
 groups.forEach(gr => {
-    // N'afficher dans les filtres de la sidebar que les groupes ayant au moins un nœud dans le projet actuel
-    const hasNode = graph.nodes.some(n => n.group === gr);
-    if (hasNode && gr !== "Projet central") {
-        const label = document.createElement('label');
-        label.innerHTML = `<input type="checkbox" checked value="${gr}"><span class="legend-dot" style="background:${colors[gr]}"></span><span>${gr}</span>`;
-        checks.appendChild(label);
-    }
+    activeGroups.add(gr);
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="checkbox" checked value="${gr}"><span class="legend-dot" style="background:${colors[gr]||'#999'}"></span>${gr}`;
+    document.getElementById('checks').appendChild(label);
 });
 
-checks.addEventListener('change', e => {
+document.getElementById('checks').addEventListener('change', e => {
     if(e.target.type === 'checkbox') {
         e.target.checked ? activeGroups.add(e.target.value) : activeGroups.delete(e.target.value);
         applyFilters();
     }
 });
 
-const nodes = graph.nodes.map(d => Object.assign({}, d));
-const nodeById = new Map(nodes.map(d => [d.id, d]));
-const links = graph.links.map(d => Object.assign({}, d, {source: nodeById.get(d.source), target: nodeById.get(d.target)})).filter(d => d.source && d.target);
-
-const linkEls = links.map(l => {
+// 4. CRÉATION DES ÉLÉMENTS GRAPHIQUES
+const linkEls = links.map(() => {
     const line = document.createElementNS(ns, 'line');
     line.classList.add('link');
     linkG.appendChild(line);
@@ -156,146 +121,90 @@ const linkEls = links.map(l => {
 
 const nodeEls = nodes.map(n => {
     const el = document.createElementNS(ns, 'g');
-    el.classList.add('node');
-    el.dataset.id = n.id; el.dataset.group = n.group;
+    el.classList.add('node'); el.dataset.id = n.id;
+    
     const c = document.createElementNS(ns, 'circle');
-    c.setAttribute('r', n.size);
+    c.setAttribute('r', n.size || 15);
     c.setAttribute('fill', colors[n.group] || '#94a3b8');
+    
     const t = document.createElementNS(ns, 'text');
-    t.setAttribute('dy', n.size + 13);
-    const parts = (n.label || n.id).split('\n');
-    parts.forEach((part, i) => {
-        const tsp = document.createElementNS(ns, 'tspan');
-        tsp.textContent = part;
-        tsp.setAttribute('x', 0);
-        tsp.setAttribute('dy', i === 0 ? 0 : 12);
-        t.appendChild(tsp);
-    });
+    t.setAttribute('dy', (n.size || 15) + 12);
+    t.textContent = n.label || n.id;
+    
     el.appendChild(c); el.appendChild(t); nodeG.appendChild(el);
+    
     el.addEventListener('click', () => selectNode(n));
-    el.addEventListener('mouseenter', ev => showTip(n, ev));
-    el.addEventListener('mousemove', ev => showTip(n, ev));
+    el.addEventListener('mouseenter', ev => { tooltip.textContent = n.id; tooltip.style.opacity = 1; });
+    el.addEventListener('mousemove', ev => {
+        const rect = chart.getBoundingClientRect();
+        tooltip.style.left = (ev.clientX - rect.left) + 'px';
+        tooltip.style.top = (ev.clientY - rect.top) + 'px';
+    });
     el.addEventListener('mouseleave', () => tooltip.style.opacity = 0);
     drag(el, n);
     return el;
 });
 
-function initialPosition() {
-    const ring = {
-        "Projet central": 0,
-        "Noyau d’opposition local": 150,
-        "Porteurs / institutions du projet": 185,
-        "Opposants / critiques nommément cités": 250,
-        "Organisations agricoles / foncières": 280,
-        "Élus / acteurs institutionnels": 340,
-        "Porte-parole / entreprises associées": 340,
-        "Points de vigilance / griefs": 390,
-        "Médias / sources cités": 420
-    };
-    const byGroup = {};
-    nodes.forEach(n => (byGroup[n.group] ||= []).push(n));
-    nodes.forEach(n => {
-        if(n.group === "Projet central" || n.id === centralId) { n.x = width/2; n.y = height/2; return; }
-        const arr = byGroup[n.group], idx = arr.indexOf(n), total = arr.length;
-        let base = Object.keys(byGroup).indexOf(n.group) * 0.6;
-        if(window.projectData) {
-            // Ajustements d'angles fins si métadonnées métropolitaines complexes détectées
-            if(n.group === "Porteurs / institutions du projet") base = -0.1;
-            if(n.group === "Points de vigilance / griefs") base = 2.3;
-        }
-        const angle = base + idx * (Math.PI * 2 / Math.max(total, 1));
-        const r = ring[n.group] || 300;
-        n.x = width/2 + Math.cos(angle) * r;
-        n.y = height/2 + Math.sin(angle) * r;
-    });
-}
-
-let centralId = "";
-if (nodes.length > 0) {
-    const cNode = nodes.find(n => n.group === "Projet central") || nodes[0];
-    centralId = centralId = cNode.id;
-    document.getElementById("main-title").innerText = "Cartographie interactive — " + centralId;
-    resetDetails();
-}
+// 5. PHYSIQUE DU GRAPHE
+nodes.forEach(n => { n.x = width/2 + (Math.random()-0.5)*200; n.y = height/2 + (Math.random()-0.5)*200; });
 
 function tick() {
-    for(let k=0; k<2; k++) {
-        links.forEach(l => {
-            const dx = l.target.x - l.source.x, dy = l.target.y - l.source.y;
-            const dist = Math.hypot(dx, dy) || 1;
-            const desired = l.source.id === centralId || l.target.id === centralId ? 165 : 115;
-            const f = (dist - desired) * 0.012;
-            const fx = dx / dist * f, fy = dy / dist * f;
-            if(!l.source.fixed) { l.source.x += fx; l.source.y += fy; }
-            if(!l.target.fixed) { l.target.x -= fx; l.target.y -= fy; }
-        });
-        for(let i=0; i<nodes.length; i++) for(let j=i+1; j<nodes.length; j++) {
-            const a = nodes[i], b = nodes[j], dx = b.x - a.x, dy = b.y - a.y, dist = Math.hypot(dx, dy) || 1;
-            const min = a.size + b.size + 38;
-            if(dist < min) {
-                const f = (min - dist) / dist * 0.028;
-                if(!a.fixed) { a.x -= dx * f; a.y -= dy * f; }
-                if(!b.fixed) { b.x += dx * f; b.y += dy*f; }
-            }
+    links.forEach(l => {
+        const dx = l.target.x - l.source.x, dy = l.target.y - l.source.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const f = (dist - 120) * 0.01;
+        if(!l.source.fixed) { l.source.x += (dx/dist)*f; l.source.y += (dy/dist)*f; }
+        if(!l.target.fixed) { l.target.x -= (dx/dist)*f; l.target.y -= (dy/dist)*f; }
+    });
+    
+    for(let i=0; i<nodes.length; i++) for(let j=i+1; j<nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = b.x - a.x, dy = b.y - a.y, dist = Math.hypot(dx, dy) || 1;
+        const min = (a.size||15) + (b.size||15) + 20;
+        if(dist < min) {
+            const f = (min - dist) / dist * 0.03;
+            if(!a.fixed) { a.x -= dx * f; a.y -= dy * f; }
+            if(!b.fixed) { b.x += dx * f; b.y += dy * f; }
         }
-        nodes.forEach(n => {
-            if(n.id !== centralId && !n.fixed) {
-                n.x += (width/2 - n.x) * 0.0015;
-                n.y += (height/2 - n.y) * 0.0015;
-            }
-            n.x = Math.max(40, Math.min(width-40, n.x));
-            n.y = Math.max(40, Math.min(height-40, n.y));
-        });
     }
+    
+    nodes.forEach(n => {
+        if(!n.fixed) { n.x += (width/2 - n.x) * 0.002; n.y += (height/2 - n.y) * 0.002; }
+    });
+    
     linkEls.forEach((el, i) => {
-        const l = links[i];
-        el.setAttribute('x1', l.source.x); el.setAttribute('y1', l.source.y);
-        el.setAttribute('x2', l.target.x); el.setAttribute('y2', l.target.y);
+        el.setAttribute('x1', links[i].source.x); el.setAttribute('y1', links[i].source.y);
+        el.setAttribute('x2', links[i].target.x); el.setAttribute('y2', links[i].target.y);
     });
     nodeEls.forEach((el, i) => el.setAttribute('transform', `translate(${nodes[i].x},${nodes[i].y})`));
+    
     requestAnimationFrame(tick);
 }
-initialPosition();
 tick();
 
+// 6. INTERACTIONS ET RECHERCHE
 function selectNode(n) {
-    nodeEls.forEach(el => { el.classList.remove('selected'); el.classList.remove('dim'); });
+    nodeEls.forEach(el => el.classList.remove('selected', 'dim'));
     linkEls.forEach(el => el.classList.remove('dim'));
+    
     const neigh = new Set([n.id]);
     links.forEach(l => {
         if(l.source.id === n.id) neigh.add(l.target.id);
         if(l.target.id === n.id) neigh.add(l.source.id);
     });
-    nodeEls.forEach(el => { 
-        if(!neigh.has(el.dataset.id)) el.classList.add('dim'); 
-        if(el.dataset.id === n.id) el.classList.add('selected'); 
+    
+    nodeEls.forEach(el => {
+        if(!neigh.has(el.dataset.id)) el.classList.add('dim');
+        if(el.dataset.id === n.id) el.classList.add('selected');
     });
-    linkEls.forEach((el, i) => { 
-        const l = links[i]; 
-        if(l.source.id !== n.id && l.target.id !== n.id) el.classList.add('dim'); 
+    linkEls.forEach((el, i) => {
+        if(links[i].source.id !== n.id && links[i].target.id !== n.id) el.classList.add('dim');
     });
     
-    details.innerHTML = `<h2>${escapeHtml(n.id)}</h2>
-        <span class="pill" style="background:${colors[n.group]}">${escapeHtml(n.group)}</span>
-        <p>${escapeHtml(n.detail || '')}</p>
-        <p class="mini"><strong>Connexions directes :</strong> ${[...neigh].filter(x => x !== n.id).map(escapeHtml).join(', ') || 'aucune'}</p>`;
-}
-
-function resetDetails() {
-    details.innerHTML = `<h2>${escapeHtml(centralId || 'Sélection')}</h2>
-        <span class="pill" style="background:#111827">Projet central</span>
-        <p>Cliquez sur un acteur pour afficher sa fiche analytique, sa description sémantique et ses rattachements.</p>
-        <p class="mini">Lecture : la taille du nœud dépend de sa centralité structurelle dans le corpus.</p>`;
-}
-
-function escapeHtml(s) { return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-
-function showTip(n, ev) {
-    tooltip.textContent = n.id + " — " + n.group;
-    tooltip.style.opacity = 1;
-    const rect = chart.getBoundingClientRect();
-    tooltip.style.left = (ev.clientX - rect.left) + 'px';
-    tooltip.style.top = (ev.clientY - rect.top) + 'px';
+    details.innerHTML = `<h2>${n.id}</h2>
+        <span class="pill" style="background:${colors[n.group]||'#999'}">${n.group}</span>
+        <p>${n.detail || 'Aucune description disponible.'}</p>
+        <p style="font-size:13px; color:#666; margin-top:20px;"><strong>Connexions :</strong> ${[...neigh].filter(x => x !== n.id).join(', ') || 'aucune'}</p>`;
 }
 
 function applyFilters() {
@@ -303,44 +212,27 @@ function applyFilters() {
     let visible = 0;
     nodeEls.forEach((el, i) => {
         const n = nodes[i];
-        const okGroup = activeGroups.has(n.group) || n.group === "Projet central";
-        const okSearch = !q || (n.id + " " + n.group + " " + (n.detail || "")).toLowerCase().includes(q);
-        const ok = okGroup && okSearch;
+        const ok = activeGroups.has(n.group) && (!q || (n.id + " " + n.detail).toLowerCase().includes(q));
         el.classList.toggle('hidden', !ok);
         if(ok) visible++;
     });
     linkEls.forEach((el, i) => {
-        const l = links[i];
-        const sEl = nodeEls[nodes.indexOf(l.source)], tEl = nodeEls[nodes.indexOf(l.target)];
+        const sEl = nodeEls[nodes.indexOf(links[i].source)], tEl = nodeEls[nodes.indexOf(links[i].target)];
         el.classList.toggle('hidden', sEl.classList.contains('hidden') || tEl.classList.contains('hidden'));
     });
-    countEl.textContent = visible + " nœuds affichés sur " + nodes.length;
+    document.getElementById('count').textContent = `${visible} nœud(s) affiché(s)`;
 }
 
 document.getElementById('search').addEventListener('input', applyFilters);
-applyFilters();
-
 document.getElementById('reset').onclick = () => {
     document.getElementById('search').value = "";
-    document.querySelectorAll('#checks input').forEach(cb => { cb.checked = true; activeGroups.add(cb.value); });
+    document.querySelectorAll('#checks input').forEach(cb => cb.checked = true);
+    groups.forEach(gr => activeGroups.add(gr));
     nodeEls.forEach(el => el.classList.remove('selected', 'dim', 'hidden'));
     linkEls.forEach(el => el.classList.remove('dim', 'hidden'));
-    resetFixedPositions();
-    resetZoom();
+    currentZoom = 1; panX = 0; panY = 0; updateTransform();
     applyFilters();
 };
-
-function resetFixedNodes() {
-    nodes.forEach(n => { n.fixed = false; });
-}
-
-nodeEls.forEach(el => {
-    el.addEventListener('dblclick', (ev) => {
-        const id = el.dataset.id;
-        const n = nodeById.get(id);
-        if(n) n.fixed = false;
-    });
-});
 
 document.getElementById('center').onclick = () => { currentZoom = 1; panX = 0; panY = 0; updateTransform(); };
 
@@ -350,34 +242,25 @@ function drag(el, n) {
         down = true; n.fixed = true; el.setPointerCapture(ev.pointerId);
         const pt = toSvg(ev); ox = n.x - pt.x; oy = n.y - pt.y;
     });
-    el.addEventListener('pointermove', ev => {
-        if(!down) return;
-        const pt = toSvg(ev); n.x = pt.x + ox; n.y = pt.y + oy;
-    });
-    el.addEventListener('pointerup', ev => { down = false; el.releasePointerCapture(ev.pointerId); });
+    el.addEventListener('pointermove', ev => { if(down) { const pt = toSvg(ev); n.x = pt.x + ox; n.y = pt.y + oy; } });
+    el.addEventListener('pointerup', ev => { down = false; el.releasePointerCapture(ev.pointerId); n.fixed = false; });
 }
 
+// 7. ZOOM ET PANORAMIQUE
 let currentZoom = 1, panX = 0, panY = 0, panning = false, sx = 0, sy = 0;
 function updateTransform() { g.setAttribute('transform', `translate(${panX},${panY}) scale(${currentZoom})`); }
-function toSvg(ev) {
-    const rect = svg.getBoundingClientRect();
-    return {x: (ev.clientX - rect.left - panX) / currentZoom, y: (ev.clientY - rect.top - panY) / currentZoom};
-}
+function toSvg(ev) { const rect = svg.getBoundingClientRect(); return {x: (ev.clientX - rect.left - panX) / currentZoom, y: (ev.clientY - rect.top - panY) / currentZoom}; }
+
 svg.addEventListener('wheel', ev => {
     ev.preventDefault();
-    const scale = ev.deltaY < 0 ? 1.08 : 0.92;
-    currentZoom = Math.max(.25, Math.min(2.8, currentZoom * scale));
+    currentZoom = Math.max(0.3, Math.min(3, currentZoom * (ev.deltaY < 0 ? 1.1 : 0.9)));
     updateTransform();
-}, {passive: false});
-
-svg.addEventListener('pointerdown', ev => { if(ev.target === svg) { panning = true; sx = ev.clientX - panX; sy = ev.clientY - panY; svg.style.cursor = 'grabbing'; } });
-svg.addEventListener('pointermove', ev => { if(panning) { panX = ev.clientX - sx; panY = ev.clientY - sy; updateTransform(); } });
-svg.addEventListener('pointerup', () => { panning = false; svg.style.cursor = 'grab'; });
-
-window.addEventListener('resize', () => {
-    width = chart.clientWidth; height = chart.clientHeight;
-    svg.setAttribute('viewBox', [0, 0, width, height].join(' '));
 });
+svg.addEventListener('pointerdown', ev => { if(ev.target === svg) { panning = true; sx = ev.clientX - panX; sy = ev.clientY - panY; } });
+svg.addEventListener('pointermove', ev => { if(panning) { panX = ev.clientX - sx; panY = ev.clientY - sy; updateTransform(); } });
+svg.addEventListener('pointerup', () => panning = false);
+window.addEventListener('resize', () => { width = chart.clientWidth; height = chart.clientHeight; svg.setAttribute('viewBox', `0 0 ${width} ${height}`); });
+applyFilters();
 </script>
 </body>
 </html>

@@ -1,13 +1,7 @@
 const graphData = {
   
   "new_nodes": [
-    {
-      "id": "Data Center de Petit-Landau",
-      "label": "Data Center\nPetit-Landau",
-      "group": "Projet central",
-      "size": 34,
-      "detail": "Projet de centre de données Microsoft dédié à l'IA générative à Petit-Landau et Hombourg. Emprise de 36 à 40 hectares (plus de 50 terrains de football) sur des terres agricoles dont un tiers cultivées en bio. Investissement supérieur à 2 milliards d'euros pour une consommation électrique projetée entre 1 500 et 1 750 GWh par an, soit l'équivalent de 80 % de celle de l'ensemble des ménages du Haut-Rhin."
-    },
+    {"id": "Data Center de Petit-Landau", "label": "Data Center\nPetit-Landau", "group": "Projet central", "size": 34, "detail": "Projet de centre de données Microsoft dédié à l'IA générative à Petit-Landau et Hombourg. Emprise de 36 à 40 hectares (plus de 50 terrains de football) sur des terres agricoles dont un tiers cultivées en bio. Investissement supérieur à 2 milliards d'euros pour une consommation électrique projetée entre 1 500 et 1 750 GWh par an, soit l'équivalent de 80 % de celle de l'ensemble des ménages du Haut-Rhin."},
     {"id": "Michel", "label": "Michel", "group": "Opposants / critiques nommément cités", "size": 15, "detail": "Habitant dénonçant la prédation énergétique et foncière."},
     {"id": "Philippe", "label": "Philippe", "group": "Opposants / critiques nommément cités", "size": 15, "detail": "Habitant critique sur le manque d'information citoyenne."},
     {"id": "Cécile Germain-Ecuer", "label": "C. Germain-Ecuer", "group": "Élus / acteurs institutionnels", "size": 20, "detail": "Conseillère régionale écologiste demandant la suspension du projet."},

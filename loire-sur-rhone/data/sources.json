@@ -1,0 +1,189 @@
+[
+  {
+    "id": "source_0001",
+    "publisher": "EDF",
+    "title": "Procédure d’accès au dossier de l’AMI Data center Loire-sur-Rhône",
+    "url": "https://www.edf.fr/sites/groupe/files/2025-12/1.%20Demande%20d%27acc%C3%A8s%20au%20dossier%20AMI%20Loire-sur-Rh%C3%B4ne.pdf",
+    "date": null,
+    "access": "PDF : texte consulté, capture indisponible",
+    "xlsx_row": null,
+    "status": "pdf_text_only",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0002",
+    "publisher": "Le Dauphiné Libéré",
+    "title": "Le projet d’un « super » data center sur un site EDF suscite le débat",
+    "url": "https://www.ledauphine.com/economie/2026/01/26/le-projet-d-un-super-data-center-sur-un-site-edf-suscite-le-debat",
+    "date": "2026-01-26",
+    "access": "Page consultée et texte complet du classeur ; prénom corrigé par corroboration officielle",
+    "xlsx_row": 6,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0003",
+    "publisher": "L’Usine Nouvelle",
+    "title": "EDF choisit de nouveau Eclairion pour construire un datacenter sur un ancien site près de Lyon",
+    "url": "https://www.usinenouvelle.com/electronique-informatique/cloud-computing/datacenters/limpact-environnemental-a-ete-un-critere-fort-edf-choisit-de-nouveau-eclairion-pour-construire-un-datacenter-sur-un-ancien-site-pres-de-lyon.ANTB3646CZEM7ONK56A3DMRI3Y.html",
+    "date": "2026-05-28",
+    "access": "Texte complet reproduit dans le classeur ; accès direct bloqué par robots.txt, titre et date corroborés",
+    "xlsx_row": 5,
+    "status": "excel_only",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0004",
+    "publisher": "Vivre villes",
+    "title": "Projet de grand data center IA d’Eclairion à Loire-sur-Rhône prévu pour 2028/2030",
+    "url": "https://www.vivre-villes.fr/vienne/vienne-a-la-une/2026/11/09/vienne-condrieu-agglomeration-le-projet-de-grand-data-center-ia-de-la-societe-eclairion-a-loire-sur-rhone-prevu-pour-2028-2030/",
+    "date": "2026-11-09",
+    "access": "Page consultée ; URL éditoriale retrouvée",
+    "xlsx_row": 2,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0005",
+    "publisher": "Bref Eco",
+    "title": "EDF choisit Éclairion pour développer un data center de grande puissance à Loire-sur-Rhône",
+    "url": "https://www.brefeco.com/actualite/logiciels-services-numeriques/edf-choisit-eclairion-pour-developper-un-data-center-de",
+    "date": "2026-06-02",
+    "access": "Page consultée ; URL éditoriale retrouvée",
+    "xlsx_row": 4,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0006",
+    "publisher": "Vivre villes",
+    "title": "EDF prévoit d’installer un data center de grande puissance sur le site de l’ancienne centrale thermique",
+    "url": "https://www.vivre-villes.fr/vienne/vienne-a-la-une/2026/01/22/edf-prevoit-dinstaller-un-data-center-de-grande-puissance-sur-le-site-de-lancienne-centrale-thermique-de-loire-sur-rhone/",
+    "date": "2026-01-22",
+    "access": "Page consultée ; URL éditoriale retrouvée",
+    "xlsx_row": 8,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0007",
+    "publisher": "Commune de Loire-sur-Rhône",
+    "title": "Installation du nouveau conseil municipal",
+    "url": "https://www.loire-sur-rhone.fr/actualites/installation-du-nouveau-conseil-municipal/",
+    "date": "2026-03-25",
+    "access": "Publication municipale consultée",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0008",
+    "publisher": "Vienne Condrieu Agglomération",
+    "title": "Les élus communautaires",
+    "url": "https://www.vienne-condrieu-agglomeration.fr/connaitre-et-participer/linstitution/les-elus-communautaires",
+    "date": "2026-10-16",
+    "access": "Page officielle consultée ; date de mise à jour",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0009",
+    "publisher": "Schneider Electric",
+    "title": "Eclairion et Schneider Electric renforcent leur partenariat",
+    "url": "https://www.se.com/fr/fr/about-us/newsroom/news/press-releases/6a6c75b5cc6ba9fd1103cd79/",
+    "date": "2026-07-31",
+    "access": "Communiqué officiel consulté",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0010",
+    "publisher": "CNR",
+    "title": "Règlement de l’AMI 2023-15 — site industriel et portuaire de Loire Saint-Romain",
+    "url": "https://www.cnr.tm.fr/wp-content/uploads/2023/09/Reglement-AMI-Loire-Saint-Romain.pdf",
+    "date": null,
+    "access": "PDF historique : texte consulté, capture indisponible ; document de contexte distinct de l’AMI EDF",
+    "xlsx_row": null,
+    "status": "pdf_text_only",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0011",
+    "publisher": "Le Journal des Entreprises",
+    "title": "EDF choisit Éclairion pour le site de Loire-sur-Rhône",
+    "url": "https://www.lejournaldesentreprises.com/breve/edf-choisit-eclairion-pour-developper-un-data-center-de-grande-puissance-sur-le-site-de-loire-sur-2143693",
+    "date": "2026-05-29",
+    "access": "Page consultée",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0012",
+    "publisher": "News Tank Energies",
+    "title": "EDF : Éclairion choisi pour développer un data center de 350 MW",
+    "url": "https://energies.newstank.fr/article/view/442529/edf-eclairion-choisi-developper-data-center-350-mw-site-loire-rhone.html",
+    "date": "2026-05-28",
+    "access": "Page consultée ; date de l’annonce EDF",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0013",
+    "publisher": "Légifrance",
+    "title": "Décret du 22 avril 2026 — cessation de fonctions de Fabienne Buccio",
+    "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053930665?origin=list",
+    "date": "2026-04-23",
+    "access": "Acte officiel consulté",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0014",
+    "publisher": "Légifrance",
+    "title": "Décret de nomination d’Étienne Guyot",
+    "url": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000053930596?origin=list",
+    "date": "2026-04-23",
+    "access": "Acte officiel consulté",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0015",
+    "publisher": "Le Dauphiné Libéré",
+    "title": "EDF a choisi la société qui développera son futur data center de 350 MW",
+    "url": "https://www.ledauphine.com/economie/2026/07/01/reconversion-de-ses-anciens-sites-industriels-edf-a-choisi-la-societe-qui-developpera-son-futur-data-center-de-350-mw",
+    "date": "2026-07-01",
+    "access": "Page consultée ; réserves de l’agglomération après sélection",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0016",
+    "publisher": "Le Progrès",
+    "title": "Pourquoi le projet de data center à Loire-sur-Rhône suscite le débat",
+    "url": "https://www.leprogres.fr/economie/2026/01/21/le-projet-de-data-center-sur-le-site-de-l-ancienne-centrale-thermique-de-loire-sur-rhone-suscite-debat",
+    "date": "2026-01-24",
+    "access": "Page consultée ; même reportage que la ligne 6, non compté comme témoignage indépendant",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  },
+  {
+    "id": "source_0017",
+    "publisher": "Vienne Condrieu Agglomération",
+    "title": "Projet logistique multimodale",
+    "url": "https://entreprendre.vienne-condrieu-agglomeration.fr/simplanter/recherche-du-foncier/projet-logistique-multimodale",
+    "date": null,
+    "access": "Page institutionnelle de contexte consultée",
+    "xlsx_row": null,
+    "status": "web_consulted",
+    "verified_at": "2026-11-16"
+  }
+]

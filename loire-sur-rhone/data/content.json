@@ -1,0 +1,285 @@
+{
+  "project_status": "Lauréat EDF annoncé ; études et autorisations à documenter. Aucun permis, contrat de raccordement ni chantier engagé confirmé par le corpus.",
+  "project_summary": "350 MW annoncés à terme · 14 ha · sélection EDF le 28 mai 2026 · premier horizon 2028-2030 sous conditions",
+  "milestones": [
+    {
+      "id": "milestone_0001",
+      "date": "2013-01-01",
+      "period_precision": "year",
+      "status": "documented",
+      "title": "Démantèlement achevé de l’ancienne centrale",
+      "details": "Année rapportée par Vivre villes ; ne pas confondre démantèlement et dépollution complète.",
+      "evidence_ids": [
+        "evidence_0023"
+      ]
+    },
+    {
+      "id": "milestone_0003",
+      "date": "2025-12-01",
+      "period_precision": "month",
+      "status": "documented",
+      "title": "Saisine de la préfète rapportée",
+      "details": "Courrier adressé par Thierry Kovacs fin décembre, rapporté en janvier ; date du jour inconnue.",
+      "evidence_ids": [
+        "evidence_0005"
+      ]
+    },
+    {
+      "id": "milestone_0002",
+      "date": "2025-12-22",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "Lancement de l’AMI EDF",
+      "details": "Sélection d’un porteur de data center et procédure de bail à construction.",
+      "evidence_ids": [
+        "evidence_0001",
+        "evidence_0019"
+      ]
+    },
+    {
+      "id": "milestone_0004",
+      "date": "2026-01-19",
+      "period_precision": "day",
+      "status": "announced",
+      "title": "Échéance indicative de demande de participation",
+      "details": "Calendrier AMI, et non preuve de dépôt effectif.",
+      "evidence_ids": [
+        "evidence_0002"
+      ]
+    },
+    {
+      "id": "milestone_0005",
+      "date": "2026-01-26",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "Clivage public des élus",
+      "details": "Soutien de Guy Martinet et réserves de Thierry Kovacs publiés.",
+      "evidence_ids": [
+        "evidence_0003",
+        "evidence_0004",
+        "evidence_0025"
+      ]
+    },
+    {
+      "id": "milestone_0006",
+      "date": "2026-03-20",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "Changement de maire",
+      "details": "Élection de Pascal Galamand, position projet non établie.",
+      "evidence_ids": [
+        "evidence_0013"
+      ]
+    },
+    {
+      "id": "milestone_0007",
+      "date": "2026-05-18",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "Changement de préfet",
+      "details": "Étienne Guyot succède à Fabienne Buccio.",
+      "evidence_ids": [
+        "evidence_0020",
+        "evidence_0021"
+      ]
+    },
+    {
+      "id": "milestone_0008",
+      "date": "2026-05-28",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "EDF retient Eclairion",
+      "details": "Lauréat annoncé, études et autorisations à obtenir.",
+      "evidence_ids": [
+        "evidence_0006",
+        "evidence_0019"
+      ]
+    },
+    {
+      "id": "milestone_0009",
+      "date": "2026-07-01",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "Réserves territoriales après sélection",
+      "details": "La presse rapporte des réserves au sein de l’agglomération.",
+      "evidence_ids": [
+        "evidence_0022"
+      ]
+    },
+    {
+      "id": "milestone_0010",
+      "date": "2026-07-31",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "Protocole national Eclairion–Schneider",
+      "details": "Partenariat annoncé au niveau national, pas de contrat local établi.",
+      "evidence_ids": [
+        "evidence_0015"
+      ]
+    },
+    {
+      "id": "milestone_0011",
+      "date": "2026-11-09",
+      "period_precision": "day",
+      "status": "documented",
+      "title": "Point de situation publié",
+      "details": "Calendrier indicatif 2028-2030 et études jusqu’à fin 2027 évoqués.",
+      "evidence_ids": [
+        "evidence_0011",
+        "evidence_0024"
+      ]
+    },
+    {
+      "id": "milestone_0012",
+      "date": "2027-12-01",
+      "period_precision": "month",
+      "status": "forecast",
+      "title": "Horizon d’instruction envisagé",
+      "details": "Fin 2027 selon la presse locale, non une échéance administrative garantie.",
+      "evidence_ids": [
+        "evidence_0011"
+      ]
+    },
+    {
+      "id": "milestone_0013",
+      "date": "2028-01-01",
+      "period_precision": "year",
+      "status": "forecast",
+      "title": "Premières capacités envisagées",
+      "details": "Enedis puis RTE selon presse ; aucune mise sous tension confirmée.",
+      "evidence_ids": [
+        "evidence_0007",
+        "evidence_0008",
+        "evidence_0011"
+      ]
+    },
+    {
+      "id": "milestone_0014",
+      "date": "2030-01-01",
+      "period_precision": "year",
+      "status": "forecast",
+      "title": "Horizon de montée à la puissance cible",
+      "details": "350 MW à terme dans le scénario annoncé ; premières capacités au plus tard en 2030 selon EDF rapporté.",
+      "evidence_ids": [
+        "evidence_0007",
+        "evidence_0010",
+        "evidence_0019"
+      ]
+    }
+  ],
+  "fact_sheet": [
+    {
+      "id": "fact_0001",
+      "label": "Porteur sélectionné",
+      "value": "Eclairion",
+      "qualifier": "Annonce du 28 mai 2026, phase d’études.",
+      "evidence_ids": [
+        "evidence_0006",
+        "evidence_0019"
+      ]
+    },
+    {
+      "id": "fact_0002",
+      "label": "Puissance cible",
+      "value": "350 MW",
+      "qualifier": "Capacité électrique à terme, pas de puissance IT ou réservée démontrée.",
+      "evidence_ids": [
+        "evidence_0006",
+        "evidence_0007",
+        "evidence_0008"
+      ]
+    },
+    {
+      "id": "fact_0003",
+      "label": "Emprise",
+      "value": "≈ 14 ha",
+      "qualifier": "Sur environ 60 ha de friche EDF.",
+      "evidence_ids": [
+        "evidence_0010",
+        "evidence_0011",
+        "evidence_0023"
+      ]
+    },
+    {
+      "id": "fact_0004",
+      "label": "Usage annoncé",
+      "value": "IA / calcul haute densité",
+      "qualifier": "Infrastructure d’hébergement ; client final non identifié.",
+      "evidence_ids": [
+        "evidence_0006",
+        "evidence_0009"
+      ]
+    },
+    {
+      "id": "fact_0005",
+      "label": "Premier horizon",
+      "value": "2028",
+      "qualifier": "Premiers MW envisagés, dépendants du raccordement et des permis.",
+      "evidence_ids": [
+        "evidence_0007",
+        "evidence_0008",
+        "evidence_0011"
+      ]
+    },
+    {
+      "id": "fact_0006",
+      "label": "Horizon cible",
+      "value": "2030",
+      "qualifier": "Calendrier indicatif ; phases à confirmer.",
+      "evidence_ids": [
+        "evidence_0007",
+        "evidence_0019"
+      ]
+    },
+    {
+      "id": "fact_0007",
+      "label": "Emplois évoqués",
+      "value": "≈ 100",
+      "qualifier": "Prévision rapportée, pas de décompte vérifié.",
+      "evidence_ids": [
+        "evidence_0012"
+      ]
+    },
+    {
+      "id": "fact_0008",
+      "label": "Eau / refroidissement",
+      "value": "Boucle fermée ; eau proche de zéro annoncée",
+      "qualifier": "Indice revendiqué par l’offre ; pas de mesure en exploitation.",
+      "evidence_ids": [
+        "evidence_0006",
+        "evidence_0018"
+      ]
+    },
+    {
+      "id": "fact_0009",
+      "label": "Chaleur fatale",
+      "value": "Valorisation envisagée",
+      "qualifier": "Pas de réseau ni contrat confirmé.",
+      "evidence_ids": [
+        "evidence_0003",
+        "evidence_0012"
+      ]
+    },
+    {
+      "id": "fact_0010",
+      "label": "Foncier",
+      "value": "Bail à construction envisagé",
+      "qualifier": "Bail final conditionné au permis.",
+      "evidence_ids": [
+        "evidence_0001",
+        "evidence_0010"
+      ]
+    },
+    {
+      "id": "fact_0011",
+      "label": "Coût et clients",
+      "value": "Non documentés",
+      "qualifier": "Ne pas reporter les 2 Md€ mosellans sur ce projet ; aucun client local confirmé.",
+      "evidence_ids": [
+        "evidence_0009",
+        "evidence_0010"
+      ]
+    }
+  ],
+  "last_updated": "2026-11-16"
+}

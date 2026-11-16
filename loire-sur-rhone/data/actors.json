@@ -1,0 +1,402 @@
+[
+  {
+    "id": "project_loire_sur_rhone",
+    "type": "project",
+    "name": "Data center Eclairion — Loire-sur-Rhône",
+    "short_name": "Eclairion · Loire-sur-Rhône",
+    "description": "Projet de centre IA sur l’ancienne centrale EDF : 350 MW de capacité électrique cible, 14 ha environ, phases 2028-2030 envisagées.",
+    "categories": [
+      "project"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0006",
+      "evidence_0008",
+      "evidence_0010",
+      "evidence_0011",
+      "evidence_0019"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "actor_0001",
+    "type": "entity",
+    "name": "EDF",
+    "short_name": "EDF",
+    "description": "Propriétaire de l’ancienne centrale et organisateur de l’AMI. Sélection d’Eclairion annoncée le 28 mai 2026 ; bail définitif non démontré.",
+    "categories": [
+      "porteurs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0001",
+      "evidence_0006",
+      "evidence_0010",
+      "evidence_0019",
+      "evidence_0023"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0002",
+    "type": "entity",
+    "name": "Eclairion",
+    "short_name": "Eclairion",
+    "description": "Lauréat de l’AMI ; concepteur, constructeur et exploitant pressenti de l’infrastructure IA de 350 MW à terme.",
+    "categories": [
+      "porteurs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0006",
+      "evidence_0007",
+      "evidence_0010",
+      "evidence_0019"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0003",
+    "type": "entity",
+    "name": "Arnaud Lepinois",
+    "short_name": "A. Lepinois",
+    "description": "PDG d’Eclairion ; défend la reconversion industrielle et le déploiement rapide des premières tranches.",
+    "categories": [
+      "porteurs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0007",
+      "evidence_0009"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0004",
+    "type": "entity",
+    "name": "Stéphane Raison",
+    "short_name": "S. Raison",
+    "description": "Responsable EDF des grands sites de consommation cité en mai 2026, explicite les critères environnementaux du choix.",
+    "categories": [
+      "porteurs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0006"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0005",
+    "type": "entity",
+    "name": "Guy Martinet",
+    "short_name": "G. Martinet",
+    "description": "Ancien maire de Loire-sur-Rhône, favorable au projet en janvier 2026. A quitté sa fonction le 20 mars 2026. Le prénom Pascal dans le classeur est erroné.",
+    "categories": [
+      "elus-fav"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0003",
+      "evidence_0013",
+      "evidence_0025"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0006",
+    "type": "entity",
+    "name": "Thierry Kovacs",
+    "short_name": "T. Kovacs",
+    "description": "Maire de Vienne et président de l’agglomération. Conteste la pertinence du data center sur ce foncier multimodal ; réserves maintenues dans la presse en juillet.",
+    "categories": [
+      "elus-opp"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0004",
+      "evidence_0005",
+      "evidence_0014",
+      "evidence_0022"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0007",
+    "type": "entity",
+    "name": "Vienne Condrieu Agglomération",
+    "short_name": "Vienne Condrieu Agglo",
+    "description": "Collectivité portant la stratégie industrielle et portuaire. Réserves exprimées par son président sur ce projet, sans décision formelle de rejet établie.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0004",
+      "evidence_0005",
+      "evidence_0014",
+      "evidence_0022",
+      "evidence_0026"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0008",
+    "type": "entity",
+    "name": "Commune de Loire-sur-Rhône",
+    "short_name": "Loire-sur-Rhône",
+    "description": "Commune d’implantation ; ancien maire favorable ; position du nouveau conseil non établie.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0003",
+      "evidence_0013",
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0009",
+    "type": "entity",
+    "name": "Pascal Galamand",
+    "short_name": "P. Galamand",
+    "description": "Maire élu le 20 mars 2026, successeur de Guy Martinet. Position publique non établie sur le projet.",
+    "categories": [
+      "elus"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0013",
+      "evidence_0014"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0010",
+    "type": "entity",
+    "name": "Fabienne Buccio",
+    "short_name": "F. Buccio",
+    "description": "Ancienne préfète de région et du Rhône, destinataire de la saisine rapportée fin 2025 ; départ le 18 mai 2026. Pas de réponse documentée.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0005",
+      "evidence_0020"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0011",
+    "type": "entity",
+    "name": "Étienne Guyot",
+    "short_name": "É. Guyot",
+    "description": "Préfet de région et du Rhône depuis le 18 mai 2026. Fonction pertinente pour le suivi institutionnel ; aucune prise de position projet.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0021"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "context"
+  },
+  {
+    "id": "actor_0012",
+    "type": "entity",
+    "name": "Préfecture du Rhône / État",
+    "short_name": "Préfecture / État",
+    "description": "Services de l’État associés à la gouvernance portuaire ; préfète saisie selon Thierry Kovacs, aucune décision finale retrouvée.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0005",
+      "evidence_0016",
+      "evidence_0020",
+      "evidence_0021"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0013",
+    "type": "entity",
+    "name": "RTE",
+    "short_name": "RTE",
+    "description": "Gestionnaire du réseau de transport ; raccordement haute tension ultérieur envisagé dans la presse, sans convention ni calendrier contractuel documenté.",
+    "categories": [
+      "porteurs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0008"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0014",
+    "type": "entity",
+    "name": "Enedis",
+    "short_name": "Enedis",
+    "description": "Gestionnaire de distribution présenté comme voie de première alimentation envisagée en 2028. Aucune puissance ni convention confirmée.",
+    "categories": [
+      "porteurs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0008"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0015",
+    "type": "entity",
+    "name": "Schneider Electric",
+    "short_name": "Schneider Electric",
+    "description": "Partenaire industriel d’Eclairion en France pour l’équipement électrique. Le rattachement local est rapporté par Vivre villes ; marché spécifique non établi.",
+    "categories": [
+      "porteurs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0015",
+      "evidence_0011"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0016",
+    "type": "entity",
+    "name": "Compagnie Nationale du Rhône (CNR)",
+    "short_name": "CNR",
+    "description": "Partenaire de la gouvernance industrialo-portuaire et aménageur portuaire. Aucune position explicite sur Eclairion.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0005",
+      "evidence_0016",
+      "evidence_0017"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0017",
+    "type": "entity",
+    "name": "DREAL Auvergne-Rhône-Alpes",
+    "short_name": "DREAL AURA",
+    "description": "Citée par Thierry Kovacs au sujet d’une étude de transport combiné, pas comme auteur d’un avis environnemental spécifique au data center.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "context"
+  },
+  {
+    "id": "actor_0018",
+    "type": "entity",
+    "name": "Comité partenarial de développement",
+    "short_name": "Comité partenarial",
+    "description": "Instance de gouvernance historique du site portuaire. Thierry Kovacs demande son examen du projet. L’avis propre au data center n’est pas établi.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0005",
+      "evidence_0016",
+      "evidence_0017"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "direct"
+  },
+  {
+    "id": "actor_0019",
+    "type": "entity",
+    "name": "Métropole de Lyon",
+    "short_name": "Métropole de Lyon",
+    "description": "Membre de la gouvernance portuaire selon règlement CNR historique. Aucune position sur le projet.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "context"
+  },
+  {
+    "id": "actor_0020",
+    "type": "entity",
+    "name": "Commune de Givors",
+    "short_name": "Givors",
+    "description": "Collectivité membre de la gouvernance historique du site portuaire, sans position publique établie sur Eclairion.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "context"
+  },
+  {
+    "id": "actor_0021",
+    "type": "entity",
+    "name": "Commune de Saint-Romain-en-Gal",
+    "short_name": "Saint-Romain-en-Gal",
+    "description": "Collectivité membre de la gouvernance historique du site portuaire, sans position publique établie sur Eclairion.",
+    "categories": [
+      "orgs"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "context"
+  },
+  {
+    "id": "actor_0022",
+    "type": "entity",
+    "name": "Mistral AI",
+    "short_name": "Mistral AI",
+    "description": "Client d’Eclairion sur un autre site (Bruyères-le-Châtel). Aucun contrat de Loire-sur-Rhône identifié ; acteur de contexte uniquement.",
+    "categories": [
+      "context"
+    ],
+    "roles": [],
+    "evidence_ids": [
+      "evidence_0009"
+    ],
+    "updated_at": "2026-11-16",
+    "scope": "context"
+  }
+]

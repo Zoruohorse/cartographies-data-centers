@@ -1,0 +1,392 @@
+[
+  {
+    "id": "evidence_0001",
+    "type": "reported_fact",
+    "text": "EDF fixe le lancement de l’AMI au 22 décembre 2025. L’AMI vise une promesse de bail puis un bail à construction, et non une vente de terrain.",
+    "source_id": "source_0001",
+    "source_ids": [
+      "source_0001"
+    ],
+    "published_at": null,
+    "event_date": "2025-12-22",
+    "source_status": "pdf_text_only",
+    "location": "Calendrier indicatif, p. 1-2",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0002",
+    "type": "reported_fact",
+    "text": "Date limite indicative pour demander la participation : 19 janvier 2026 ; visites prévues le 29 janvier, propositions initiales le 27 février, finales en avril. Ces échéances annoncées ne prouvent pas leur exécution.",
+    "source_id": "source_0001",
+    "source_ids": [
+      "source_0001"
+    ],
+    "published_at": null,
+    "event_date": "2025-12-22",
+    "source_status": "pdf_text_only",
+    "location": "Calendrier indicatif, p. 2",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0003",
+    "type": "reported_fact",
+    "text": "Guy Martinet, alors maire de Loire-sur-Rhône, souhaite que le projet se réalise. Il invoque le foncier vacant et une possible valorisation de la chaleur. La mention « Pascal Martinet » dans le texte exporté est contredite par l’édition en ligne et la mairie.",
+    "source_id": "source_0002",
+    "source_ids": [
+      "source_0002"
+    ],
+    "published_at": "2026-01-26",
+    "event_date": "2026-01-26",
+    "source_status": "web_consulted",
+    "location": "Ligne 6 et édition en ligne",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0004",
+    "type": "reported_fact",
+    "text": "Thierry Kovacs, maire de Vienne et président de Vienne Condrieu Agglomération, conteste l’implantation sur ce site : inadéquation alléguée avec les priorités industrielles et multimodales et emplois jugés trop peu nombreux.",
+    "source_id": "source_0002",
+    "source_ids": [
+      "source_0002"
+    ],
+    "published_at": "2026-01-26",
+    "event_date": "2026-01-26",
+    "source_status": "web_consulted",
+    "location": "Ligne 6, entretien et courrier de fin décembre",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0005",
+    "type": "reported_fact",
+    "text": "Le président dit avoir saisi la préfète de région par courrier fin décembre 2025. Le texte exporté cite la gouvernance État, collectivités, CNR et EDF, l’étude de transport combiné pilotée par la DREAL et demande l’examen du projet par les instances partenariales.",
+    "source_id": "source_0002",
+    "source_ids": [
+      "source_0002"
+    ],
+    "published_at": "2026-01-26",
+    "event_date": "2026-01-26",
+    "source_status": "web_consulted",
+    "location": "Ligne 6, courrier rapporté",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0006",
+    "type": "reported_fact",
+    "text": "EDF a choisi Eclairion pour concevoir, construire et exploiter un centre de calcul haute densité de 350 MW à terme. Stéphane Raison expose les critères de choix, notamment la boucle fermée et les indices d’efficacité énergétique et de consommation d’eau.",
+    "source_id": "source_0003",
+    "source_ids": [
+      "source_0003"
+    ],
+    "published_at": "2026-05-28",
+    "event_date": "2026-05-28",
+    "source_status": "excel_only",
+    "location": "Ligne 5, article intégral",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0007",
+    "type": "reported_fact",
+    "text": "Arnaud Lepinois, PDG d’Eclairion, défend la réhabilitation de friches et un déploiement rapide des premières tranches électriques. Il vise des premiers MW en 2028 ; la puissance finale de 350 MW à l’horizon 2030 est une cible, pas une capacité déjà installée.",
+    "source_id": "source_0003",
+    "source_ids": [
+      "source_0003"
+    ],
+    "published_at": "2026-05-28",
+    "event_date": "2026-05-28",
+    "source_status": "excel_only",
+    "location": "Ligne 5, entretien",
+    "accessed_at": "2026-11-16",
+    "certainty": "medium"
+  },
+  {
+    "id": "evidence_0008",
+    "type": "reported_fact",
+    "text": "Selon l’article, le démarrage envisagé passerait par des raccordements au réseau de distribution Enedis avant les raccordements haute tension de RTE. Aucune convention de raccordement, puissance de première tranche ni calendrier garanti n'est fournie.",
+    "source_id": "source_0003",
+    "source_ids": [
+      "source_0003"
+    ],
+    "published_at": "2026-05-28",
+    "event_date": "2026-05-28",
+    "source_status": "excel_only",
+    "location": "Ligne 5, section raccordement",
+    "accessed_at": "2026-11-16",
+    "certainty": "medium"
+  },
+  {
+    "id": "evidence_0009",
+    "type": "reported_fact",
+    "text": "Mistral AI est déjà client d’Eclairion sur son site de Bruyères-le-Châtel et des capacités d’autres sites non précisés. L’article indique qu’Eclairion doit encore identifier les clients du projet de Loire-sur-Rhône ; aucune attribution à Mistral AI n’est démontrée.",
+    "source_id": "source_0003",
+    "source_ids": [
+      "source_0003"
+    ],
+    "published_at": "2026-05-28",
+    "event_date": "2026-05-28",
+    "source_status": "excel_only",
+    "location": "Ligne 5, section clients",
+    "accessed_at": "2026-11-16",
+    "certainty": "medium"
+  },
+  {
+    "id": "evidence_0010",
+    "type": "reported_fact",
+    "text": "Bref Eco présente l’emprise d’environ 14 ha, la capacité électrique maximale de 350 MW et une phase d’études avant dépôt des demandes. La promesse de bail est prévue pendant la due diligence ; bail définitif conditionné au permis de construire.",
+    "source_id": "source_0005",
+    "source_ids": [
+      "source_0005"
+    ],
+    "published_at": "2026-06-02",
+    "event_date": "2026-06-02",
+    "source_status": "web_consulted",
+    "location": "Ligne 4 et page éditeur",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0011",
+    "type": "reported_fact",
+    "text": "Vivre villes situe le projet sur 14 ha d’une friche d’environ 60 ha. Il évoque l’instruction jusqu’à fin 2027 et un début commercial possible en 2028-2030, conditionné aux autorisations et au raccordement.",
+    "source_id": "source_0004",
+    "source_ids": [
+      "source_0004"
+    ],
+    "published_at": "2026-11-09",
+    "event_date": "2026-11-09",
+    "source_status": "web_consulted",
+    "location": "Ligne 2",
+    "accessed_at": "2026-11-16",
+    "certainty": "medium"
+  },
+  {
+    "id": "evidence_0012",
+    "type": "reported_fact",
+    "text": "Vivre villes évoque environ 100 emplois et une récupération de chaleur potentielle pour la commune. Ces éléments sont des perspectives, sans étude d’emplois détaillée ni contrat de chaleur produit.",
+    "source_id": "source_0004",
+    "source_ids": [
+      "source_0004"
+    ],
+    "published_at": "2026-11-09",
+    "event_date": "2026-11-09",
+    "source_status": "web_consulted",
+    "location": "Ligne 2",
+    "accessed_at": "2026-11-16",
+    "certainty": "medium"
+  },
+  {
+    "id": "evidence_0013",
+    "type": "reported_fact",
+    "text": "Le conseil municipal du 20 mars 2026 a élu Pascal Galamand maire de Loire-sur-Rhône, succédant à Guy Martinet. Aucune position de Galamand sur ce data center n’est documentée dans les ressources retenues.",
+    "source_id": "source_0007",
+    "source_ids": [
+      "source_0007"
+    ],
+    "published_at": "2026-03-25",
+    "event_date": "2026-03-25",
+    "source_status": "web_consulted",
+    "location": "Annonce municipale",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0014",
+    "type": "reported_fact",
+    "text": "La liste communautaire actualisée le 16 octobre confirme Thierry Kovacs à la présidence de l’agglomération et désigne Pascal Galamand comme maire de Loire-sur-Rhône invité au bureau.",
+    "source_id": "source_0008",
+    "source_ids": [
+      "source_0008"
+    ],
+    "published_at": "2026-10-16",
+    "event_date": "2026-10-16",
+    "source_status": "web_consulted",
+    "location": "Liste des élus",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0015",
+    "type": "reported_fact",
+    "text": "Eclairion et Schneider Electric signent un protocole national de coopération relatif aux infrastructures électriques de leurs futurs centres IA. Vivre villes l’associe au projet local, mais le communiqué national seul ne vaut pas preuve d’un marché dédié au site.",
+    "source_id": "source_0009",
+    "source_ids": [
+      "source_0009"
+    ],
+    "published_at": "2026-07-31",
+    "event_date": "2026-07-31",
+    "source_status": "web_consulted",
+    "location": "Communiqué du 31 juillet",
+    "accessed_at": "2026-11-16",
+    "certainty": "medium"
+  },
+  {
+    "id": "evidence_0016",
+    "type": "reported_fact",
+    "text": "Le règlement historique CNR de 2023 décrit une charte et un comité de gouvernance portuaire associant l’État, CNR, EDF, Vienne Condrieu Agglomération, Métropole de Lyon et les communes de Loire-sur-Rhône, Givors et Saint-Romain-en-Gal. Ce document concerne un AMI CNR distinct ; aucune opinion sur Eclairion n’en découle.",
+    "source_id": "source_0010",
+    "source_ids": [
+      "source_0010"
+    ],
+    "published_at": null,
+    "event_date": "2023-10-31",
+    "source_status": "pdf_text_only",
+    "location": "P. 2 ; 31 octobre = échéance de l’AMI, publication non datée",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0017",
+    "type": "reported_fact",
+    "text": "Le règlement d’un AMI CNR distinct présente les filières multimodales prioritaires et le rôle du comité. Il ne prouve pas que les procédures juridiques de cet appel CNR s’imposent à l’AMI foncier EDF.",
+    "source_id": "source_0010",
+    "source_ids": [
+      "source_0010"
+    ],
+    "published_at": null,
+    "event_date": "2023-10-31",
+    "source_status": "pdf_text_only",
+    "location": "P. 2-3 ; contexte",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0018",
+    "type": "reported_fact",
+    "text": "Le Journal des Entreprises rapporte le choix d’Eclairion et la friche présentée comme déjà dépolluée, ainsi que les études à venir. La consommation d’eau proche de zéro est un critère de l’offre annoncée, pas une mesure d'exploitation.",
+    "source_id": "source_0011",
+    "source_ids": [
+      "source_0011"
+    ],
+    "published_at": "2026-05-29",
+    "event_date": "2026-05-29",
+    "source_status": "web_consulted",
+    "location": "Article du 29 mai",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0019",
+    "type": "reported_fact",
+    "text": "News Tank date l’annonce de sélection par EDF du 28 mai 2026, après l’AMI de décembre 2025. Les premières capacités sont annoncées au plus tard en 2030.",
+    "source_id": "source_0012",
+    "source_ids": [
+      "source_0012"
+    ],
+    "published_at": "2026-05-28",
+    "event_date": "2026-05-28",
+    "source_status": "web_consulted",
+    "location": "Article du 28 mai",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0020",
+    "type": "reported_fact",
+    "text": "Le décret met fin aux fonctions de Fabienne Buccio à compter du 18 mai 2026 ; elle était préfète lors de la saisine rapportée en janvier.",
+    "source_id": "source_0013",
+    "source_ids": [
+      "source_0013"
+    ],
+    "published_at": "2026-04-23",
+    "event_date": "2026-04-23",
+    "source_status": "web_consulted",
+    "location": "Décret",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0021",
+    "type": "reported_fact",
+    "text": "Étienne Guyot est nommé préfet de région et du Rhône à compter du 18 mai 2026. Aucune prise de position individuelle sur le data center n’est identifiée.",
+    "source_id": "source_0014",
+    "source_ids": [
+      "source_0014"
+    ],
+    "published_at": "2026-04-23",
+    "event_date": "2026-04-23",
+    "source_status": "web_consulted",
+    "location": "Décret",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0022",
+    "type": "reported_fact",
+    "text": "Le Dauphiné rapporte des réserves persistantes au sein de Vienne Condrieu Agglomération après la sélection d’Eclairion. Il ne s’agit pas d’un refus de permis de construire.",
+    "source_id": "source_0015",
+    "source_ids": [
+      "source_0015"
+    ],
+    "published_at": "2026-07-01",
+    "event_date": "2026-07-01",
+    "source_status": "web_consulted",
+    "location": "Article du 1er juillet",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0023",
+    "type": "reported_fact",
+    "text": "L’article rappelle que le terrain de l’ancienne centrale thermique est une friche d’environ 60 hectares, centrale démantelée en 2013. EDF met en avant le potentiel de raccordement et la reconversion foncière.",
+    "source_id": "source_0006",
+    "source_ids": [
+      "source_0006"
+    ],
+    "published_at": "2026-01-22",
+    "event_date": "2026-01-22",
+    "source_status": "web_consulted",
+    "location": "Ligne 8",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0024",
+    "type": "reported_fact",
+    "text": "L’article de novembre mentionne encore des enjeux de dépollution dans le calendrier d’instruction, alors que les annonces de mai décrivent la friche comme dépolluée. Le périmètre et l’état des opérations restent à préciser.",
+    "source_id": "source_0004",
+    "source_ids": [
+      "source_0004"
+    ],
+    "published_at": "2026-11-09",
+    "event_date": "2026-11-09",
+    "source_status": "web_consulted",
+    "location": "Ligne 2",
+    "accessed_at": "2026-11-16",
+    "certainty": "medium"
+  },
+  {
+    "id": "evidence_0025",
+    "type": "reported_fact",
+    "text": "Le Progrès identifie Guy Martinet comme maire favorable au projet et Thierry Kovacs comme président émettant des réserves. Même reportage que Le Dauphiné : ne pas compter comme deux témoignages indépendants.",
+    "source_id": "source_0016",
+    "source_ids": [
+      "source_0016"
+    ],
+    "published_at": "2026-01-24",
+    "event_date": "2026-01-24",
+    "source_status": "web_consulted",
+    "location": "Article du 24 janvier",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  },
+  {
+    "id": "evidence_0026",
+    "type": "reported_fact",
+    "text": "L’agglomération présente le site de Loire-sur-Rhône comme espace logistique multimodal. Cette orientation de développement est un enjeu de contexte, non une décision d’urbanisme relative au data center.",
+    "source_id": "source_0017",
+    "source_ids": [
+      "source_0017"
+    ],
+    "published_at": null,
+    "event_date": null,
+    "source_status": "web_consulted",
+    "location": "Page institutionnelle",
+    "accessed_at": "2026-11-16",
+    "certainty": "high"
+  }
+]

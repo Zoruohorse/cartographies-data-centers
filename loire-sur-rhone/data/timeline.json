@@ -1,0 +1,486 @@
+[
+  {
+    "id": "timeline_0001",
+    "actor_id": "actor_0001",
+    "event_type": "first_documented_appearance",
+    "date": "2025-12-22",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "porteurs",
+    "stance": "favorable",
+    "source_ids": [
+      "source_0001"
+    ],
+    "evidence_ids": [
+      "evidence_0001"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Propriétaire de l’ancienne centrale et organisateur de l’AMI. Sélection d’Eclairion annoncée le 28 mai 2026 ; bail définitif non démontré.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0002",
+    "actor_id": "actor_0002",
+    "event_type": "first_documented_appearance",
+    "date": "2026-05-28",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "porteurs",
+    "stance": "favorable",
+    "source_ids": [
+      "source_0003"
+    ],
+    "evidence_ids": [
+      "evidence_0006"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Lauréat de l’AMI ; concepteur, constructeur et exploitant pressenti de l’infrastructure IA de 350 MW à terme.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0003",
+    "actor_id": "actor_0003",
+    "event_type": "first_documented_appearance",
+    "date": "2026-05-28",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "porteurs",
+    "stance": "favorable",
+    "source_ids": [
+      "source_0003"
+    ],
+    "evidence_ids": [
+      "evidence_0007"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "PDG d’Eclairion ; défend la reconversion industrielle et le déploiement rapide des premières tranches.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0004",
+    "actor_id": "actor_0004",
+    "event_type": "first_documented_appearance",
+    "date": "2026-05-28",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "porteurs",
+    "stance": "favorable",
+    "source_ids": [
+      "source_0003"
+    ],
+    "evidence_ids": [
+      "evidence_0006"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Responsable EDF des grands sites de consommation cité en mai 2026, explicite les critères environnementaux du choix.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0005",
+    "actor_id": "actor_0005",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "elus-fav",
+    "stance": "favorable",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0003"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Ancien maire de Loire-sur-Rhône, favorable au projet en janvier 2026. A quitté sa fonction le 20 mars 2026. Le prénom Pascal dans le classeur est erroné.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0006",
+    "actor_id": "actor_0006",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "elus-opp",
+    "stance": "opposed",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0004"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Maire de Vienne et président de l’agglomération. Conteste la pertinence du data center sur ce foncier multimodal ; réserves maintenues dans la presse en juillet.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0007",
+    "actor_id": "actor_0007",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "orgs",
+    "stance": "opposed",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0004"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Collectivité portant la stratégie industrielle et portuaire. Réserves exprimées par son président sur ce projet, sans décision formelle de rejet établie.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0008",
+    "actor_id": "actor_0008",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0003"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Commune d’implantation ; ancien maire favorable ; position du nouveau conseil non établie.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0009",
+    "actor_id": "actor_0009",
+    "event_type": "first_documented_appearance",
+    "date": "2026-03-25",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "elus",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0007"
+    ],
+    "evidence_ids": [
+      "evidence_0013"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Maire élu le 20 mars 2026, successeur de Guy Martinet. Position publique non établie sur le projet.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0010",
+    "actor_id": "actor_0010",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Ancienne préfète de région et du Rhône, destinataire de la saisine rapportée fin 2025 ; départ le 18 mai 2026. Pas de réponse documentée.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0011",
+    "actor_id": "actor_0011",
+    "event_type": "first_documented_appearance",
+    "date": "2026-04-23",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "context",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0014"
+    ],
+    "evidence_ids": [
+      "evidence_0021"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Préfet de région et du Rhône depuis le 18 mai 2026. Fonction pertinente pour le suivi institutionnel ; aucune prise de position projet.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0012",
+    "actor_id": "actor_0012",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Services de l’État associés à la gouvernance portuaire ; préfète saisie selon Thierry Kovacs, aucune décision finale retrouvée.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0013",
+    "actor_id": "actor_0013",
+    "event_type": "first_documented_appearance",
+    "date": "2026-05-28",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "porteurs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0003"
+    ],
+    "evidence_ids": [
+      "evidence_0008"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Gestionnaire du réseau de transport ; raccordement haute tension ultérieur envisagé dans la presse, sans convention ni calendrier contractuel documenté.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0014",
+    "actor_id": "actor_0014",
+    "event_type": "first_documented_appearance",
+    "date": "2026-05-28",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "porteurs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0003"
+    ],
+    "evidence_ids": [
+      "evidence_0008"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Gestionnaire de distribution présenté comme voie de première alimentation envisagée en 2028. Aucune puissance ni convention confirmée.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0015",
+    "actor_id": "actor_0015",
+    "event_type": "first_documented_appearance",
+    "date": "2026-07-31",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "porteurs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0009"
+    ],
+    "evidence_ids": [
+      "evidence_0015"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Partenaire industriel d’Eclairion en France pour l’équipement électrique. Le rattachement local est rapporté par Vivre villes ; marché spécifique non établi.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0016",
+    "actor_id": "actor_0016",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Partenaire de la gouvernance industrialo-portuaire et aménageur portuaire. Aucune position explicite sur Eclairion.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0017",
+    "actor_id": "actor_0017",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "context",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Citée par Thierry Kovacs au sujet d’une étude de transport combiné, pas comme auteur d’un avis environnemental spécifique au data center.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0018",
+    "actor_id": "actor_0018",
+    "event_type": "first_documented_appearance",
+    "date": "2026-01-26",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "direct",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0002"
+    ],
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Instance de gouvernance historique du site portuaire. Thierry Kovacs demande son examen du projet. L’avis propre au data center n’est pas établi.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0019",
+    "actor_id": "actor_0019",
+    "event_type": "first_documented_appearance",
+    "date": null,
+    "date_precision": "unknown",
+    "status": "undated",
+    "scope": "context",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0010"
+    ],
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "confidence": "low",
+    "date_basis": "Règlement de 2023 non daté au jour près : exclu du graphique.",
+    "summary": "Membre de la gouvernance portuaire selon règlement CNR historique. Aucune position sur le projet.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0020",
+    "actor_id": "actor_0020",
+    "event_type": "first_documented_appearance",
+    "date": null,
+    "date_precision": "unknown",
+    "status": "undated",
+    "scope": "context",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0010"
+    ],
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "confidence": "low",
+    "date_basis": "Règlement de 2023 non daté au jour près : exclu du graphique.",
+    "summary": "Collectivité membre de la gouvernance historique du site portuaire, sans position publique établie sur Eclairion.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0021",
+    "actor_id": "actor_0021",
+    "event_type": "first_documented_appearance",
+    "date": null,
+    "date_precision": "unknown",
+    "status": "undated",
+    "scope": "context",
+    "category": "orgs",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0010"
+    ],
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "confidence": "low",
+    "date_basis": "Règlement de 2023 non daté au jour près : exclu du graphique.",
+    "summary": "Collectivité membre de la gouvernance historique du site portuaire, sans position publique établie sur Eclairion.",
+    "is_aggregate": false,
+    "is_media": false
+  },
+  {
+    "id": "timeline_0022",
+    "actor_id": "actor_0022",
+    "event_type": "first_documented_appearance",
+    "date": "2026-05-28",
+    "date_precision": "day",
+    "status": "confirmed",
+    "scope": "context",
+    "category": "context",
+    "stance": "unknown",
+    "source_ids": [
+      "source_0003"
+    ],
+    "evidence_ids": [
+      "evidence_0009"
+    ],
+    "confidence": "medium",
+    "date_basis": "Première référence retrouvée et datable dans le corpus retenu, pas première intervention réelle.",
+    "summary": "Client d’Eclairion sur un autre site (Bruyères-le-Châtel). Aucun contrat de Loire-sur-Rhône identifié ; acteur de contexte uniquement.",
+    "is_aggregate": false,
+    "is_media": false
+  }
+]

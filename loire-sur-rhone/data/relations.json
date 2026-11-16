@@ -1,0 +1,406 @@
+[
+  {
+    "id": "relation_0001",
+    "source_id": "actor_0001",
+    "target_id": "project_loire_sur_rhone",
+    "type": "leads",
+    "summary": "EDF lance l’AMI pour la reconversion de son site et retient Eclairion.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0001",
+      "evidence_0019"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0002",
+    "source_id": "actor_0002",
+    "target_id": "project_loire_sur_rhone",
+    "type": "leads",
+    "summary": "Eclairion conçoit, construit et exploite le site envisagé sous réserve des autorisations.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0006",
+      "evidence_0010",
+      "evidence_0019"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0003",
+    "source_id": "actor_0001",
+    "target_id": "actor_0002",
+    "type": "institutional_link",
+    "summary": "Sélection à l’AMI ; promesse de bail et bail définitif à conclure, pas de vente.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0001",
+      "evidence_0010",
+      "evidence_0019"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0004",
+    "source_id": "actor_0003",
+    "target_id": "actor_0002",
+    "type": "represents",
+    "summary": "Arnaud Lepinois est dirigeant d’Eclairion.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0007"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0005",
+    "source_id": "actor_0004",
+    "target_id": "actor_0001",
+    "type": "represents",
+    "summary": "Stéphane Raison expose les critères EDF.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0006"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0006",
+    "source_id": "actor_0005",
+    "target_id": "actor_0008",
+    "type": "represents",
+    "summary": "Guy Martinet était maire lors de la prise de position publiée en janvier, jusqu’au 20 mars 2026.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0003",
+      "evidence_0013"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0007",
+    "source_id": "actor_0005",
+    "target_id": "project_loire_sur_rhone",
+    "type": "supports",
+    "summary": "Soutien public en janvier 2026 à l’implantation, chaleur et emplois envisagés.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0003",
+      "evidence_0025"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0008",
+    "source_id": "actor_0006",
+    "target_id": "actor_0007",
+    "type": "represents",
+    "summary": "Thierry Kovacs est président de l’agglomération.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0004",
+      "evidence_0014"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0009",
+    "source_id": "actor_0006",
+    "target_id": "project_loire_sur_rhone",
+    "type": "criticizes",
+    "summary": "Conteste la destination du foncier stratégique au regard du report modal et des emplois.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0004",
+      "evidence_0005"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0010",
+    "source_id": "actor_0007",
+    "target_id": "project_loire_sur_rhone",
+    "type": "criticizes",
+    "summary": "Réserves exprimées en son nom ; ne vaut pas refus administratif.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0004",
+      "evidence_0022"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0011",
+    "source_id": "actor_0006",
+    "target_id": "actor_0010",
+    "type": "institutional_link",
+    "summary": "Courrier de saisine à la préfète de région fin décembre 2025, rapporté en janvier.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0012",
+    "source_id": "actor_0010",
+    "target_id": "actor_0012",
+    "type": "represents",
+    "summary": "Préfète au moment de la saisine, jusqu’au 18 mai 2026.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0005",
+      "evidence_0020"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0013",
+    "source_id": "actor_0011",
+    "target_id": "actor_0012",
+    "type": "represents",
+    "summary": "Nommé préfet à compter du 18 mai 2026 ; pas de position déduite.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0021"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0014",
+    "source_id": "actor_0009",
+    "target_id": "actor_0008",
+    "type": "represents",
+    "summary": "Maire élu le 20 mars 2026.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0013",
+      "evidence_0014"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0015",
+    "source_id": "actor_0008",
+    "target_id": "project_loire_sur_rhone",
+    "type": "related_to",
+    "summary": "Commune du site d’implantation ; position de la nouvelle municipalité non établie.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0003",
+      "evidence_0013"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0016",
+    "source_id": "actor_0013",
+    "target_id": "project_loire_sur_rhone",
+    "type": "related_to",
+    "summary": "Raccordement HT envisagé, non contractuellement démontré.",
+    "certainty": "medium",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0008"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0017",
+    "source_id": "actor_0014",
+    "target_id": "project_loire_sur_rhone",
+    "type": "related_to",
+    "summary": "Premiers raccordements de distribution envisagés, non contractuellement démontrés.",
+    "certainty": "medium",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0008"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0018",
+    "source_id": "actor_0015",
+    "target_id": "actor_0002",
+    "type": "institutional_link",
+    "summary": "Protocole de coopération national annoncé le 31 juillet 2026 ; pas de commande locale certaine.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0015"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0019",
+    "source_id": "actor_0016",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "CNR participe à la gouvernance historique du site portuaire.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0005",
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0020",
+    "source_id": "actor_0017",
+    "target_id": "actor_0018",
+    "type": "related_to",
+    "summary": "Étude de transport combiné citée dans le débat ; lien de participation au comité non présumé.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0021",
+    "source_id": "actor_0006",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "Le président demande l’examen du projet par les instances partenariales.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0022",
+    "source_id": "actor_0018",
+    "target_id": "project_loire_sur_rhone",
+    "type": "related_to",
+    "summary": "Examen du projet demandé par Thierry Kovacs, avis non documenté.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0005"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0023",
+    "source_id": "actor_0001",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "EDF membre historique du partenariat portuaire.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0024",
+    "source_id": "actor_0007",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "Agglomération membre historique de la gouvernance portuaire.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0025",
+    "source_id": "actor_0008",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "Commune membre historique de la gouvernance portuaire.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0026",
+    "source_id": "actor_0012",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "État membre historique de la gouvernance portuaire.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0027",
+    "source_id": "actor_0019",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "Métropole de Lyon : membre cité du comité en 2023.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0028",
+    "source_id": "actor_0020",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "Givors : commune citée du comité en 2023.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0029",
+    "source_id": "actor_0021",
+    "target_id": "actor_0018",
+    "type": "institutional_link",
+    "summary": "Saint-Romain-en-Gal : commune citée du comité en 2023.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0016"
+    ],
+    "updated_at": "2026-11-16"
+  },
+  {
+    "id": "relation_0030",
+    "source_id": "actor_0022",
+    "target_id": "actor_0002",
+    "type": "related_to",
+    "summary": "Mistral AI client d’Eclairion ailleurs ; aucun contrat sur Loire-sur-Rhône confirmé.",
+    "certainty": "high",
+    "status": "reported",
+    "evidence_ids": [
+      "evidence_0009"
+    ],
+    "updated_at": "2026-11-16"
+  }
+]

@@ -1,0 +1,105 @@
+{
+  "project": "Cartographie interactive — Eclairion à Loire-sur-Rhône",
+  "date": "2026-11-16",
+  "workbook": "Loire-sur-Rhone.xlsx",
+  "rows_total": 8,
+  "row_review": [
+    {
+      "row": 2,
+      "decision": "retenu",
+      "sources": [
+        "source_0004"
+      ],
+      "note": "URL originale retrouvée ; calendrier et retombées traités au conditionnel."
+    },
+    {
+      "row": 3,
+      "decision": "contexte, non intégré",
+      "note": "Tour d’horizon lyonnais ; données de Loire-sur-Rhône redondantes, autres opérateurs non liés au projet ; URL éditoriale exacte non retrouvée."
+    },
+    {
+      "row": 4,
+      "decision": "retenu",
+      "sources": [
+        "source_0005"
+      ],
+      "note": "URL Bref Eco retrouvée ; publication 2 juin distincte de découverte 21 juin."
+    },
+    {
+      "row": 5,
+      "decision": "retenu",
+      "sources": [
+        "source_0003"
+      ],
+      "note": "Texte intégral du classeur ; page bloquée."
+    },
+    {
+      "row": 6,
+      "decision": "retenu",
+      "sources": [
+        "source_0002",
+        "source_0016"
+      ],
+      "note": "Corrections Guy Martinet et Fabienne Buccio ; rapprochement avec sources officielles. Deux éditions du même reportage, non indépendantes."
+    },
+    {
+      "row": 7,
+      "decision": "redondant, non intégré",
+      "note": "AMI et autres sites EDF ; pas de nouvelle preuve locale ; URL éditeur non retrouvée."
+    },
+    {
+      "row": 8,
+      "decision": "retenu",
+      "sources": [
+        "source_0006"
+      ],
+      "note": "URL originale retrouvée."
+    },
+    {
+      "row": 9,
+      "decision": "redondant, non intégré",
+      "note": "AMI et contexte national ; essentiel confirmé par document EDF, URL originale de L’Usine Nouvelle non récupérée."
+    }
+  ],
+  "corrections": [
+    "Pascal Martinet → Guy Martinet, maire sortant ; Pascal Galamand élu le 20 mars 2026.",
+    "Fabienne Bucco → Fabienne Buccio ; préfète historique, remplacée par Étienne Guyot.",
+    "Mistral AI : relation commerciale sur autre site uniquement.",
+    "Schneider : partenariat national, pas de contrat local démontré."
+  ],
+  "additional_sources": [
+    "source_0001",
+    "source_0007",
+    "source_0008",
+    "source_0009",
+    "source_0010",
+    "source_0011",
+    "source_0012",
+    "source_0013",
+    "source_0014",
+    "source_0015",
+    "source_0016",
+    "source_0017"
+  ],
+  "limitations": [
+    "Captures PDF EDF et CNR indisponibles ; texte accessible.",
+    "Page Usine Nouvelle inaccessible directement ; texte intégral fourni.",
+    "Aucune conclusion d’absence de procédures ou d’opposition en dehors du corpus.",
+    "Le document CNR concerne un autre AMI ; ses membres ne sont que contexte historique."
+  ],
+  "scope": "Pas de nouvelle position supposée sur les acteurs institutionnels. Les acteurs de contexte sont exclus du mode direct.",
+  "validation": {
+    "errors": [],
+    "orphan_evidence": [],
+    "counts": {
+      "actors": 23,
+      "claims": 7,
+      "evidence": 26,
+      "relations": 30,
+      "sources": 17,
+      "chronology": 14,
+      "dated": 19,
+      "timeline": 22
+    }
+  }
+}

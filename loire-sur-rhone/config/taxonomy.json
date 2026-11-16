@@ -1,0 +1,166 @@
+{
+  "categories": {
+    "all": {
+      "label": "Tous les acteurs",
+      "color": "#64748b"
+    },
+    "project": {
+      "label": "Projet central",
+      "color": "#111827"
+    },
+    "porteurs": {
+      "label": "Porteurs, réseau et industriels",
+      "color": "#0f766e"
+    },
+    "elus-fav": {
+      "label": "Élus favorables documentés",
+      "color": "#2563eb"
+    },
+    "elus-opp": {
+      "label": "Élus critiques documentés",
+      "color": "#dc2626"
+    },
+    "elus": {
+      "label": "Élus sans position établie",
+      "color": "#8b5cf6"
+    },
+    "orgs": {
+      "label": "Collectivités et institutions",
+      "color": "#10b981"
+    },
+    "context": {
+      "label": "Acteurs de contexte",
+      "color": "#64748b"
+    },
+    "griefs": {
+      "label": "Points de vigilance",
+      "color": "#f97316"
+    },
+    "sources": {
+      "label": "Médias et sources",
+      "color": "#64748b"
+    }
+  },
+  "stances": {
+    "all": {
+      "label": "Toutes les positions",
+      "color": "#64748b"
+    },
+    "favorable": {
+      "label": "Favorable ou soutien",
+      "color": "#22c55e"
+    },
+    "opposed": {
+      "label": "Opposé ou critique",
+      "color": "#ef4444"
+    },
+    "neutral": {
+      "label": "Prudent ou ambigu",
+      "color": "#f59e0b"
+    },
+    "unknown": {
+      "label": "Position non établie",
+      "color": "#94a3b8"
+    }
+  },
+  "certainty_levels": {
+    "high": {
+      "label": "Haute"
+    },
+    "medium": {
+      "label": "Moyenne"
+    },
+    "low": {
+      "label": "Faible"
+    }
+  },
+  "relation_types": {
+    "leads": {
+      "label": "Porte / sélectionne le projet",
+      "directed": true
+    },
+    "institutional_link": {
+      "label": "Relation institutionnelle / contractuelle",
+      "directed": true
+    },
+    "represents": {
+      "label": "Rattachement ou représentation",
+      "directed": true
+    },
+    "supports": {
+      "label": "Soutien",
+      "directed": true
+    },
+    "criticizes": {
+      "label": "Critique",
+      "directed": true
+    },
+    "related_to": {
+      "label": "Lien documenté (sans position implicite)",
+      "directed": true
+    }
+  },
+  "timeline": {
+    "event_type": "first_documented_appearance",
+    "categories": [
+      {
+        "id": "porteurs",
+        "label": "Porteurs, réseau et industriels",
+        "color": "#0f766e"
+      },
+      {
+        "id": "elus-fav",
+        "label": "Élus favorables documentés",
+        "color": "#2563eb"
+      },
+      {
+        "id": "elus-opp",
+        "label": "Élus critiques documentés",
+        "color": "#dc2626"
+      },
+      {
+        "id": "elus",
+        "label": "Élus sans position établie",
+        "color": "#8b5cf6"
+      },
+      {
+        "id": "orgs",
+        "label": "Collectivités et institutions",
+        "color": "#10b981"
+      },
+      {
+        "id": "context",
+        "label": "Acteurs de contexte",
+        "color": "#64748b"
+      }
+    ],
+    "fallback_category": "context",
+    "excluded_actor_categories": [
+      "project",
+      "griefs",
+      "sources"
+    ],
+    "stances": [
+      {
+        "id": "favorable",
+        "label": "Favorable ou soutien",
+        "color": "#22c55e"
+      },
+      {
+        "id": "opposed",
+        "label": "Opposé ou critique",
+        "color": "#ef4444"
+      },
+      {
+        "id": "neutral",
+        "label": "Prudent ou ambigu",
+        "color": "#f59e0b"
+      },
+      {
+        "id": "unknown",
+        "label": "Position non établie",
+        "color": "#94a3b8"
+      }
+    ]
+  }
+}

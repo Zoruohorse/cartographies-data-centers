@@ -1,0 +1,161 @@
+{
+  "id": "project_loire_sur_rhone",
+  "title": "Cartographie interactive — Eclairion à Loire-sur-Rhône",
+  "subtitle": "350 MW annoncés à terme · 14 ha · sélection EDF le 28 mai 2026 · premier horizon 2028-2030 sous conditions",
+  "last_updated": "2026-11-16",
+  "cutoff_date": "2026-11-16",
+  "data_notice": "Corpus Loire-sur-Rhône.xlsx : 8 articles relus. Enrichissement par des sources publiques institutionnelles et éditoriales identifiées. Les fonctions de contexte ne valent pas position. Les positions historiques sont datées ; les dates de découverte du classeur sont distinctes des dates de publication.",
+  "griefs": [
+    {
+      "title": "Vocation industrielle et multimodalité",
+      "text": "Thierry Kovacs estime que le projet pourrait détourner un foncier relié au rail et au fleuve de sa vocation industrielle et logistique. Le maire de l’époque soutient au contraire sa reconversion après une longue période de friche. Aucun arbitrage définitif n’est établi.",
+      "evidence_ids": [
+        "evidence_0003",
+        "evidence_0004",
+        "evidence_0005",
+        "evidence_0016",
+        "evidence_0017",
+        "evidence_0026"
+      ]
+    },
+    {
+      "title": "Retombées économiques et emplois",
+      "text": "Une centaine d’emplois est évoquée ; le président de l’agglomération juge les emplois trop peu nombreux au regard des alternatives. Aucune étude d'emplois directs/indirects ou comparaison de scénarios n'est fournie.",
+      "evidence_ids": [
+        "evidence_0004",
+        "evidence_0012"
+      ]
+    },
+    {
+      "title": "Raccordement et montée en charge",
+      "text": "Les 350 MW constituent une cible à terme. Les premiers MW via Enedis puis RTE sont évoqués par la presse en mai ; les conditions contractuelles, puissances par tranche et dates effectives restent à confirmer.",
+      "evidence_ids": [
+        "evidence_0007",
+        "evidence_0008",
+        "evidence_0010"
+      ]
+    },
+    {
+      "title": "Eau, énergie et chaleur fatale",
+      "text": "Le refroidissement liquide en boucle fermée et la consommation d’eau proche de zéro sont des caractéristiques revendiquées de l’offre. La valorisation de la chaleur est une possibilité, sans réseau de chaleur ni débouché contractualisé démontré.",
+      "evidence_ids": [
+        "evidence_0006",
+        "evidence_0012",
+        "evidence_0018"
+      ]
+    },
+    {
+      "title": "Foncier, dépollution et autorisations",
+      "text": "Le projet est en phase de préparation et d’études. La communication de mai indique une friche déjà dépolluée, tandis que l’article de novembre évoque encore la dépollution. Le périmètre des travaux et l’état des autorisations restent à vérifier.",
+      "evidence_ids": [
+        "evidence_0010",
+        "evidence_0018",
+        "evidence_0024"
+      ]
+    },
+    {
+      "title": "Acceptabilité et gouvernance territoriale",
+      "text": "La saisine de la préfète par le président est rapportée, mais aucune réponse ni avis du comité propre au projet n’est établi. La succession municipale et préfectorale ne permet pas d’attribuer les opinions antérieures aux nouveaux titulaires.",
+      "evidence_ids": [
+        "evidence_0005",
+        "evidence_0013",
+        "evidence_0014",
+        "evidence_0020",
+        "evidence_0021",
+        "evidence_0022"
+      ]
+    },
+    {
+      "title": "Client final et exécution industrielle",
+      "text": "Mistral AI est client ailleurs. Aucun client spécifique, financement définitif ni contrat de raccordement pour Loire-sur-Rhône n’est identifié dans le corpus. Le partenariat Schneider national ne constitue pas un ordre de service local.",
+      "evidence_ids": [
+        "evidence_0009",
+        "evidence_0015",
+        "evidence_0019"
+      ]
+    }
+  ],
+  "vigilance": [
+    "350 MW = capacité électrique envisagée, non puissance IT ni puissance souscrite ou consommée. Aucun MW opérationnel prouvé.",
+    "14 ha projetés sur environ 60 ha de l’ancienne friche EDF ; ne pas confondre avec le périmètre portuaire CNR.",
+    "Le bail définitif est conditionné au permis de construire ; sélection à l’AMI ne vaut pas autorisation ni démarrage de chantier.",
+    "2028-2030 : trajectoire indicative conditionnée aux autorisations et raccordements ; pas une garantie de mise en service.",
+    "L’ancien maire Guy Martinet et le nouveau Pascal Galamand sont distincts ; position du second inconnue.",
+    "La préfète Buccio a quitté ses fonctions le 18 mai ; aucune position du successeur n’est déduite.",
+    "CNR, Métropole, Givors, Saint-Romain-en-Gal : liens historiques à la gouvernance, aucune opposition ou adhésion au site attribuée.",
+    "Mistral AI n’est pas un client confirmé de Loire-sur-Rhône ; pas d’autres opérateurs régionaux ou projets d’EDF intégrés comme acteurs locaux.",
+    "Pas de collectif d’opposition, manifestation, recours, avis MRAe ou permis identifié dans les huit articles ni dans les compléments retenus ; absence de preuve, non preuve d’absence.",
+    "Les indicateurs environnementaux annoncés doivent être confirmés par des études et des mesures en exploitation ; la chaleur fatale n’a pas de débouché établi."
+  ],
+  "vigilance_evidence_ids": [
+    [
+      "evidence_0006",
+      "evidence_0007",
+      "evidence_0008"
+    ],
+    [
+      "evidence_0010",
+      "evidence_0011",
+      "evidence_0016",
+      "evidence_0023"
+    ],
+    [
+      "evidence_0001",
+      "evidence_0010",
+      "evidence_0019"
+    ],
+    [
+      "evidence_0007",
+      "evidence_0008",
+      "evidence_0011",
+      "evidence_0019"
+    ],
+    [
+      "evidence_0003",
+      "evidence_0013",
+      "evidence_0025"
+    ],
+    [
+      "evidence_0005",
+      "evidence_0020",
+      "evidence_0021"
+    ],
+    [
+      "evidence_0016",
+      "evidence_0017"
+    ],
+    [
+      "evidence_0009"
+    ],
+    [
+      "evidence_0004",
+      "evidence_0022",
+      "evidence_0010"
+    ],
+    [
+      "evidence_0006",
+      "evidence_0012",
+      "evidence_0018",
+      "evidence_0024"
+    ]
+  ],
+  "source_descriptions": [
+    "EDF — Procédure d’accès au dossier de l’AMI Data center Loire-sur-Rhône",
+    "Le Dauphiné Libéré — Le projet d’un « super » data center sur un site EDF suscite le débat",
+    "L’Usine Nouvelle — EDF choisit de nouveau Eclairion pour construire un datacenter sur un ancien site près de Lyon",
+    "Vivre villes — Projet de grand data center IA d’Eclairion à Loire-sur-Rhône prévu pour 2028/2030",
+    "Bref Eco — EDF choisit Éclairion pour développer un data center de grande puissance à Loire-sur-Rhône",
+    "Vivre villes — EDF prévoit d’installer un data center de grande puissance sur le site de l’ancienne centrale thermique",
+    "Commune de Loire-sur-Rhône — Installation du nouveau conseil municipal",
+    "Vienne Condrieu Agglomération — Les élus communautaires",
+    "Schneider Electric — Eclairion et Schneider Electric renforcent leur partenariat",
+    "CNR — Règlement de l’AMI 2023-15 — site industriel et portuaire de Loire Saint-Romain",
+    "Le Journal des Entreprises — EDF choisit Éclairion pour le site de Loire-sur-Rhône",
+    "News Tank Energies — EDF : Éclairion choisi pour développer un data center de 350 MW",
+    "Légifrance — Décret du 22 avril 2026 — cessation de fonctions de Fabienne Buccio",
+    "Légifrance — Décret de nomination d’Étienne Guyot",
+    "Le Dauphiné Libéré — EDF a choisi la société qui développera son futur data center de 350 MW",
+    "Le Progrès — Pourquoi le projet de data center à Loire-sur-Rhône suscite le débat",
+    "Vienne Condrieu Agglomération — Projet logistique multimodale"
+  ]
+}
